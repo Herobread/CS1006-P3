@@ -11,4 +11,7 @@ case "$(uname -sr)" in
     ;;
 esac
 
-java -cp "lib/*${SEPARATOR}dist" Main
+java -cp "lib/*${SEPARATOR}dist" rgou.Main
+
+# Taken from
+# https://github.com/p2js/sta-java-template/blob/main/run.sh
