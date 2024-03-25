@@ -1,1 +1,13 @@
 /dist
+
+/.idea/
+/out/production/p3repo/rgou/view/GameSceneController.class
+/out/production/p3repo/rgou/Main.class
+/out/production/p3repo/CoordinatePoint.class
+/out/production/p3repo/GameBoard.class
+/out/production/p3repo/GameEngine.class
+/out/production/p3repo/OutOfBoundsSquare.class
+/out/production/p3repo/Path.class
+/out/production/p3repo/Piece.class
+/out/production/p3repo/RosetteSquare.class
+/out/production/p3repo/Square.class
