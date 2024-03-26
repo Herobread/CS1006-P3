@@ -1,42 +1,42 @@
 package rgou.view.scenes;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
+import javax.swing.BorderFactory;
 
 import rgou.view.GameSceneController;
 import rgou.view.GameScenes;
+import rgou.view.components.ImageButton;
 
 public class GameplayScene extends GameSceneBase {
-	private int count = 0;
-
 	public GameplayScene(GameSceneController gameSceneController) {
 		super(gameSceneController);
 	}
 
 	public void run() {
-		JButton button = new JButton("go to main menu");
+		double scale = gameSceneController.getSceneScale();
+		System.out.println(scale);
+		System.out.println("rerender");
 
-		button.addActionListener(new ActionListener() {
+		ImageButton goBackButton = new ImageButton("assets/textures/pawns/pawn-black.png");
+		goBackButton.setBounds((int) (248 * scale), (int) (226 * scale), (int) (40 * scale), (int) (40 * scale));
+
+		goBackButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				gameSceneController.setActiveScene(GameScenes.MAIN_MENU);
-				gameSceneController.renderActiveScene();
 			}
 		});
-		add(button);
 
-		JButton button2 = new JButton("increment " + count);
+		add(goBackButton);
 
-		button2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				count += 1;
-				gameSceneController.renderActiveScene();
-			}
-		});
-		add(button2);
+		setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
 
-		// gameSceneController.renderActiveScene();
-		System.out.println("running...");
+		setPreferredSize(new Dimension((int) (300 * scale), 100));
+
+		repaint();
 	}
 }

@@ -20,6 +20,7 @@ public abstract class GameSceneBase extends JPanel implements Runnable {
 	 */
 	public GameSceneBase(GameSceneController gameSceneController) {
 		this.gameSceneController = gameSceneController;
+		setLayout(null);
 	}
 
 	/**
