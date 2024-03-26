@@ -1,14 +1,13 @@
 package rgou;
 
-import javax.swing.SwingUtilities;
-
+import rgou.view.GameSceneController;
 import rgou.view.MainFrame;
 
 public class Main {
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> {
-			MainFrame frame = new MainFrame();
-			frame.setVisible(true);
-		});
+		MainFrame frame = new MainFrame();
+		GameSceneController gameSceneController = new GameSceneController(frame);
+
+		gameSceneController.renderActiveScene();
 	}
 }

@@ -1,4 +1,4 @@
-package rgou.view;
+package rgou.view.exceptions;
 
 public class InvalidSceneException extends RuntimeException {
 	public InvalidSceneException() {

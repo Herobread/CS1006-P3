@@ -10,6 +10,7 @@ public class MainFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(504, 358);
 		centerFrame();
+		setVisible(true);
 	}
 
 	private void centerFrame() {

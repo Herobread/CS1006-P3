@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import rgou.view.exceptions.InvalidSceneException;
 import rgou.view.scenes.GameOverScene;
 import rgou.view.scenes.GameSceneBase;
 import rgou.view.scenes.GameplayScene;
@@ -22,7 +23,10 @@ public class GameSceneController {
 	public GameSceneController(JFrame mainFrame) {
 		this.mainFrame = mainFrame;
 		sceneMap = new EnumMap<>(Scenes.class);
+
 		initializeScenes();
+
+		setActiveScene(Scenes.MAIN_MENU);
 	}
 
 	private void initializeScenes() {
