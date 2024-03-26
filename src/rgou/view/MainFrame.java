@@ -8,7 +8,7 @@ public class MainFrame extends JFrame {
 	public MainFrame() {
 		setTitle("Royal game of Ur");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(504, 358);
+		setSize(1280, 720);
 		centerFrame();
 		setVisible(true);
 	}

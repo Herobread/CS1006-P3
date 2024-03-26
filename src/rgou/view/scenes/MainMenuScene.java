@@ -4,7 +4,6 @@ import rgou.view.GameSceneController;
 import rgou.view.GameScenes;
 
 import javax.swing.JButton;
-import javax.swing.JPanel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -14,9 +13,7 @@ public class MainMenuScene extends GameSceneBase {
 	}
 
 	public void run() {
-		JPanel panel = new JPanel();
-
-		JButton button = new JButton("Click Me");
+		JButton button = new JButton("Go to gameplay panel");
 
 		button.addActionListener(new ActionListener() {
 			@Override
@@ -27,8 +24,6 @@ public class MainMenuScene extends GameSceneBase {
 			}
 		});
 
-		panel.add(button);
-
-		this.add(panel);
+		add(button);
 	}
 }

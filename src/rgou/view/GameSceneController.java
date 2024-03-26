@@ -2,7 +2,9 @@ package rgou.view;
 
 import java.util.EnumMap;
 import java.util.Map;
+import java.awt.Color;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -16,6 +18,10 @@ import rgou.view.scenes.MainMenuScene;
  * Controls the switching and rendering of game scenes.
  */
 public class GameSceneController {
+	// private final int WIDTH = 1280;
+	// private final int HEIGHT = 720;
+	// private final double ASPECT_RATIO = (double) WIDTH / HEIGHT;
+
 	private JFrame mainFrame;
 	private Map<GameScenes, GameSceneBase> sceneMap;
 	private GameScenes activeScene = GameScenes.MAIN_MENU;
@@ -57,17 +63,20 @@ public class GameSceneController {
 			throw new InvalidSceneException();
 		}
 
-		System.out.println("rendering");
-
-		// update current scene
 		GameSceneBase currentScene = getScene(activeScene);
 		currentScene.removeAll();
 		currentScene.run();
-		currentScene.repaint();
+		currentScene.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-		// render it on the main frame
+		// currentScene.setBackground(Color.LIGHT_GRAY);
+
+		renderSceneOnMainFrame(currentScene);
+	}
+
+	private void renderSceneOnMainFrame(GameSceneBase scene) {
 		mainFrame.getContentPane().removeAll();
-		mainFrame.getContentPane().add(currentScene);
+		mainFrame.setBackground(Color.BLACK);
+		mainFrame.getContentPane().add(scene);
 		mainFrame.revalidate();
 		mainFrame.repaint();
 	}
