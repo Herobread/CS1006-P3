@@ -18,7 +18,6 @@ public class GameBoard {
         gameBoard[5] = new Square[] { new OutOfBoundsSquare(), new Square(), new OutOfBoundsSquare() };
         gameBoard[6] = new Square[] { new RosetteSquare(), new Square(), new RosetteSquare() };
         gameBoard[7] = new Square[] { new Square(), new Square(), new Square() };
-
     }
 
     public Square[][] getGameBoard() {
@@ -29,9 +28,11 @@ public class GameBoard {
         return gamePath;
     }
 
-    public Square getSquare(int x, int y) {
-        return gameBoard[x][y];
+    public Square getSquare(Coordinate coord) {
+        return gameBoard[coord.getY()][coord.getX()];
     }
+
+
 }
 
 class Path {
