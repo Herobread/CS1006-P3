@@ -1,7 +1,7 @@
 package rgou.view.scenes;
 
 import rgou.view.GameSceneController;
-import rgou.view.Scenes;
+import rgou.view.GameScenes;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -14,8 +14,6 @@ public class MainMenuScene extends GameSceneBase {
 	}
 
 	public void run() {
-		removeAll();
-
 		JPanel panel = new JPanel();
 
 		JButton button = new JButton("Click Me");
@@ -24,7 +22,7 @@ public class MainMenuScene extends GameSceneBase {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Button Clicked");
-				gameSceneController.setActiveScene(Scenes.GAMEPLAY);
+				gameSceneController.setActiveScene(GameScenes.GAMEPLAY);
 				gameSceneController.renderActiveScene();
 			}
 		});
@@ -32,6 +30,5 @@ public class MainMenuScene extends GameSceneBase {
 		panel.add(button);
 
 		this.add(panel);
-
 	}
 }

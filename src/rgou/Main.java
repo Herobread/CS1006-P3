@@ -5,8 +5,8 @@ import rgou.view.MainFrame;
 
 public class Main {
 	public static void main(String[] args) {
-		MainFrame frame = new MainFrame();
-		GameSceneController gameSceneController = new GameSceneController(frame);
+		MainFrame mainFrame = new MainFrame();
+		GameSceneController gameSceneController = new GameSceneController(mainFrame);
 
 		gameSceneController.renderActiveScene();
 	}

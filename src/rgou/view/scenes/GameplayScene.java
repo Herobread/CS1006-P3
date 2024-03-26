@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
 import rgou.view.GameSceneController;
-import rgou.view.Scenes;
+import rgou.view.GameScenes;
 
 public class GameplayScene extends GameSceneBase {
 	private int count = 0;
@@ -16,12 +16,11 @@ public class GameplayScene extends GameSceneBase {
 	}
 
 	public void run() {
-		removeAll();
 		JButton button = new JButton("go to main menu");
 
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				gameSceneController.setActiveScene(Scenes.MAIN_MENU);
+				gameSceneController.setActiveScene(GameScenes.MAIN_MENU);
 				gameSceneController.renderActiveScene();
 			}
 		});
@@ -37,7 +36,6 @@ public class GameplayScene extends GameSceneBase {
 		});
 		add(button2);
 
-		repaint();
 		// gameSceneController.renderActiveScene();
 		System.out.println("running...");
 	}
