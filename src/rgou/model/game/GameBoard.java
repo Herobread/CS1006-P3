@@ -18,6 +18,7 @@ public class GameBoard {
         gameBoard[5] = new Square[] { new OutOfBoundsSquare(), new Square(), new OutOfBoundsSquare() };
         gameBoard[6] = new Square[] { new RosetteSquare(), new Square(), new RosetteSquare() };
         gameBoard[7] = new Square[] { new Square(), new Square(), new Square() };
+
     }
 
     public Square[][] getGameBoard() {
@@ -43,23 +44,23 @@ class Path {
     public Path() {
         // Creates first stretch of path, this is from the 3 index X co-ordinate to the
         // 0 index x co-ordiante
-        for (int x = 3; x >= 0; x--) {
-            DARK_PATH.add(new Coordinate(x, 0));
-            LIGHT_PATH.add(new Coordinate(x, 2));
+        for (int y = 3; y >= 0; y--) {
+            DARK_PATH.add(new Coordinate(0, y));
+            LIGHT_PATH.add(new Coordinate(2, y));
         }
 
         // Creates the shared path, this is down the middle of the board
-        for (int x = 0; x < 8; x++) {
-            DARK_PATH.add(new Coordinate(x, 1));
-            LIGHT_PATH.add(new Coordinate(x, 1));
+        for (int y = 0; y < 8; y++) {
+            DARK_PATH.add(new Coordinate(1, y));
+            LIGHT_PATH.add(new Coordinate(1, y));
         }
 
         // Creates the ending stretch of the path
-        DARK_PATH.add(new Coordinate(7, 0));
-        LIGHT_PATH.add(new Coordinate(7, 2));
+        DARK_PATH.add(new Coordinate(0, 7));
+        LIGHT_PATH.add(new Coordinate(2, 7));
 
-        DARK_PATH.add(new Coordinate(6, 0));
-        LIGHT_PATH.add(new Coordinate(6, 2));
+        DARK_PATH.add(new Coordinate(0,6));
+        LIGHT_PATH.add(new Coordinate(2, 6));
 
     }
 

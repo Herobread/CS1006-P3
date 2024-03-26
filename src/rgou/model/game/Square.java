@@ -3,9 +3,9 @@ package rgou.model.game;
 public class Square {
 
     private Piece currentPiece;
-    private boolean outOfBounds = false;
+    protected boolean outOfBounds = false;
 
-    private boolean rossete = false;
+    protected boolean rossete = false;
 
     public Square() {
 

@@ -1,5 +1,8 @@
 package rgou.model.game;
 
+import rgou.model.utils.Coordinate;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 // Will Likely change this
@@ -9,6 +12,8 @@ public class Player {
     private LinkedList<Piece> inStock = new LinkedList<>();
 
     private Piece[] home = new Piece[7];
+
+    private ArrayList<Coordinate> path;
 
     public Player(String symbol) {
         this.symbol = symbol;
@@ -34,4 +39,11 @@ public class Player {
         return inStock.poll();
     }
 
+    public void setPath(ArrayList<Coordinate> path) {
+        this.path = path;
+    }
+
+    public ArrayList<Coordinate> getPath() {
+        return path;
+    }
 }

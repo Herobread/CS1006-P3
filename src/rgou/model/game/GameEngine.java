@@ -1,5 +1,6 @@
 package rgou.model.game;
 
+import java.nio.charset.CoderResult;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Scanner;
@@ -20,6 +21,12 @@ public class GameEngine {
         Player DarkPlayer = new Player("X");
         Player LightPlayer = new Player("O");
         View view = new View();
+
+        DarkPlayer.setPath(gameBoard.getGamePath().getDARK_PATH());
+        LightPlayer.setPath(gameBoard.getGamePath().getLIGHT_PATH());
+
+        System.out.println(DarkPlayer.getPath());
+
 
         Player[] players = new Player[] { DarkPlayer, LightPlayer };
 
@@ -49,24 +56,22 @@ public class GameEngine {
             // Ask the co-ordinate to move
             view.askWhichPieceToMove(roll);
             Coordinate pieceToMoveLocation = getCoord();
-            if(checkIfNewPieceOut(currentPlayer, pieceToMoveLocation, roll)) {
-                takeOutNewPiece(currentPlayer, roll);
-            } else if (checkCoordValidity(currentPlayer, pieceToMoveLocation, roll)) {
-                moveCurrentPiece(currentPlayer, pieceToMoveLocation, roll);
-            }
-            else {
-                System.out.println(checkCoordValidity(currentPlayer, pieceToMoveLocation, roll));
-                System.out.println(gameBoard.getSquare(pieceToMoveLocation).getCurrentPiece().getSymbol());
+
+            // Move piece
+            if(validCoordinate(currentPlayer, pieceToMoveLocation)) {
+                Coordinate startCoord = pieceToMoveLocation;
+                Coordinate endCoord = findEndCoordiante(currentPlayer, startCoord, roll);
+
+                System.out.println(startCoord+" "+endCoord);
+
+                movePiece(startCoord, endCoord);
             }
 
-
-            // Validate co-ordinate
 
             turn = 1 - turn;
         }
 
     }
-
 
 
     public static Player checkWinCondition(Player dP, Player lP) {
@@ -99,10 +104,13 @@ public class GameEngine {
     public static Coordinate getCoord() {
         String coord = reader.nextLine();
         String[] xy = coord.split(",");
+        if(xy.length != 2) {
+            System.out.println("Please enter an actual co-ordinate!");
+        }
         try {
             int x;
             int y;
-            if (((x = Integer.parseInt(xy[0])) >= 0 && x < 8) && ((y = Integer.parseInt(xy[1])) >= 0 && y < 4)) {
+            if (((x = Integer.parseInt(xy[0])) >= 0 && x < 3) && ((y = Integer.parseInt(xy[1])) >= 0 && y < 8)) {
                 Coordinate xyPoint = new Coordinate(x, y);
                 return xyPoint;
             }
@@ -115,84 +123,38 @@ public class GameEngine {
         }
     }
 
-    private static boolean checkCoordValidity(Player currentPlayer, Coordinate moveTo, int roll) {
-        if (currentPlayer.getSymbol().equals("X")) {
-            int currentLocation = gameBoard.getGamePath().getDARK_PATH().indexOf(moveTo);
-            Coordinate newLocation = gameBoard.getGamePath().getDARK_PATH().get(currentLocation+ roll -1);
+    private static boolean checkPlayerPieceOnCoord(Player currentPlayer, Coordinate pieceToMoveLocation) {
+        return gameBoard.getSquare(pieceToMoveLocation).getCurrentPiece().getSymbol().equals(currentPlayer.getSymbol());
+    }
 
-            return gameBoard.getGamePath().getDARK_PATH().contains(moveTo) &&
-                    "X".equals(gameBoard.getSquare(moveTo).getCurrentPiece().getSymbol()) &&
-                    !"X".equals(gameBoard.getSquare(newLocation).getCurrentPiece().getSymbol());
-
-
-        } else if (currentPlayer.getSymbol().equals("O")) {
-            int currentLocation = gameBoard.getGamePath().getLIGHT_PATH().indexOf(moveTo);
-            Coordinate newLocation = gameBoard.getGamePath().getDARK_PATH().get(currentLocation+ roll -1);
-
-            return gameBoard.getGamePath().getLIGHT_PATH().contains(moveTo) &&
-                    "O".equals(gameBoard.getSquare(moveTo).getCurrentPiece().getSymbol()) &&
-                    !"O".equals(gameBoard.getSquare(newLocation).getCurrentPiece().getSymbol());
+    private static boolean validCoordinate(Player currentPlayer, Coordinate pieceToMoveLocation) {
+        if(pieceToMoveLocation.getX() == -1 && pieceToMoveLocation.getY() == -1) {
+            return true;
         }
-        return false;
+        return checkPlayerPieceOnCoord(currentPlayer, pieceToMoveLocation);
     }
 
-
-    public static Player getPlayerTurn() {
-        return currentPlayer;
-    }
-
-    private static boolean checkIfNewPieceOut(Player currentPlayer, Coordinate moveTo, int roll) {
-        if (currentPlayer.getSymbol().equals("X")) {
-            Coordinate coord = gameBoard.getGamePath().getDARK_PATH().get(roll -1);
-            if(gameBoard.getSquare(coord).equals("X")) {
-                return false;
-            }
-        } else if (currentPlayer.getSymbol().equals("O")) {
-            Coordinate coord = gameBoard.getGamePath().getLIGHT_PATH().get(roll -1);
-            if(gameBoard.getSquare(coord).equals("O")) {
-                return false;
-            }
+    private static Coordinate findEndCoordiante(Player currentPlayer, Coordinate startCoord, int roll) {
+        if(startCoord.getX() == - 1 && startCoord.getY() == -1) {
+            return currentPlayer.getPath().get(roll - 1);
         }
-        return (moveTo.getX() == -1 && moveTo.getY() == -1) && currentPlayer.getInStock().size() > 0;
+        int currentLocation = currentPlayer.getPath().indexOf(startCoord);
+
+        return currentPlayer.getPath().get(currentLocation + roll);
     }
 
-    public static void takeOutNewPiece(Player currentPlayer, int roll) {
-        if (currentPlayer.getSymbol().equals("X")) {
-            Coordinate coord = gameBoard.getGamePath().getDARK_PATH().get(roll -1);
-            gameBoard.getSquare(coord).setCurrentPiece(currentPlayer.takeFromStock());
-        } else if (currentPlayer.getSymbol().equals("O")) {
-            Coordinate coord = gameBoard.getGamePath().getLIGHT_PATH().get(roll -1);
-            gameBoard.getSquare(coord).setCurrentPiece(currentPlayer.takeFromStock());
+    public static void movePiece(Coordinate startCoord, Coordinate endCoord) {
+        Piece pieceToMove;
+        if(startCoord.getX() == -1 && startCoord.getY() == -1) {
+            pieceToMove = currentPlayer.getInStock().poll();
         }
-    }
-
-    public static void moveCurrentPiece(Player currentPlayer,Coordinate pieceLocation, int roll) {
-        if (currentPlayer.getSymbol().equals("X")) {
-            int currentLocation = gameBoard.getGamePath().getDARK_PATH().indexOf(pieceLocation);
-            Coordinate newLocation = gameBoard.getGamePath().getDARK_PATH().get(currentLocation+ roll -1);
-
-            // Setting previous to null
-            Piece move = gameBoard.getSquare(pieceLocation).getCurrentPiece();
-            gameBoard.getSquare(pieceLocation).setCurrentPiece(null);
-
-            // Set new piece
-            gameBoard.getSquare(newLocation).setCurrentPiece(move);
-
-        } else if (currentPlayer.getSymbol().equals("O")) {
-            Coordinate coord = gameBoard.getGamePath().getLIGHT_PATH().get(roll -1);
-            int currentLocation = gameBoard.getGamePath().getLIGHT_PATH().indexOf(pieceLocation);
-            Coordinate newLocation = gameBoard.getGamePath().getLIGHT_PATH().get(currentLocation+ roll -1);
-
-            // Setting previous to null
-            Piece move = gameBoard.getSquare(pieceLocation).getCurrentPiece();
-            gameBoard.getSquare(pieceLocation).setCurrentPiece(null);
-
-            // Set new piece
-            gameBoard.getSquare(newLocation).setCurrentPiece(move);
+        else {
+            pieceToMove = gameBoard.getSquare(startCoord).getCurrentPiece();
+            gameBoard.getSquare(startCoord).setCurrentPiece(null);
         }
+
+        gameBoard.getSquare(endCoord).setCurrentPiece(pieceToMove);
     }
-
-
 
 
 }
