@@ -1,8 +1,10 @@
-class CoordinatePoint {
+package rgou.model.utils;
+
+public class Coordinate {
     private int X;
     private int Y;
 
-    public CoordinatePoint(int X, int Y) {
+    public Coordinate(int X, int Y) {
         this.X = X;
         this.Y = Y;
     }

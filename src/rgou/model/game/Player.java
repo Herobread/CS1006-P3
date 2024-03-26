@@ -1,3 +1,4 @@
+package rgou.model.game;
 
 // Will Likely change this
 public class Player {
@@ -6,7 +7,7 @@ public class Player {
 
     public Player(String symbol) {
         this.symbol = symbol;
-        for(int i = 0; i < 7; i++) {
+        for (int i = 0; i < 7; i++) {
             pieces[i] = new Piece(this, symbol);
         }
     }

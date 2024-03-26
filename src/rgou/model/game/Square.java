@@ -1,3 +1,5 @@
+package rgou.model.game;
+
 public class Square {
 
     private Piece currentPiece;
