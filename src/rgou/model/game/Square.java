@@ -19,6 +19,8 @@ public class Square {
         this.currentPiece = currentPiece;
     }
 
+
+
     public boolean isOutOfBounds() {
         return this.outOfBounds;
     }

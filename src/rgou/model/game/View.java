@@ -10,6 +10,9 @@ public class View {
                     symbol = "b";
                 } else {
                     symbol = (col.getCurrentPiece() == null) ? "e" : col.getCurrentPiece().getSymbol();
+                    if(symbol.equals("e") && col.getClass() == RosetteSquare.class) {
+                        symbol = "r";
+                    }
                 }
                 System.out.print(" " + symbol + " ");
             }
@@ -24,6 +27,12 @@ public class View {
     public void askWhichPieceToMove(int rollNum) {
         System.out.println("You have rolled a " + rollNum);
         System.out.println("Co-ordinate format -> x,y");
+        System.out.println("If you want to take out a new piece, type -1,-1");
         System.out.println("Type the co-ordinate of the piece you want to move: ");
+    }
+
+    public void printPieceStock(Player[] players) {
+        System.out.println(players[0].getSymbol()+"'s player has "+players[0].getInStock().size()+" pieces in stock");
+        System.out.println(players[1].getSymbol()+"'s player has "+players[1].getInStock().size()+" pieces in stock");
     }
 }
