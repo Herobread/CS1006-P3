@@ -1,6 +1,7 @@
 package rgou.view.scenes;
 
 import rgou.view.GameSceneController;
+import rgou.view.Scenes;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;

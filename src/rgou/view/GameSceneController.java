@@ -11,7 +11,6 @@ import rgou.view.scenes.GameOverScene;
 import rgou.view.scenes.GameSceneBase;
 import rgou.view.scenes.GameplayScene;
 import rgou.view.scenes.MainMenuScene;
-import rgou.view.scenes.Scenes;
 
 public class GameSceneController {
 	private JFrame mainFrame;

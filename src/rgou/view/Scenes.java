@@ -1,4 +1,4 @@
-package rgou.view.scenes;
+package rgou.view;
 
 public enum Scenes {
 	MAIN_MENU,

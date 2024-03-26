@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
 import rgou.view.GameSceneController;
+import rgou.view.Scenes;
 
 public class GameplayScene extends GameSceneBase {
 	private int count = 0;
