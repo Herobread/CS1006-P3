@@ -1,63 +1,83 @@
 package rgou.view;
 
-import rgou.view.scenes.MainMenuScene;
-
-import rgou.view.scenes.GameOverScene;
-import rgou.view.scenes.GameplayScene;
+import java.util.EnumMap;
+import java.util.Map;
 
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
+import javax.swing.JPanel;
+import javax.swing.Timer;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import rgou.view.scenes.GameOverScene;
+import rgou.view.scenes.GameSceneBase;
+import rgou.view.scenes.GameplayScene;
+import rgou.view.scenes.MainMenuScene;
+import rgou.view.scenes.Scenes;
 
 public class GameSceneController {
-	private static GameSceneController instance;
-	private JFrame frame;
+	private JFrame mainFrame;
+	private Map<Scenes, GameSceneBase> sceneMap;
+	private Scenes activeScene = Scenes.MAIN_MENU;
+	private GameSceneBase activeSceneObject = null;
+	private Timer timer;
 
-	private GameSceneController() {
-		initialize();
+	public GameSceneController(JFrame mainFrame) {
+		this.mainFrame = mainFrame;
+		sceneMap = new EnumMap<>(Scenes.class);
+		initializeScenes();
 	}
 
-	public static GameSceneController getInstance() {
-		if (instance == null) {
-			instance = new GameSceneController();
+	private void initializeScenes() {
+		MainMenuScene mainMenuScene = new MainMenuScene(this);
+		GameplayScene gameplayScene = new GameplayScene(this);
+		GameOverScene gameOverScene = new GameOverScene(this);
+
+		sceneMap.put(Scenes.MAIN_MENU, mainMenuScene);
+		sceneMap.put(Scenes.GAMEPLAY, gameplayScene);
+		sceneMap.put(Scenes.GAME_OVER, gameOverScene);
+	}
+
+	public void renderActiveScene() {
+		if (activeSceneObject != null) {
+			System.out.println("rendering");
+			GameSceneBase currentScene = getScene(activeScene);
+			currentScene.run();
+			mainFrame.getContentPane().removeAll();
+			mainFrame.getContentPane().add(currentScene);
+			mainFrame.revalidate();
+			mainFrame.repaint();
+		} else {
+			System.err.println("no scene");
 		}
-		return instance;
 	}
 
-	private void initialize() {
-		frame = new JFrame("My Game");
-		frame.setSize(800, 600);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
+	public GameSceneBase getScene(Scenes scene) throws InvalidSceneException {
+		GameSceneBase sceneObject = sceneMap.get(scene);
+		if (sceneObject == null) {
+			throw new InvalidSceneException();
+		}
+		return sceneObject;
 	}
 
-	public void showMainMenu() {
-		MainMenuScene mainMenuScene = new MainMenuScene();
-		frame.getContentPane().removeAll();
-		frame.getContentPane().add(mainMenuScene);
-		frame.revalidate();
-		frame.repaint();
+	public void setActiveScene(Scenes scene) throws InvalidSceneException {
+		System.out.println("Setting active scene to: " + scene);
+		activeSceneObject = getScene(scene);
+		activeScene = scene;
 	}
 
-	public void startGameplay() {
-		GameplayScene gameplayScene = new GameplayScene();
-		frame.getContentPane().removeAll();
-		frame.getContentPane().add(gameplayScene);
-		frame.revalidate();
-		frame.repaint();
+	public Scenes getActiveScene() {
+		return activeScene;
 	}
 
-	public void showGameOver() {
-		GameOverScene gameOverScene = new GameOverScene();
-		frame.getContentPane().removeAll();
-		frame.getContentPane().add(gameOverScene);
-		frame.revalidate();
-		frame.repaint();
+	public JPanel getActiveScenePanel() {
+		return activeSceneObject;
 	}
 
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> {
-			GameSceneController.getInstance().showMainMenu(); // Show main menu initially
-		});
+	// Don't forget to stop the timer when your application exits
+	public void stopTimer() {
+		if (timer != null && timer.isRunning()) {
+			timer.stop();
+		}
 	}
 }

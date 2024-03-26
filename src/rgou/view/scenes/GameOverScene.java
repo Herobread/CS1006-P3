@@ -1,8 +1,12 @@
 package rgou.view.scenes;
 
-import javax.swing.JFrame;
+import rgou.view.GameSceneController;
 
-public class GameOverScene extends JFrame implements Runnable {
+public class GameOverScene extends GameSceneBase {
+	public GameOverScene(GameSceneController gameSceneController) {
+		super(gameSceneController);
+	}
+
 	public void run() {
 	}
 }
