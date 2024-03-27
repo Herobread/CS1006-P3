@@ -30,14 +30,13 @@ public class GameplayScene extends GameSceneBase {
 
 		ImageBox tile = new ImageBox("tiles/rosette.png");
 		tile.setBounds(renderContext.scaleRectangle(266, 45, 32, 32));
-		System.out.println("aadded mosue list");
 		tile.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				System.out.println("enter " + e.getX());
 				previewMoveBox = new ImageBox("pawns/pawn-target.png");
-				previewMoveBox.setBounds(renderContext.scaleRectangle(164, 79, 36, 36));
+				previewMoveBox.setBounds(renderContext.scaleRectangle(264, 79, 36, 36));
 				add(previewMoveBox);
+				setComponentZOrder(previewMoveBox, 2);
 				revalidate();
 				repaint();
 			}
@@ -49,7 +48,6 @@ public class GameplayScene extends GameSceneBase {
 				repaint();
 			}
 		});
-
 		add(tile);
 
 		LabelBox turn = new LabelBox("black’s turn");
@@ -65,10 +63,6 @@ public class GameplayScene extends GameSceneBase {
 		LabelBox whiteScore = new LabelBox("score: 1");
 		whiteScore.setBounds(renderContext.scaleRectangle(395, 67, 110, 19));
 		add(whiteScore);
-
-		if (previewMoveBox != null) {
-			add(previewMoveBox);
-		}
 
 		ImageBox boardBg = new ImageBox("tiles/board-bg.png");
 		boardBg.setBounds(renderContext.scaleRectangle(262, 41, 112, 292));
