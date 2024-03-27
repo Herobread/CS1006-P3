@@ -51,6 +51,16 @@ public class MainMenuScene extends GameSceneBase {
 		});
 		add(playRemote);
 
+		ImageButton playAi = new ImageButton("buttons/play-ai.png");
+		playAi.setBounds(renderContext.scaleRectangle(348, 226, 40, 40));
+		playAi.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				gameSceneController.setActiveScene(GameScenes.SELECT_REMOTE);
+			}
+		});
+		add(playAi);
+
 		repaint();
 	}
 }
