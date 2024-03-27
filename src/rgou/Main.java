@@ -19,6 +19,7 @@ public class Main {
 		});
 		thread.run();
 
+		// show loading screen
 		gameSceneController.renderActiveScene();
 	}
 }

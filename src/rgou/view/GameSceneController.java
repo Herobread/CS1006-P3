@@ -9,6 +9,7 @@ import java.awt.event.ComponentEvent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import rgou.view.components.primitives.ImageBox;
 import rgou.view.exceptions.InvalidSceneException;
 import rgou.view.sceneTemplates.GameSceneBase;
 import rgou.view.scenes.GameOverScene;
@@ -79,11 +80,15 @@ public class GameSceneController {
 
 		GameSceneBase currentScene = getScene(activeScene);
 		currentScene.removeAll();
+		currentScene.setOpaque(false);
 		activeScenePanel.setBounds(getPanelTargetBounds());
 		currentScene.run();
 
 		mainFrame.getContentPane().removeAll();
+		ImageBox bg = new ImageBox("ui/background.png");
+		bg.setBounds(0, 0, mainFrame.getWidth(), mainFrame.getHeight());
 		mainFrame.getContentPane().add(currentScene);
+		mainFrame.getContentPane().add(bg);
 		mainFrame.revalidate();
 		mainFrame.repaint();
 	}

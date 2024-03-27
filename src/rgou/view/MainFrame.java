@@ -1,7 +1,5 @@
 package rgou.view;
 
-import java.awt.Color;
-
 import javax.swing.JFrame;
 
 public class MainFrame extends JFrame {
@@ -11,8 +9,6 @@ public class MainFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1280, 720);
 
-		setBackground(Color.BLACK);
-
 		// center window itself
 		setLocationRelativeTo(null);
 
@@ -21,5 +17,4 @@ public class MainFrame extends JFrame {
 
 		setVisible(true);
 	}
-
 }

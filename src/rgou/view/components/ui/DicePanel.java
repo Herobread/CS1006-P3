@@ -9,6 +9,7 @@ import rgou.view.components.primitives.RenderScaleContext;
 public class DicePanel extends JPanel {
 	public DicePanel(RenderScaleContext renderScaleContext) {
 		setLayout(null);
+		setOpaque(false);
 
 		ImageBox number = new ImageBox("dice/numbers/1.png");
 		number.setBounds(renderScaleContext.scaleRectangle(39, 0, 32, 42));
