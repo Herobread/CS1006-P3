@@ -30,8 +30,6 @@ public class FontLoader {
 			customFont = new Font(Font.SANS_SERIF, Font.PLAIN, fontSize);
 		}
 
-		System.out.println("loaded font: " + customFont);
-
 		return customFont;
 	}
 }

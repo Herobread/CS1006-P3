@@ -2,12 +2,10 @@ package rgou.view;
 
 import java.util.EnumMap;
 import java.util.Map;
-import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
-import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -15,6 +13,7 @@ import rgou.view.exceptions.InvalidSceneException;
 import rgou.view.sceneTemplates.GameSceneBase;
 import rgou.view.scenes.GameOverScene;
 import rgou.view.scenes.GameplayScene;
+import rgou.view.scenes.LoadingScene;
 import rgou.view.scenes.MainMenuScene;
 
 /**
@@ -41,7 +40,7 @@ public class GameSceneController {
 
 		initializeScenes();
 
-		setActiveScene(GameScenes.MAIN_MENU);
+		setActiveScene(GameScenes.LOADING);
 
 		addResizeListener();
 	}
@@ -57,11 +56,12 @@ public class GameSceneController {
 	}
 
 	private void initializeScenes() {
+		sceneMap.put(GameScenes.LOADING, new LoadingScene(this));
 		sceneMap.put(GameScenes.MAIN_MENU, new MainMenuScene(this));
 		sceneMap.put(GameScenes.GAMEPLAY, new GameplayScene(this));
 		sceneMap.put(GameScenes.GAME_OVER, new GameOverScene(this));
 
-		// add new scenes:
+		// to add new scenes:
 		// sceneMap.put(scene name, Class that extends GameSceneBase);
 	}
 
@@ -80,7 +80,6 @@ public class GameSceneController {
 		GameSceneBase currentScene = getScene(activeScene);
 		currentScene.removeAll();
 		activeScenePanel.setBounds(getPanelTargetBounds());
-		currentScene.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		currentScene.run();
 
 		mainFrame.getContentPane().removeAll();
@@ -142,7 +141,6 @@ public class GameSceneController {
 	 * @throws InvalidSceneException if the scene is not valid
 	 */
 	public void setActiveScene(GameScenes scene) throws InvalidSceneException {
-		System.out.println("Setting active scene to: " + scene);
 		activeScenePanel = getScene(scene);
 		activeScene = scene;
 		renderActiveScene();

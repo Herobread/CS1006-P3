@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 import rgou.view.assets.FontLoader;
 
 public class LabelBox extends JLabel {
-	private static Font font = FontLoader.loadFont("assets/fonts/pixelify-sans.ttf");
+	private static Font font;
 
 	public LabelBox(String text) {
 		super(text);
@@ -19,5 +19,9 @@ public class LabelBox extends JLabel {
 		if (font != null) {
 			font = font.deriveFont((float) size);
 		}
+	}
+
+	public static void loadCustomFont() {
+		font = FontLoader.loadFont("assets/fonts/pixelify-sans.ttf");
 	}
 }

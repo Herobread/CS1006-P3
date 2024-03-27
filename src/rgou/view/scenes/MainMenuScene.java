@@ -8,10 +8,8 @@ import rgou.view.components.RenderScaleContext;
 import rgou.view.components.LabelBox;
 import rgou.view.sceneTemplates.GameSceneBase;
 
-import javax.swing.BorderFactory;
 import javax.swing.SwingConstants;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -31,7 +29,6 @@ public class MainMenuScene extends GameSceneBase {
 		LabelBox text = new LabelBox("Play:");
 		text.setBounds(renderContext.scaleRectangle(248, 200, 140, 19));
 		text.setHorizontalAlignment(SwingConstants.CENTER);
-		text.setBorder(BorderFactory.createLineBorder(Color.RED));
 		add(text);
 
 		ImageButton play = new ImageButton("buttons/play-local.png");
@@ -47,8 +44,6 @@ public class MainMenuScene extends GameSceneBase {
 		});
 
 		add(play);
-
-		setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
 
 		repaint();
 	}

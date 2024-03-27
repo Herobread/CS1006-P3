@@ -1,10 +1,7 @@
 package rgou.view.scenes;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.BorderFactory;
 
 import rgou.view.GameSceneController;
 import rgou.view.GameScenes;
@@ -30,8 +27,6 @@ public class GameplayScene extends GameSceneBase {
 		});
 
 		add(goBackButton);
-
-		setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
 
 		repaint();
 	}
