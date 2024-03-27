@@ -21,9 +21,9 @@ import rgou.view.scenes.MainMenuScene;
  * Controls the switching and rendering of game scenes.
  */
 public class GameSceneController {
-	private final int EXPECTED_WIDTH = 636;
-	private final int EXPECTED_HEIGHT = 358;
-	private final double ASPECT_RATIO = (double) EXPECTED_WIDTH / EXPECTED_HEIGHT;
+	private final int ORIGINAL_SCENE_WIDTH = 636;
+	private final int ORIGINAL_SCENE_HEIGHT = 358;
+	private final double ORIGINAL_ASPECT_RATIO = (double) ORIGINAL_SCENE_WIDTH / ORIGINAL_SCENE_HEIGHT;
 
 	private JFrame mainFrame;
 	private Map<GameScenes, GameSceneBase> sceneMap;
@@ -90,7 +90,7 @@ public class GameSceneController {
 	}
 
 	public double getSceneScale() {
-		return (double) activeScenePanel.getWidth() / EXPECTED_WIDTH;
+		return (double) activeScenePanel.getWidth() / ORIGINAL_SCENE_WIDTH;
 	}
 
 	// calculates how to scale the panel inside the frame,
@@ -103,14 +103,14 @@ public class GameSceneController {
 
 		double frameAspectRatio = (double) frameWidth / frameHeight;
 
-		if (frameAspectRatio > ASPECT_RATIO) {
+		if (frameAspectRatio > ORIGINAL_ASPECT_RATIO) {
 			// frame is wider than the desired aspect ratio
 			targetHeight = frameHeight;
-			targetWidth = targetHeight * ASPECT_RATIO;
+			targetWidth = targetHeight * ORIGINAL_ASPECT_RATIO;
 		} else {
 			// frame is narrower or equal to the desired aspect ratio
 			targetWidth = frameWidth;
-			targetHeight = targetWidth / ASPECT_RATIO;
+			targetHeight = targetWidth / ORIGINAL_ASPECT_RATIO;
 		}
 
 		// center frame
