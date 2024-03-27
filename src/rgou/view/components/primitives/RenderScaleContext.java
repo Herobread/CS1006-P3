@@ -49,7 +49,8 @@ public class RenderScaleContext {
 	 * @return A new Rectangle with scaled dimensions.
 	 */
 	public Rectangle scaleRectangle(int x, int y, int width, int height) {
-		return new Rectangle((int) (x * scale), (int) (y * scale), (int) (width * scale), (int) (height * scale));
+		return new Rectangle((int) (x * scale), (int) (y * scale), (int) (width * scale) + 1,
+				(int) (height * scale) + 1);
 	}
 
 	/**
