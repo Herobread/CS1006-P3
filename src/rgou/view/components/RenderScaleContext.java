@@ -7,7 +7,7 @@ import java.awt.Rectangle;
  * A utility class for managing rendering context properties, such as scale.
  * These properties are commonly shared among different components.
  */
-public class RenderContext {
+public class RenderScaleContext {
 
 	/** The scale factor applied to rendering dimensions. */
 	private double scale;
@@ -17,7 +17,7 @@ public class RenderContext {
 	 *
 	 * @param scale The scale factor to be applied to rendering dimensions.
 	 */
-	public RenderContext(double scale) {
+	public RenderScaleContext(double scale) {
 		this.scale = scale;
 	}
 
@@ -61,5 +61,13 @@ public class RenderContext {
 	 */
 	public Dimension scaleDimension(int width, int height) {
 		return new Dimension((int) (width * scale), (int) (height * scale));
+	}
+
+	public int scaleFont() {
+		return scaleFont(16);
+	}
+
+	public int scaleFont(int font) {
+		return (int) (font * scale);
 	}
 }

@@ -9,7 +9,7 @@ import javax.swing.BorderFactory;
 import rgou.view.GameSceneController;
 import rgou.view.GameScenes;
 import rgou.view.components.ImageButton;
-import rgou.view.components.RenderContext;
+import rgou.view.components.RenderScaleContext;
 import rgou.view.sceneTemplates.GameSceneBase;
 
 public class GameplayScene extends GameSceneBase {
@@ -18,7 +18,7 @@ public class GameplayScene extends GameSceneBase {
 	}
 
 	public void run() {
-		RenderContext renderContext = new RenderContext(gameSceneController.getSceneScale());
+		RenderScaleContext renderContext = new RenderScaleContext(gameSceneController.getSceneScale());
 
 		ImageButton goBackButton = new ImageButton("pawns/pawn-black.png");
 		goBackButton.setBounds(renderContext.scaleRectangle(248, 226, 40, 40));

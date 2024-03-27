@@ -2,11 +2,14 @@ package rgou.view.scenes;
 
 import rgou.view.GameSceneController;
 import rgou.view.GameScenes;
+import rgou.view.components.ImageBox;
 import rgou.view.components.ImageButton;
-import rgou.view.components.RenderContext;
+import rgou.view.components.RenderScaleContext;
+import rgou.view.components.LabelBox;
 import rgou.view.sceneTemplates.GameSceneBase;
 
 import javax.swing.BorderFactory;
+import javax.swing.SwingConstants;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -18,7 +21,18 @@ public class MainMenuScene extends GameSceneBase {
 	}
 
 	public void run() {
-		RenderContext renderContext = new RenderContext(gameSceneController.getSceneScale());
+		RenderScaleContext renderContext = new RenderScaleContext(gameSceneController.getSceneScale());
+		LabelBox.setFontSize(renderContext.scaleFont());
+
+		ImageBox logo = new ImageBox("ui/logo.png");
+		logo.setBounds(renderContext.scaleRectangle(222, 92, 192, 99));
+		add(logo);
+
+		LabelBox text = new LabelBox("Play:");
+		text.setBounds(renderContext.scaleRectangle(248, 200, 140, 19));
+		text.setHorizontalAlignment(SwingConstants.CENTER);
+		text.setBorder(BorderFactory.createLineBorder(Color.RED));
+		add(text);
 
 		ImageButton play = new ImageButton("buttons/play-local.png");
 

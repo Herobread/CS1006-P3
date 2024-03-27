@@ -2,13 +2,37 @@ package rgou.view.components;
 
 import javax.swing.*;
 
-import java.io.IOException;
+import rgou.view.assets.TextureLoader;
 
-/**
- * A custom component to draw an image.
- */
+import java.awt.*;
+
 public class ImageBox extends JComponent {
-	public ImageBox(String imagePath) throws IOException {
-		// Image icon = TextureLoader.loadImage(imagePath);
+	private Image image;
+
+	public ImageBox(String imagePath) {
+		this.image = TextureLoader.loadImage(imagePath);
+	}
+
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+
+		if (image != null) {
+			Graphics2D g2d = (Graphics2D) g.create();
+			int width = getWidth();
+			int height = getHeight();
+
+			g2d.drawImage(image, 0, 0, width, height, null);
+
+			g2d.dispose();
+		}
+	}
+
+	@Override
+	public Dimension getPreferredSize() {
+		if (image != null) {
+			return new Dimension(image.getWidth(null), image.getHeight(null));
+		}
+		return super.getPreferredSize();
 	}
 }
