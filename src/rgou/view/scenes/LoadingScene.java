@@ -1,8 +1,8 @@
 package rgou.view.scenes;
 
 import rgou.view.GameSceneController;
-import rgou.view.components.ImageBox;
-import rgou.view.components.RenderScaleContext;
+import rgou.view.components.primitives.ImageBox;
+import rgou.view.components.primitives.RenderScaleContext;
 import rgou.view.sceneTemplates.GameSceneBase;
 
 public class LoadingScene extends GameSceneBase {

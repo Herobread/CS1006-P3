@@ -1,4 +1,4 @@
-package rgou.view.components;
+package rgou.view.components.primitives;
 
 import javax.swing.*;
 

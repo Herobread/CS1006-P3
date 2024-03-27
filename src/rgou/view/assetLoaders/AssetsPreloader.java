@@ -1,6 +1,6 @@
 package rgou.view.assetLoaders;
 
-import rgou.view.components.LabelBox;
+import rgou.view.components.primitives.LabelBox;
 
 public class AssetsPreloader {
 	public static void load() {

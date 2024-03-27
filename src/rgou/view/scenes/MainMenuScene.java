@@ -2,10 +2,10 @@ package rgou.view.scenes;
 
 import rgou.view.GameSceneController;
 import rgou.view.GameScenes;
-import rgou.view.components.ImageBox;
-import rgou.view.components.ImageButton;
-import rgou.view.components.RenderScaleContext;
-import rgou.view.components.LabelBox;
+import rgou.view.components.primitives.ImageBox;
+import rgou.view.components.primitives.ImageButton;
+import rgou.view.components.primitives.LabelBox;
+import rgou.view.components.primitives.RenderScaleContext;
 import rgou.view.sceneTemplates.GameSceneBase;
 
 import javax.swing.SwingConstants;
@@ -38,7 +38,6 @@ public class MainMenuScene extends GameSceneBase {
 		play.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Button Clicked");
 				gameSceneController.setActiveScene(GameScenes.GAMEPLAY);
 			}
 		});
