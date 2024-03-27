@@ -1,6 +1,7 @@
 package rgou.view.components.primitives;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Rectangle;
 
 /**
@@ -49,8 +50,7 @@ public class RenderScaleContext {
 	 * @return A new Rectangle with scaled dimensions.
 	 */
 	public Rectangle scaleRectangle(int x, int y, int width, int height) {
-		return new Rectangle((int) (x * scale), (int) (y * scale), (int) (width * scale) + 1,
-				(int) (height * scale) + 1);
+		return new Rectangle(scaleValue(x), scaleValue(y), scaleValue(width), scaleValue(height));
 	}
 
 	/**
@@ -61,7 +61,28 @@ public class RenderScaleContext {
 	 * @return A new Dimension object with scaled width and height.
 	 */
 	public Dimension scaleDimension(int width, int height) {
-		return new Dimension((int) (width * scale), (int) (height * scale));
+		return new Dimension(scaleValue(width), scaleValue(height));
+	}
+
+	/**
+	 * Scale point
+	 * 
+	 * @param x
+	 * @param y
+	 * @return Point
+	 */
+	public Point scalePoint(int x, int y) {
+		return new Point(scaleValue(x), scaleValue(y));
+	}
+
+	/**
+	 * Scales 1 value by the current scale factor
+	 * 
+	 * @param value original value
+	 * @return scaled value
+	 */
+	public int scaleValue(int value) {
+		return (int) (value * scale);
 	}
 
 	public int scaleFont() {

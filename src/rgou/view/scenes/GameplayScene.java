@@ -14,6 +14,7 @@ import rgou.view.components.primitives.ImageBox;
 import rgou.view.components.primitives.ImageButton;
 import rgou.view.components.primitives.LabelBox;
 import rgou.view.components.primitives.RenderScaleContext;
+import rgou.view.components.ui.BoardPanel;
 import rgou.view.components.ui.DicePanel;
 import rgou.view.sceneTemplates.GameSceneBase;
 
@@ -28,27 +29,27 @@ public class GameplayScene extends GameSceneBase {
 		RenderScaleContext renderContext = new RenderScaleContext(gameSceneController.getSceneScale());
 		LabelBox.setFontSize(renderContext.scaleFont());
 
-		ImageBox tile = new ImageBox("tiles/rosette.png");
-		tile.setBounds(renderContext.scaleRectangle(266, 45, 32, 32));
-		tile.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				previewMoveBox = new ImageBox("pawns/pawn-target.png");
-				previewMoveBox.setBounds(renderContext.scaleRectangle(264, 79, 36, 36));
-				add(previewMoveBox);
-				setComponentZOrder(previewMoveBox, 2);
-				revalidate();
-				repaint();
-			}
+		// ImageBox tile = new ImageBox("tiles/rosette.png");
+		// tile.setBounds(renderContext.scaleRectangle(266, 45, 32, 32));
+		// tile.addMouseListener(new MouseAdapter() {
+		// @Override
+		// public void mouseEntered(MouseEvent e) {
+		// previewMoveBox = new ImageBox("pawns/pawn-target.png");
+		// previewMoveBox.setBounds(renderContext.scaleRectangle(264, 79, 36, 36));
+		// add(previewMoveBox);
+		// setComponentZOrder(previewMoveBox, 2);
+		// revalidate();
+		// repaint();
+		// }
 
-			@Override
-			public void mouseExited(MouseEvent e) {
-				remove(previewMoveBox);
-				revalidate();
-				repaint();
-			}
-		});
-		add(tile);
+		// @Override
+		// public void mouseExited(MouseEvent e) {
+		// remove(previewMoveBox);
+		// revalidate();
+		// repaint();
+		// }
+		// });
+		// add(tile);
 
 		LabelBox turn = new LabelBox("black’s turn");
 		turn.setHorizontalAlignment(SwingConstants.CENTER);
@@ -64,13 +65,17 @@ public class GameplayScene extends GameSceneBase {
 		whiteScore.setBounds(renderContext.scaleRectangle(395, 67, 110, 19));
 		add(whiteScore);
 
-		ImageBox boardBg = new ImageBox("tiles/board-bg.png");
-		boardBg.setBounds(renderContext.scaleRectangle(262, 41, 112, 292));
-		add(boardBg);
+		// ImageBox boardBg = new ImageBox("tiles/board-bg.png");
+		// boardBg.setBounds(renderContext.scaleRectangle(262, 41, 112, 292));
+		// add(boardBg);
 
 		DicePanel dicePanel = new DicePanel(renderContext);
 		dicePanel.setBounds(renderContext.scaleRectangle(109, 132, 110, 111));
 		add(dicePanel);
+
+		BoardPanel boardPanel = new BoardPanel(renderContext);
+		boardPanel.setBounds(renderContext.scaleRectangle(262, 41, 112, 292));
+		add(boardPanel);
 
 		///////////////////////////////////////////////////////////////////////////
 
