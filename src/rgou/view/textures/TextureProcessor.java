@@ -1,4 +1,4 @@
-package rgou.view.utils;
+package rgou.view.textures;
 
 import java.awt.Image;
 import java.awt.Graphics2D;
