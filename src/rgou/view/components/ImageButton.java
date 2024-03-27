@@ -7,12 +7,37 @@ import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.io.File;
 
+/**
+ * A custom JButton component with image support.
+ */
 public class ImageButton extends JButton {
 	private Image originalImage;
+	private String BASE_TEXTURE_PATH = "assets/textures/";
+	private String TEXTURE_NOT_FOUND = "not-found.png";
 
+	/**
+	 * Constructs an ImageButton with the specified image path.
+	 *
+	 * Note: base path already included
+	 * 
+	 * @param imagePath The path to the image file.
+	 */
 	public ImageButton(String imagePath) {
-		ImageIcon icon = new ImageIcon(imagePath);
+		// check if image exists
+		File image = new File(BASE_TEXTURE_PATH + imagePath);
+		if (!image.exists()) {
+			imagePath = TEXTURE_NOT_FOUND;
+		}
+
+		// check if texture not found image exists
+		File imageNotFound = new File(BASE_TEXTURE_PATH + TEXTURE_NOT_FOUND);
+		if (!imageNotFound.exists()) {
+			throw new RuntimeException("Could not find placeholder asset.");
+		}
+
+		ImageIcon icon = new ImageIcon(BASE_TEXTURE_PATH + imagePath);
 		originalImage = icon.getImage();
 		setIcon(icon);
 
@@ -27,7 +52,6 @@ public class ImageButton extends JButton {
 	public void setBounds(int x, int y, int width, int height) {
 		if (originalImage != null) {
 			Image scaledImage = originalImage.getScaledInstance(width, height, Image.SCALE_AREA_AVERAGING);
-			// Use nearest neighbor interpolation hint
 			scaledImage = getScaledImage(originalImage, width, height,
 					RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR, false);
 			setIcon(new ImageIcon(scaledImage));
@@ -44,6 +68,13 @@ public class ImageButton extends JButton {
 		return resizedImg;
 	}
 
+	/**
+	 * Sets the opacity of the button's image.
+	 *
+	 * @param opacity The opacity value, between 0.0 and 1.0.
+	 * @throws IllegalArgumentException if the opacity value is not within the range
+	 *                                  [0.0f, 1.0f].
+	 */
 	public void setOpacity(float opacity) {
 		if (opacity >= 0.0f && opacity <= 1.0f) {
 			ImageIcon icon = (ImageIcon) getIcon();

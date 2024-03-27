@@ -10,6 +10,7 @@ import javax.swing.BorderFactory;
 import rgou.view.GameSceneController;
 import rgou.view.GameScenes;
 import rgou.view.components.ImageButton;
+import rgou.view.sceneTemplates.GameSceneBase;
 
 public class GameplayScene extends GameSceneBase {
 	public GameplayScene(GameSceneController gameSceneController) {

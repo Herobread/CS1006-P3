@@ -1,4 +1,4 @@
-package rgou.view.scenes;
+package rgou.view.sceneTemplates;
 
 import javax.swing.JPanel;
 import rgou.view.GameSceneController;

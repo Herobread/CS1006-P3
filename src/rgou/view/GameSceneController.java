@@ -12,8 +12,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import rgou.view.exceptions.InvalidSceneException;
+import rgou.view.sceneTemplates.GameSceneBase;
 import rgou.view.scenes.GameOverScene;
-import rgou.view.scenes.GameSceneBase;
 import rgou.view.scenes.GameplayScene;
 import rgou.view.scenes.MainMenuScene;
 
