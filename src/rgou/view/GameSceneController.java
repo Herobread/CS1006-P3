@@ -16,6 +16,7 @@ import rgou.view.scenes.GameOverScene;
 import rgou.view.scenes.GameplayScene;
 import rgou.view.scenes.LoadingScene;
 import rgou.view.scenes.MainMenuScene;
+import rgou.view.scenes.RemoteOptionsScene;
 
 /**
  * Controls the switching and rendering of game scenes.
@@ -61,6 +62,7 @@ public class GameSceneController {
 		sceneMap.put(GameScenes.MAIN_MENU, new MainMenuScene(this));
 		sceneMap.put(GameScenes.GAMEPLAY, new GameplayScene(this));
 		sceneMap.put(GameScenes.GAME_OVER, new GameOverScene(this));
+		sceneMap.put(GameScenes.SELECT_REMOTE, new RemoteOptionsScene(this));
 
 		// to add new scenes:
 		// sceneMap.put(scene name, Class that extends GameSceneBase);
@@ -121,7 +123,7 @@ public class GameSceneController {
 		int x = (int) ((frameWidth - targetWidth) / 2);
 		int y = (int) ((frameHeight - targetHeight) / 2);
 
-		return new Rectangle(x, y - 20, (int) targetWidth, (int) targetHeight);
+		return new Rectangle(x, y - 10, (int) targetWidth, (int) targetHeight);
 	}
 
 	/**

@@ -32,17 +32,24 @@ public class MainMenuScene extends GameSceneBase {
 		add(text);
 
 		ImageButton play = new ImageButton("buttons/play-local.png");
-
 		play.setBounds(renderContext.scaleRectangle(248, 226, 40, 40));
-
 		play.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				gameSceneController.setActiveScene(GameScenes.GAMEPLAY);
 			}
 		});
-
 		add(play);
+
+		ImageButton playRemote = new ImageButton("buttons/play-remote.png");
+		playRemote.setBounds(renderContext.scaleRectangle(298, 226, 40, 40));
+		playRemote.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				gameSceneController.setActiveScene(GameScenes.SELECT_REMOTE);
+			}
+		});
+		add(playRemote);
 
 		repaint();
 	}

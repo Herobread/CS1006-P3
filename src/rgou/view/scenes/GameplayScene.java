@@ -47,8 +47,8 @@ public class GameplayScene extends GameSceneBase {
 
 		///////////////////////////////////////////////////////////////////////////
 
-		ImageButton goBackButton = new ImageButton("buttons/ok.png");
-		goBackButton.setBounds(renderContext.scaleRectangle(10, 10, 20, 10));
+		ImageButton goBackButton = new ImageButton("buttons/cross.png");
+		goBackButton.setBounds(renderContext.scaleRectangle(10, 10, 20, 20));
 		goBackButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

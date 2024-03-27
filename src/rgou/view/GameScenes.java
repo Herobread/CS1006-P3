@@ -5,6 +5,7 @@ package rgou.view;
  */
 public enum GameScenes {
 	LOADING,
+	SELECT_REMOTE,
 	MAIN_MENU,
 	GAMEPLAY,
 	GAME_OVER

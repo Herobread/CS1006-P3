@@ -14,6 +14,7 @@ public class AssetsPreloader {
 				"buttons/play-local.png",
 				"buttons/play-remote.png",
 				"buttons/roll.png",
+				"buttons/cross.png",
 				"dice/numbers/0.png",
 				"dice/numbers/1.png",
 				"dice/numbers/2.png",
