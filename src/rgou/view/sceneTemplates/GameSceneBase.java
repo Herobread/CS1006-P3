@@ -29,13 +29,14 @@ public abstract class GameSceneBase extends JPanel implements Runnable {
 	 */
 	public GameSceneBase(GameSceneController gameSceneController) {
 		this.gameSceneController = gameSceneController;
+		// disable layout manager for manual positioning
 		setLayout(null);
 	}
 
 	/**
 	 * Runs the rendering logic associated with the game scene.
 	 * 
-	 * Note: GameSceneController automatically clears scene
+	 * Note: GameSceneController automatically clears and paints scene
 	 */
 	public abstract void run();
 }

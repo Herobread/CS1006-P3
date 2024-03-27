@@ -21,11 +21,9 @@ import rgou.view.scenes.MainMenuScene;
  * Controls the switching and rendering of game scenes.
  */
 public class GameSceneController {
-	// private final int INITIAL_WIDTH = 1280;
-	// private final int INITIAL_HEIGHT = 720;
-	private final int INITIAL_WIDTH = 636;
-	private final int INITIAL_HEIGHT = 358;
-	private final double ASPECT_RATIO = (double) INITIAL_WIDTH / INITIAL_HEIGHT;
+	private final int EXPECTED_WIDTH = 636;
+	private final int EXPECTED_HEIGHT = 358;
+	private final double ASPECT_RATIO = (double) EXPECTED_WIDTH / EXPECTED_HEIGHT;
 
 	private JFrame mainFrame;
 	private Map<GameScenes, GameSceneBase> sceneMap;
@@ -45,23 +43,26 @@ public class GameSceneController {
 
 		setActiveScene(GameScenes.MAIN_MENU);
 
-		// resize frame inside, while keeping aspect ratio
+		addResizeListener();
+	}
+
+	private void addResizeListener() {
+		// resize panel inside of the frame
+		// when frame is resized
 		mainFrame.addComponentListener(new ComponentAdapter() {
 			public void componentResized(ComponentEvent e) {
 				renderActiveScene();
 			}
 		});
-
 	}
 
 	private void initializeScenes() {
-		MainMenuScene mainMenuScene = new MainMenuScene(this);
-		GameplayScene gameplayScene = new GameplayScene(this);
-		GameOverScene gameOverScene = new GameOverScene(this);
+		sceneMap.put(GameScenes.MAIN_MENU, new MainMenuScene(this));
+		sceneMap.put(GameScenes.GAMEPLAY, new GameplayScene(this));
+		sceneMap.put(GameScenes.GAME_OVER, new GameOverScene(this));
 
-		sceneMap.put(GameScenes.MAIN_MENU, mainMenuScene);
-		sceneMap.put(GameScenes.GAMEPLAY, gameplayScene);
-		sceneMap.put(GameScenes.GAME_OVER, gameOverScene);
+		// add new scenes:
+		// sceneMap.put(scene name, Class that extends GameSceneBase);
 	}
 
 	/**
@@ -82,14 +83,18 @@ public class GameSceneController {
 		currentScene.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		currentScene.run();
 
-		renderSceneOnMainFrame(currentScene);
+		mainFrame.getContentPane().removeAll();
+		mainFrame.getContentPane().add(currentScene);
+		mainFrame.revalidate();
+		mainFrame.repaint();
 	}
 
 	public double getSceneScale() {
-		return (double) activeScenePanel.getWidth() / INITIAL_WIDTH;
+		return (double) activeScenePanel.getWidth() / EXPECTED_WIDTH;
 	}
 
-	// calculates how to scale
+	// calculates how to scale the panel inside the frame,
+	// while keeping aspect ratio
 	private Rectangle getPanelTargetBounds() {
 		int frameWidth = mainFrame.getWidth();
 		int frameHeight = mainFrame.getHeight();
@@ -113,14 +118,6 @@ public class GameSceneController {
 		int y = (int) ((frameHeight - targetHeight) / 2);
 
 		return new Rectangle(x, y - 20, (int) targetWidth, (int) targetHeight);
-	}
-
-	private void renderSceneOnMainFrame(GameSceneBase scene) {
-		mainFrame.getContentPane().removeAll();
-		mainFrame.setBackground(Color.BLACK);
-		mainFrame.getContentPane().add(scene);
-		mainFrame.revalidate();
-		mainFrame.repaint();
 	}
 
 	/**
