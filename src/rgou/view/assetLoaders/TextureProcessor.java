@@ -1,4 +1,4 @@
-package rgou.view.assets;
+package rgou.view.assetLoaders;
 
 import java.awt.Image;
 import java.awt.Graphics2D;

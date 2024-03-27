@@ -1,4 +1,4 @@
-package rgou.view.assets;
+package rgou.view.assetLoaders;
 
 import rgou.view.components.LabelBox;
 

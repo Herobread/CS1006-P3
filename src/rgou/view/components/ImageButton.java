@@ -2,8 +2,8 @@ package rgou.view.components;
 
 import javax.swing.JButton;
 
-import rgou.view.assets.TextureLoader;
-import rgou.view.assets.TextureProcessor;
+import rgou.view.assetLoaders.TextureLoader;
+import rgou.view.assetLoaders.TextureProcessor;
 
 import javax.swing.ImageIcon;
 import java.awt.Image;

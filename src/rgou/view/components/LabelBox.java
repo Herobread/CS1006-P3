@@ -4,7 +4,7 @@ import java.awt.Font;
 
 import javax.swing.JLabel;
 
-import rgou.view.assets.FontLoader;
+import rgou.view.assetLoaders.FontLoader;
 
 public class LabelBox extends JLabel {
 	private static Font font;

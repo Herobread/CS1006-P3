@@ -2,7 +2,7 @@ package rgou.view.components;
 
 import javax.swing.*;
 
-import rgou.view.assets.TextureLoader;
+import rgou.view.assetLoaders.TextureLoader;
 
 import java.awt.*;
 

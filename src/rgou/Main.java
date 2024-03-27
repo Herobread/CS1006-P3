@@ -3,7 +3,7 @@ package rgou;
 import rgou.view.GameSceneController;
 import rgou.view.GameScenes;
 import rgou.view.MainFrame;
-import rgou.view.assets.AssetsPreloader;
+import rgou.view.assetLoaders.AssetsPreloader;
 
 public class Main {
 	public static void main(String[] args) {
