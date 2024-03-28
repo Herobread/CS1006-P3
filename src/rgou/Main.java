@@ -14,7 +14,6 @@ public class Main {
 		// load assets
 		Thread thread = new Thread(() -> {
 			AssetsPreloader.load();
-
 			gameSceneController.setActiveScene(GameScenes.MAIN_MENU);
 		});
 		thread.run();
