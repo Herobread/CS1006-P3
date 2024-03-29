@@ -56,13 +56,15 @@ public class TextureLoader {
 
 		if (!imageFile.exists()) {
 			throw new RuntimeException(
-					"Failed to preload image: image " + BASE_TEXTURE_PATH + textureName + "doesn't exist.");
+					"Failed to preload image: image " + BASE_TEXTURE_PATH + textureName +
+							"doesn't exist.");
 		}
 
 		try {
 			textureCache.put(textureName, ImageIO.read(imageFile));
 		} catch (IOException e) {
-			System.err.println("Failed to preload image." + BASE_TEXTURE_PATH + textureName);
+			System.err.println("Failed to preload image." + BASE_TEXTURE_PATH +
+					textureName);
 		}
 	}
 }
