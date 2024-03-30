@@ -35,4 +35,9 @@ public class View {
         System.out.println(players[0].getSymbol()+"'s player has "+players[0].getInStock().size()+" pieces in stock");
         System.out.println(players[1].getSymbol()+"'s player has "+players[1].getInStock().size()+" pieces in stock");
     }
+
+    public void landedOnRosette(Player player) {
+        System.out.println("Player "+player.getSymbol()+" has landed on a rosette!");
+        System.out.println("They get to roll again!");
+    }
 }

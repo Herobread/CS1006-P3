@@ -39,6 +39,10 @@ public class Player {
         return inStock.poll();
     }
 
+    public void addToStock(Piece piece) {
+        inStock.add(piece);
+    }
+
     public void setPath(ArrayList<Coordinate> path) {
         this.path = path;
     }

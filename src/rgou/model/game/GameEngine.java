@@ -1,6 +1,7 @@
 package rgou.model.game;
 
 import java.nio.charset.CoderResult;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Scanner;
@@ -25,7 +26,6 @@ public class GameEngine {
         DarkPlayer.setPath(gameBoard.getGamePath().getDARK_PATH());
         LightPlayer.setPath(gameBoard.getGamePath().getLIGHT_PATH());
 
-        System.out.println(DarkPlayer.getPath());
 
 
         Player[] players = new Player[] { DarkPlayer, LightPlayer };
@@ -34,6 +34,7 @@ public class GameEngine {
 
         Player winner;
 
+        Piece pieceBackToStock = null;
 
         while ((winner = checkWinCondition(DarkPlayer, LightPlayer)) == null) {
 
@@ -46,6 +47,8 @@ public class GameEngine {
             // Set the current player
             currentPlayer = players[turn];
 
+
+
             // Get the user to input roll
             view.askPlayerToRoll(currentPlayer);
             while (getRoll()) {
@@ -57,14 +60,31 @@ public class GameEngine {
             view.askWhichPieceToMove(roll);
             Coordinate pieceToMoveLocation = getCoord();
 
-            // Move piece
+            // check if location is valid
             if(validCoordinate(currentPlayer, pieceToMoveLocation)) {
                 Coordinate startCoord = pieceToMoveLocation;
                 Coordinate endCoord = findEndCoordiante(currentPlayer, startCoord, roll);
 
-                System.out.println(startCoord+" "+endCoord);
 
+                // Check if landed on piece
+                if ((pieceBackToStock =  landedOnEnemyPiece(currentPlayer, endCoord)) != null) {
+                    if(pieceBackToStock.getSymbol().equals("X")) {
+                        DarkPlayer.addToStock(pieceBackToStock);
+                    }
+                    else if(pieceBackToStock.getSymbol().equals("O")) {
+                        LightPlayer.addToStock(pieceBackToStock);
+                    }
+                }
+
+                // Move piece
                 movePiece(startCoord, endCoord);
+
+
+                // Check if piece landed on rosette
+                if(landedOnRosette(endCoord)) {
+                    view.landedOnRosette(currentPlayer);
+                    turn = 1 - turn;
+                }
             }
 
 
@@ -72,6 +92,8 @@ public class GameEngine {
         }
 
     }
+
+
 
 
     public static Player checkWinCondition(Player dP, Player lP) {
@@ -135,12 +157,23 @@ public class GameEngine {
     }
 
     private static Coordinate findEndCoordiante(Player currentPlayer, Coordinate startCoord, int roll) {
+        ArrayList<Coordinate> path = currentPlayer.getPath();
         if(startCoord.getX() == - 1 && startCoord.getY() == -1) {
-            return currentPlayer.getPath().get(roll - 1);
+            return path.get(roll - 1);
         }
-        int currentLocation = currentPlayer.getPath().indexOf(startCoord);
+        int currentLocation = path.indexOf(startCoord);
 
-        return currentPlayer.getPath().get(currentLocation + roll);
+
+        // Checking if made it to the end of the path
+        if((currentLocation + roll) == path.size()) {
+            return new Coordinate(-1,-1);
+        }
+        try {
+            return currentPlayer.getPath().get(currentLocation + roll);
+        } catch(IndexOutOfBoundsException e) {
+            System.out.println("Not a valid option");
+            return null;
+        }
     }
 
     public static void movePiece(Coordinate startCoord, Coordinate endCoord) {
@@ -152,8 +185,27 @@ public class GameEngine {
             pieceToMove = gameBoard.getSquare(startCoord).getCurrentPiece();
             gameBoard.getSquare(startCoord).setCurrentPiece(null);
         }
-
         gameBoard.getSquare(endCoord).setCurrentPiece(pieceToMove);
+    }
+
+    public static Piece landedOnEnemyPiece(Player currentPlayer, Coordinate endCoord) {
+        if(currentPlayer.getSymbol().equals("X")) {
+
+            if(gameBoard.getSquare(endCoord).getCurrentPiece() != null && "O".equals(gameBoard.getSquare(endCoord).getCurrentPiece().getSymbol())) {
+                Piece backToStock = gameBoard.getSquare(endCoord).getCurrentPiece();
+                return backToStock;
+            }
+        } else {
+            if(gameBoard.getSquare(endCoord).getCurrentPiece() != null && "X".equals(gameBoard.getSquare(endCoord).getCurrentPiece().getSymbol())) {
+                Piece backToStock = gameBoard.getSquare(endCoord).getCurrentPiece();
+                return backToStock;
+            }
+        }
+        return null;
+    }
+
+    public static boolean landedOnRosette(Coordinate endCoord) {
+        return gameBoard.getSquare(endCoord).isRossete();
     }
 
 
