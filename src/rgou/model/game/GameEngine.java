@@ -58,6 +58,13 @@ public class GameEngine {
             view.askWhichPieceToMove(roll);
             Coordinate startCoord = getCoord();
 
+            // If co-ordinate is null then ask again
+            while(startCoord == null) {
+                view.invalidCoordEntered();
+                view.askWhichPieceToMove(roll);
+                startCoord = getCoord();
+            }
+
             // check if location is valid
             if(validCoordinate(currentPlayer, startCoord)) {
 

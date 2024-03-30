@@ -1,5 +1,7 @@
 package rgou.model.game;
 
+import rgou.model.utils.Coordinate;
+
 // Replace this with a GUI
 public class View {
     public void printBoard(GameBoard gameBoard) {
@@ -51,5 +53,10 @@ public class View {
 
     public void cannotLandOnOwnPiece() {
         System.out.println("You cannot land on your own piece!");
+    }
+
+    public void invalidCoordEntered() {
+        System.out.println("Co-ordinate entered is invalid ");
+        System.out.println();
     }
 }
