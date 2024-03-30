@@ -79,7 +79,6 @@ public class GameEngine {
                 // Move piece
                 movePiece(startCoord, endCoord);
 
-
                 // Check if piece landed on rosette
                 if(landedOnRosette(endCoord)) {
                     view.landedOnRosette(currentPlayer);

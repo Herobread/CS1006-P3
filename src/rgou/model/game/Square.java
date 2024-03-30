@@ -31,9 +31,13 @@ public class Square {
 }
 
 class OutOfBoundsSquare extends Square {
-    private boolean outOfBounds = true;
+    public OutOfBoundsSquare() {
+        outOfBounds = true;
+    }
 }
 
 class RosetteSquare extends Square {
-    private boolean rossete = true;
+    public RosetteSquare() {
+        rossete = true;
+    }
 }

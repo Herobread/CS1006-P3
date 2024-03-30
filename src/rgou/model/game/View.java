@@ -10,7 +10,7 @@ public class View {
                     symbol = "b";
                 } else {
                     symbol = (col.getCurrentPiece() == null) ? "e" : col.getCurrentPiece().getSymbol();
-                    if(symbol.equals("e") && col.getClass() == RosetteSquare.class) {
+                    if(symbol.equals("e") && col.isRossete()) {
                         symbol = "r";
                     }
                 }
