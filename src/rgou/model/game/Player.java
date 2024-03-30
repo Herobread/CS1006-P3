@@ -11,7 +11,8 @@ public class Player {
     private Piece[] pieces = new Piece[7];
     private LinkedList<Piece> inStock = new LinkedList<>();
 
-    private Piece[] home = new Piece[7];
+    private LinkedList<Piece> home = new LinkedList<>();
+
 
     private ArrayList<Coordinate> path;
 
@@ -49,5 +50,13 @@ public class Player {
 
     public ArrayList<Coordinate> getPath() {
         return path;
+    }
+
+    public void addToHome(Piece piece) {
+        home.add(piece);
+    }
+
+    public int getHomeSize() {
+        return home.size();
     }
 }

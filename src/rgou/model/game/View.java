@@ -40,4 +40,8 @@ public class View {
         System.out.println("Player "+player.getSymbol()+" has landed on a rosette!");
         System.out.println("They get to roll again!");
     }
+
+    public void pieceExactNumberToExit() {
+        System.out.println("You must get the exact dice roll in order to exit the board path");
+    }
 }

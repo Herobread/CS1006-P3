@@ -77,7 +77,7 @@ public class GameEngine {
                 }
 
                 // Move piece
-                movePiece(startCoord, endCoord);
+                movePiece(currentPlayer,startCoord, endCoord);
 
                 // Check if piece landed on rosette
                 if(landedOnRosette(endCoord)) {
@@ -86,7 +86,6 @@ public class GameEngine {
                 }
             }
 
-
             turn = 1 - turn;
         }
 
@@ -94,11 +93,10 @@ public class GameEngine {
 
 
 
-
     public static Player checkWinCondition(Player dP, Player lP) {
-        if (dP.getPieces().length == 0) {
+        if (dP.getHomeSize() == 7) {
             return dP;
-        } else if (lP.getPieces().length == 0) {
+        } else if (lP.getHomeSize() == 7) {
             return lP;
         }
         return null;
@@ -165,26 +163,35 @@ public class GameEngine {
 
         // Checking if made it to the end of the path
         if((currentLocation + roll) == path.size()) {
-            return new Coordinate(-1,-1);
+            return new Coordinate(0, 4);
         }
         try {
             return currentPlayer.getPath().get(currentLocation + roll);
         } catch(IndexOutOfBoundsException e) {
-            System.out.println("Not a valid option");
+            // TODO add message to user
             return null;
         }
     }
 
-    public static void movePiece(Coordinate startCoord, Coordinate endCoord) {
+    public static void movePiece(Player currentPlayer, Coordinate startCoord, Coordinate endCoord) {
         Piece pieceToMove;
+        // If taking piece from stock
         if(startCoord.getX() == -1 && startCoord.getY() == -1) {
             pieceToMove = currentPlayer.getInStock().poll();
+            gameBoard.getSquare(endCoord).setCurrentPiece(pieceToMove);
         }
+        // If taking a piece of the board
+        else if(endCoord.getX() == 0 && endCoord.getY() == 4) {
+            pieceToMove = gameBoard.getSquare(startCoord).getCurrentPiece();
+            gameBoard.getSquare(startCoord).setCurrentPiece(null);
+            currentPlayer.addToHome(pieceToMove);
+        }
+        // If moving piece already on the gameBoard
         else {
             pieceToMove = gameBoard.getSquare(startCoord).getCurrentPiece();
             gameBoard.getSquare(startCoord).setCurrentPiece(null);
+            gameBoard.getSquare(endCoord).setCurrentPiece(pieceToMove);
         }
-        gameBoard.getSquare(endCoord).setCurrentPiece(pieceToMove);
     }
 
     public static Piece landedOnEnemyPiece(Player currentPlayer, Coordinate endCoord) {
