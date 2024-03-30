@@ -47,8 +47,6 @@ public class GameEngine {
             // Set the current player
             currentPlayer = players[turn];
 
-
-
             // Get the user to input roll
             view.askPlayerToRoll(currentPlayer);
             while (getRoll()) {
@@ -58,12 +56,18 @@ public class GameEngine {
 
             // Ask the co-ordinate to move
             view.askWhichPieceToMove(roll);
-            Coordinate pieceToMoveLocation = getCoord();
+            Coordinate startCoord = getCoord();
 
             // check if location is valid
-            if(validCoordinate(currentPlayer, pieceToMoveLocation)) {
-                Coordinate startCoord = pieceToMoveLocation;
+            if(validCoordinate(currentPlayer, startCoord)) {
+
                 Coordinate endCoord = findEndCoordiante(currentPlayer, startCoord, roll);
+
+                // Validate ending location;
+                if(!validEndCoord(currentPlayer, endCoord)) {
+                    view.cannotLandOnOwnPiece();
+                    continue;
+                }
 
 
                 // Check if landed on piece
@@ -90,7 +94,6 @@ public class GameEngine {
         }
 
     }
-
 
 
     public static Player checkWinCondition(Player dP, Player lP) {
@@ -212,6 +215,13 @@ public class GameEngine {
 
     public static boolean landedOnRosette(Coordinate endCoord) {
         return gameBoard.getSquare(endCoord).isRossete();
+    }
+
+    private static boolean validEndCoord(Player currentPlayer, Coordinate endCoord) {
+        if(gameBoard.getSquare(endCoord).getCurrentPiece() != null) {
+            return !gameBoard.getSquare(endCoord).getCurrentPiece().getSymbol().equals(currentPlayer.getSymbol());
+        }
+        return true;
     }
 
 

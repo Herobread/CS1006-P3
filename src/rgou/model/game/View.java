@@ -44,4 +44,12 @@ public class View {
     public void pieceExactNumberToExit() {
         System.out.println("You must get the exact dice roll in order to exit the board path");
     }
+
+    public void pieceReachedHome(Player player) {
+        System.out.println("Player "+player.getSymbol()+" has gotten a piece home!");
+    }
+
+    public void cannotLandOnOwnPiece() {
+        System.out.println("You cannot land on your own piece!");
+    }
 }
