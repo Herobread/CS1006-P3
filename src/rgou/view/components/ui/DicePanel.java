@@ -1,38 +1,72 @@
 package rgou.view.components.ui;
 
-import javax.swing.JPanel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JComponent;
+
+import rgou.model.Board;
+import rgou.model.dice.DiceRollResult;
+import rgou.model.dice.DiceRollsResult;
 import rgou.view.components.primitives.ImageBox;
 import rgou.view.components.primitives.ImageButton;
+import rgou.view.components.primitives.LabelBox;
 import rgou.view.components.primitives.RenderScaleContext;
 
-public class DicePanel extends JPanel {
-	public DicePanel(RenderScaleContext renderScaleContext) {
-		setLayout(null);
-		setOpaque(false);
+public class DicePanel extends JComponent {
+	private final int TOTAL_DICES = 4;
+	private ImageBox number;
+	private ImageBox[] diceImages = new ImageBox[TOTAL_DICES];
 
-		ImageBox number = new ImageBox("dice/numbers/1.png");
+	public DicePanel(
+			RenderScaleContext renderScaleContext,
+			Board board,
+			String player,
+			boolean isNoMovesWarningShown) {
+		setOpaque(false);
+		setLayout(null);
+
+		if (isNoMovesWarningShown) {
+			LabelBox noMovesWarning = new LabelBox("No moves");
+			noMovesWarning.setBounds(renderScaleContext.scaleRectangle(20, 46, 71, 19));
+			add(noMovesWarning);
+			return;
+		}
+
+		if (!player.equals(board.getActivePlayer())) {
+			return;
+		}
+
+		DiceRollsResult diceRollsResult = board.getLastDiceRollsResult();
+		DiceRollResult[] diceRollResults = diceRollsResult.getDiceRollResults();
+
+		String numberTexture = diceRollsResult.getTotal() + "";
+
+		if (board.isRollAvailable()) {
+			numberTexture = "unknown";
+		}
+
+		number = new ImageBox("dice/numbers/" + numberTexture + ".png");
 		number.setBounds(renderScaleContext.scaleRectangle(39, 0, 32, 42));
 		add(number);
 
-		ImageBox dice1 = new ImageBox("dice/variants/dice-notop-left-up.png");
-		dice1.setBounds(renderScaleContext.scaleRectangle(0, 57, 20, 19));
-		add(dice1);
+		for (int i = 0; i < TOTAL_DICES; i++) {
+			String texture = diceRollResults[i].getTextureName();
+			diceImages[i] = new ImageBox(texture);
+			diceImages[i].setBounds(renderScaleContext.scaleRectangle(30 * i, 57, 20, 19));
+			add(diceImages[i]);
+		}
 
-		ImageBox dice2 = new ImageBox("dice/variants/dice-notop-left-up.png");
-		dice2.setBounds(renderScaleContext.scaleRectangle(30, 57, 20, 19));
-		add(dice2);
-
-		ImageBox dice3 = new ImageBox("dice/variants/dice-notop-left-up.png");
-		dice3.setBounds(renderScaleContext.scaleRectangle(60, 57, 20, 19));
-		add(dice3);
-
-		ImageBox dice4 = new ImageBox("dice/variants/dice-notop-left-up.png");
-		dice4.setBounds(renderScaleContext.scaleRectangle(90, 57, 20, 19));
-		add(dice4);
-
-		ImageButton rollButton = new ImageButton("buttons/roll.png");
-		rollButton.setBounds(renderScaleContext.scaleRectangle(34, 91, 42, 20));
-		add(rollButton);
+		if (board.isRollAvailable()) {
+			ImageButton rollButton = new ImageButton("buttons/roll.png");
+			rollButton.setBounds(renderScaleContext.scaleRectangle(34, 91, 42, 20));
+			rollButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					board.roll();
+				}
+			});
+			add(rollButton);
+		}
 	}
 }

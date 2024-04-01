@@ -4,9 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-// import java.awt.event.MouseAdapter;
-// import java.awt.event.MouseEvent;
+import rgou.model.Board;
 
 import rgou.view.GameSceneController;
 import rgou.view.GameScenes;
@@ -19,61 +20,77 @@ import rgou.view.components.ui.DicePanel;
 import rgou.view.sceneTemplates.GameSceneBase;
 
 public class GameplayScene extends GameSceneBase {
-	public GameplayScene(GameSceneController gameSceneController) {
-		super(gameSceneController);
-	}
+	private Board board;
+	private LabelBox turn;
 
-	ImageBox previewMoveBox = null;
+	public GameplayScene(GameSceneController gameSceneController, Board board) {
+		super(gameSceneController);
+		this.board = board;
+
+		board.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				if (board.getVictoriousPlayer() != null) {
+					gameSceneController.setActiveScene(GameScenes.GAME_END);
+				}
+
+				gameSceneController.renderActiveScene();
+			}
+		});
+	}
 
 	public void run() {
 		RenderScaleContext renderContext = new RenderScaleContext(gameSceneController.getSceneScale());
 		LabelBox.setFontSize(renderContext.scaleFont());
 
-		// ImageBox tile = new ImageBox("tiles/rosette.png");
-		// tile.setBounds(renderContext.scaleRectangle(266, 45, 32, 32));
-		// tile.addMouseListener(new MouseAdapter() {
-		// @Override
-		// public void mouseEntered(MouseEvent e) {
-		// previewMoveBox = new ImageBox("pawns/pawn-target.png");
-		// previewMoveBox.setBounds(renderContext.scaleRectangle(264, 79, 36, 36));
-		// add(previewMoveBox);
-		// setComponentZOrder(previewMoveBox, 2);
-		// revalidate();
-		// repaint();
-		// }
-
-		// @Override
-		// public void mouseExited(MouseEvent e) {
-		// remove(previewMoveBox);
-		// revalidate();
-		// repaint();
-		// }
-		// });
-		// add(tile);
-
-		LabelBox turn = new LabelBox("black’s turn");
+		turn = new LabelBox(board.getActivePlayer() + "’s turn");
 		turn.setHorizontalAlignment(SwingConstants.CENTER);
 		turn.setBounds(renderContext.scaleRectangle(262, 18, 112, 19));
 		add(turn);
 
-		LabelBox blackScore = new LabelBox("score: 1");
-		blackScore.setBounds(renderContext.scaleRectangle(132, 67, 110, 19));
-		blackScore.setHorizontalAlignment(SwingConstants.RIGHT);
-		add(blackScore);
+		// light info
+		LabelBox lightStock = new LabelBox(board.getPlayerStock("light") + "x");
+		lightStock.setBounds(renderContext.scaleRectangle(201, 51, 30, 19));
+		lightStock.setHorizontalAlignment(SwingConstants.RIGHT);
+		add(lightStock);
 
-		LabelBox whiteScore = new LabelBox("score: 1");
-		whiteScore.setBounds(renderContext.scaleRectangle(395, 67, 110, 19));
-		add(whiteScore);
+		ImageBox lightDecorationalPawn = new ImageBox("pawns/pawn-light.png");
+		lightDecorationalPawn.setBounds(renderContext.scaleRectangle(234, 52, 18, 18));
+		add(lightDecorationalPawn);
 
-		// ImageBox boardBg = new ImageBox("tiles/board-bg.png");
-		// boardBg.setBounds(renderContext.scaleRectangle(262, 41, 112, 292));
-		// add(boardBg);
+		LabelBox lightScore = new LabelBox("score: " + board.getPlayerScore("light"));
+		lightScore.setBounds(renderContext.scaleRectangle(129, 313, 102, 19));
+		lightScore.setHorizontalAlignment(SwingConstants.RIGHT);
+		add(lightScore);
 
-		DicePanel dicePanel = new DicePanel(renderContext);
-		dicePanel.setBounds(renderContext.scaleRectangle(109, 132, 110, 111));
-		add(dicePanel);
+		// dark info
+		LabelBox darkStock = new LabelBox("x" + board.getPlayerStock("dark"));
+		darkStock.setBounds(renderContext.scaleRectangle(405, 52, 30, 19));
+		add(darkStock);
 
-		BoardPanel boardPanel = new BoardPanel(renderContext);
+		ImageBox darkDecorationalPawn = new ImageBox("pawns/pawn-dark.png");
+		darkDecorationalPawn.setBounds(renderContext.scaleRectangle(384, 52, 18, 18));
+		add(darkDecorationalPawn);
+
+		LabelBox darkScore = new LabelBox(board.getPlayerScore("dark") + ": score");
+		darkScore.setBounds(renderContext.scaleRectangle(405, 313, 102, 19));
+		add(darkScore);
+
+		// dice
+
+		boolean isLightNoMoves = "light".equals(board.getNoMovesPlayerWarning());
+		boolean isDarkNoMoves = "dark".equals(board.getNoMovesPlayerWarning());
+
+		DicePanel dicePanelLight = new DicePanel(renderContext, board, "light", isLightNoMoves);
+		dicePanelLight.setBounds(renderContext.scaleRectangle(109, 132, 110, 111));
+		add(dicePanelLight);
+
+		DicePanel dicePanelDark = new DicePanel(renderContext, board, "dark", isDarkNoMoves);
+		dicePanelDark.setBounds(renderContext.scaleRectangle(417, 132, 110, 111));
+		add(dicePanelDark);
+
+		// board
+		BoardPanel boardPanel = new BoardPanel(renderContext, board);
 		boardPanel.setBounds(renderContext.scaleRectangle(262, 41, 112, 292));
 		add(boardPanel);
 

@@ -8,5 +8,5 @@ public enum GameScenes {
 	SELECT_REMOTE,
 	MAIN_MENU,
 	GAMEPLAY,
-	GAME_OVER
+	GAME_END
 }
