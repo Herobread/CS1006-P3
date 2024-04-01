@@ -1,7 +1,7 @@
 package rgou;
 
+import rgou.controllers.GameSceneController;
 import rgou.model.Board;
-import rgou.model.GameSceneController;
 import rgou.view.GameScenes;
 import rgou.view.MainFrame;
 import rgou.view.assetLoaders.AssetsPreloader;

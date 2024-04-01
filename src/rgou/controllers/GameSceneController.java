@@ -1,4 +1,4 @@
-package rgou.model;
+package rgou.controllers;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -9,6 +9,7 @@ import java.awt.event.ComponentEvent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import rgou.model.Board;
 import rgou.view.GameScenes;
 import rgou.view.components.primitives.ImageBox;
 import rgou.view.exceptions.InvalidSceneException;

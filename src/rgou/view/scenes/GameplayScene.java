@@ -7,8 +7,8 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import rgou.controllers.GameSceneController;
 import rgou.model.Board;
-import rgou.model.GameSceneController;
 import rgou.view.GameScenes;
 import rgou.view.components.primitives.ImageBox;
 import rgou.view.components.primitives.ImageButton;
