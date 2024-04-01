@@ -1,27 +1,27 @@
 package rgou.utils;
 
-public class Pair<K, V> {
-	private K key;
-	private V value;
+public class Pair<A, B> {
+	private A first;
+	private B second;
 
-	public Pair(K key, V value) {
-		this.key = key;
-		this.value = value;
+	public Pair(A first, B second) {
+		this.first = first;
+		this.second = second;
 	}
 
-	public K getKey() {
-		return key;
+	public A getFirst() {
+		return first;
 	}
 
-	public void setKey(K key) {
-		this.key = key;
+	public void setFirst(A first) {
+		this.first = first;
 	}
 
-	public V getValue() {
-		return value;
+	public B getSecond() {
+		return second;
 	}
 
-	public void setValue(V value) {
-		this.value = value;
+	public void setSecond(B second) {
+		this.second = second;
 	}
 }
