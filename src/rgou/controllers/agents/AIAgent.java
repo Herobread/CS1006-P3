@@ -26,7 +26,7 @@ public class AIAgent extends Agent {
 	}
 
 	// any action that updated the board will automatically update the GUI
-	// so, I think that it should trigger again when you get extra move
+	// so, I think that this should trigger again when you get extra move
 	@SuppressWarnings("unused") // remove this when implementing AI
 	public void moveAvailable() {
 		// for debug, just to see if it gets opportunity to move at the correct time
