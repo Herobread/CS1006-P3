@@ -8,8 +8,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import rgou.model.Board;
-
-import rgou.view.GameSceneController;
+import rgou.model.GameSceneController;
 import rgou.view.GameScenes;
 import rgou.view.components.primitives.ImageBox;
 import rgou.view.components.primitives.ImageButton;
@@ -30,9 +29,6 @@ public class GameplayScene extends GameSceneBase {
 		board.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				if (board.getVictoriousPlayer() != null) {
-					gameSceneController.setActiveScene(GameScenes.GAME_END);
-				}
 
 				gameSceneController.renderActiveScene();
 			}
@@ -40,6 +36,10 @@ public class GameplayScene extends GameSceneBase {
 	}
 
 	public void run() {
+		if (board.getVictoriousPlayer() != null) {
+			gameSceneController.setActiveScene(GameScenes.GAME_END);
+		}
+
 		RenderScaleContext renderContext = new RenderScaleContext(gameSceneController.getSceneScale());
 		LabelBox.setFontSize(renderContext.scaleFont());
 
@@ -59,7 +59,7 @@ public class GameplayScene extends GameSceneBase {
 		add(lightDecorationalPawn);
 
 		LabelBox lightScore = new LabelBox("score: " + board.getPlayerScore("light"));
-		lightScore.setBounds(renderContext.scaleRectangle(129, 313, 102, 19));
+		lightScore.setBounds(renderContext.scaleRectangle(150, 313, 102, 19));
 		lightScore.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lightScore);
 
@@ -73,7 +73,7 @@ public class GameplayScene extends GameSceneBase {
 		add(darkDecorationalPawn);
 
 		LabelBox darkScore = new LabelBox(board.getPlayerScore("dark") + ": score");
-		darkScore.setBounds(renderContext.scaleRectangle(405, 313, 102, 19));
+		darkScore.setBounds(renderContext.scaleRectangle(384, 313, 102, 19));
 		add(darkScore);
 
 		// dice

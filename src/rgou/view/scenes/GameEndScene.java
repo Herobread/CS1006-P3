@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.SwingConstants;
 
 import rgou.model.Board;
-import rgou.view.GameSceneController;
+import rgou.model.GameSceneController;
 import rgou.view.GameScenes;
 import rgou.view.components.primitives.ImageButton;
 import rgou.view.components.primitives.LabelBox;

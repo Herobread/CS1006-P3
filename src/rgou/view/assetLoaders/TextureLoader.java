@@ -25,7 +25,7 @@ public class TextureLoader {
 			try {
 				Image textureImage = ImageIO.read(imageFile);
 
-				// cache
+				// access cache
 				textureCache.put(textureName, textureImage);
 
 				return textureImage;

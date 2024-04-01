@@ -3,7 +3,7 @@ package rgou.view.scenes;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import rgou.view.GameSceneController;
+import rgou.model.GameSceneController;
 import rgou.view.GameScenes;
 import rgou.view.components.primitives.ImageButton;
 import rgou.view.components.primitives.LabelBox;

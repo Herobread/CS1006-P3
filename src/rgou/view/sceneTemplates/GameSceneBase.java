@@ -1,7 +1,8 @@
 package rgou.view.sceneTemplates;
 
 import javax.swing.JPanel;
-import rgou.view.GameSceneController;
+
+import rgou.model.GameSceneController;
 
 /**
  * Base abstract class for game scenes.

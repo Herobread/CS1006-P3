@@ -32,10 +32,6 @@ public class Board {
 	private boolean isRollAvailable = true;
 	private boolean isSelectMoveAvailable = false;
 
-	public void setRollAvailable(boolean isRollAvailable) {
-		this.isRollAvailable = isRollAvailable;
-	}
-
 	private ArrayList<Point> lightPath;
 	private ArrayList<Point> darkPath;
 
@@ -202,7 +198,7 @@ public class Board {
 			activePlayer = "light";
 		}
 
-		// hide warning
+		// hide warning about no moves
 		if (activePlayer.equals(noMovesPlayerWarning)) {
 			noMovesPlayerWarning = null;
 		}
@@ -230,18 +226,31 @@ public class Board {
 	}
 
 	public DiceRollsResult getLastDiceRollsResult() {
-		// placeholder
 		if (lastDiceRollsResult == null) {
+			// roll as placeholder
 			lastDiceRollsResult = DiceRoller.roll();
 		}
 
 		return lastDiceRollsResult;
 	}
 
+	/**
+	 * gets possible move for current player from Point
+	 * 
+	 * @param point
+	 * @return Point where pawn can move, null otherwise
+	 */
 	public Point getPossibleMove(Point p) {
 		return getPossibleMove(p.x, p.y);
 	}
 
+	/**
+	 * gets possible move for current player from x y
+	 * 
+	 * @param x
+	 * @param y
+	 * @return Point where pawn can move, null otherwise
+	 */
 	public Point getPossibleMove(int x, int y) {
 		Tile currentTile = getTile(x, y);
 		Point currentPoint = new Point(x, y);

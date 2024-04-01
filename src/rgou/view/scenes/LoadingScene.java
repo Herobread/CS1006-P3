@@ -1,6 +1,6 @@
 package rgou.view.scenes;
 
-import rgou.view.GameSceneController;
+import rgou.model.GameSceneController;
 import rgou.view.components.primitives.ImageBox;
 import rgou.view.components.primitives.RenderScaleContext;
 import rgou.view.sceneTemplates.GameSceneBase;
