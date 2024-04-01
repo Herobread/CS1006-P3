@@ -1,6 +1,7 @@
 package rgou.controllers.agents;
 
 import java.awt.Point;
+import java.util.List;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -8,6 +9,7 @@ import javax.swing.event.ChangeListener;
 import rgou.model.Board;
 import rgou.model.Tile;
 import rgou.model.dice.DiceRollsResult;
+import rgou.utils.Pair;
 
 public class AIAgent extends Agent {
 	public AIAgent(String player, Board board) {
@@ -54,6 +56,10 @@ public class AIAgent extends Agent {
 		DiceRollsResult diceRollsResult = board.getLastDiceRollsResult();
 		// get total dice score:
 		int total = diceRollsResult.getTotal();
+
+		//////////////////////
+		// get player path with pawns:
+		List<Pair<Point, String>> pathWithPawns = board.getPathWithPawns(player);
 
 		/////////////////////////
 		// check if move is available at all:

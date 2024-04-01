@@ -8,6 +8,7 @@ import javax.swing.event.ChangeListener;
 
 import rgou.model.dice.DiceRoller;
 import rgou.model.dice.DiceRollsResult;
+import rgou.utils.Pair;
 
 import java.awt.Point;
 
@@ -492,7 +493,16 @@ public class Board {
 
 	//////////// AI
 
-	public void getPathWithPawns() {
+	public List<Pair<Point, String>> getPathWithPawns(String player) {
+		List<Point> path = getPlayerPath(player);
+		List<Pair<Point, String>> pathWithPawns = new ArrayList<>();
+
+		for (Point pathPoint : path) {
+			String pawn = getTile(pathPoint).getPawn();
+			Pair<Point, String> pair = new Pair<>(pathPoint, pawn);
+			pathWithPawns.add(pair);
+		}
+
+		return pathWithPawns;
 	}
-	// list of coordinates map to the tile on it
 }
