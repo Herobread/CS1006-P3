@@ -489,4 +489,10 @@ public class Board {
 	public boolean isSelectMoveAvailable() {
 		return isSelectMoveAvailable;
 	}
+
+	//////////// AI
+
+	public void getPathWithPawns() {
+	}
+	// list of coordinates map to the tile on it
 }

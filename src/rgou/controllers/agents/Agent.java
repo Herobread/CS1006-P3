@@ -7,6 +7,10 @@ import rgou.model.Board;
  * other types of players such as AI, remote and local
  */
 public class Agent {
+	/**
+	 * current player team
+	 * can be light or dark
+	 */
 	protected String player;
 	protected boolean isInputRequired = true;
 

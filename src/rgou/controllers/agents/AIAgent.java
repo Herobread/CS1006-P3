@@ -13,6 +13,8 @@ public class AIAgent extends Agent {
 	public AIAgent(String player, Board board) {
 		super(player, board);
 
+		// disable dice roll
+		// and board panel inputs in future
 		isInputRequired = false;
 
 		board.addChangeListener(new ChangeListener() {
