@@ -9,7 +9,6 @@ import java.awt.event.ComponentEvent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import rgou.model.Board;
 import rgou.view.GameScenes;
 import rgou.view.components.primitives.ImageBox;
 import rgou.view.exceptions.InvalidSceneException;
@@ -32,17 +31,17 @@ public class GameSceneController {
 	private Map<GameScenes, GameSceneBase> sceneMap;
 	private GameScenes activeScene = GameScenes.LOADING;
 	private GameSceneBase activeScenePanel = null;
-
-	private Board board;
+	private GameStateController gameStateController = null;
 
 	/**
 	 * Constructs a GameSceneController with the specified main frame.
 	 * 
 	 * @param mainFrame the main frame of the game
 	 */
-	public GameSceneController(JFrame mainFrame, Board board) {
+	public GameSceneController(JFrame mainFrame, GameStateController gameStateController) {
 		this.mainFrame = mainFrame;
-		this.board = board;
+		this.gameStateController = gameStateController;
+
 		sceneMap = new EnumMap<>(GameScenes.class);
 
 		initializeScenes();
@@ -62,9 +61,9 @@ public class GameSceneController {
 
 	private void initializeScenes() {
 		sceneMap.put(GameScenes.LOADING, new LoadingScene(this));
-		sceneMap.put(GameScenes.MAIN_MENU, new MainMenuScene(this));
-		sceneMap.put(GameScenes.GAMEPLAY, new GameplayScene(this, board));
-		sceneMap.put(GameScenes.GAME_END, new GameEndScene(this, board));
+		sceneMap.put(GameScenes.MAIN_MENU, new MainMenuScene(this, gameStateController));
+		sceneMap.put(GameScenes.GAMEPLAY, new GameplayScene(this, gameStateController));
+		sceneMap.put(GameScenes.GAME_END, new GameEndScene(this, gameStateController));
 		sceneMap.put(GameScenes.SELECT_REMOTE, new RemoteOptionsScene(this));
 
 		// to add new scenes:

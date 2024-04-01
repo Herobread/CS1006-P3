@@ -1,6 +1,8 @@
 package rgou.view.scenes;
 
 import rgou.controllers.GameSceneController;
+import rgou.controllers.GameStateController;
+import rgou.controllers.scenes.MainMenuController;
 import rgou.view.GameScenes;
 import rgou.view.components.primitives.ImageBox;
 import rgou.view.components.primitives.ImageButton;
@@ -14,8 +16,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MainMenuScene extends GameSceneBase {
-	public MainMenuScene(GameSceneController gameSceneController) {
+	GameStateController gameStateController;
+
+	public MainMenuScene(GameSceneController gameSceneController, GameStateController gameStateController) {
 		super(gameSceneController);
+		this.gameStateController = gameStateController;
 	}
 
 	public void run() {
@@ -36,6 +41,7 @@ public class MainMenuScene extends GameSceneBase {
 		play.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				MainMenuController.onLocalPlayPressed(gameStateController);
 				gameSceneController.setActiveScene(GameScenes.GAMEPLAY);
 			}
 		});
@@ -46,6 +52,7 @@ public class MainMenuScene extends GameSceneBase {
 		playRemote.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				// MainMenuController.onAIPlayerPressed(gameStateController);
 				gameSceneController.setActiveScene(GameScenes.SELECT_REMOTE);
 			}
 		});
@@ -56,7 +63,8 @@ public class MainMenuScene extends GameSceneBase {
 		playAi.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				gameSceneController.setActiveScene(GameScenes.SELECT_REMOTE);
+				MainMenuController.onAIPlayerPressed(gameStateController);
+				gameSceneController.setActiveScene(GameScenes.GAMEPLAY);
 			}
 		});
 		add(playAi);

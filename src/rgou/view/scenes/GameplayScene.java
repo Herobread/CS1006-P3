@@ -8,6 +8,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import rgou.controllers.GameSceneController;
+import rgou.controllers.GameStateController;
 import rgou.model.Board;
 import rgou.view.GameScenes;
 import rgou.view.components.primitives.ImageBox;
@@ -20,16 +21,18 @@ import rgou.view.sceneTemplates.GameSceneBase;
 
 public class GameplayScene extends GameSceneBase {
 	private Board board;
+	private GameStateController gameStateController;
 	private LabelBox turn;
 
-	public GameplayScene(GameSceneController gameSceneController, Board board) {
+	public GameplayScene(GameSceneController gameSceneController, GameStateController gameStateController) {
 		super(gameSceneController);
-		this.board = board;
+		this.gameSceneController = gameSceneController;
+		this.gameStateController = gameStateController;
+		this.board = gameStateController.getBoard();
 
 		board.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-
 				gameSceneController.renderActiveScene();
 			}
 		});
@@ -77,20 +80,19 @@ public class GameplayScene extends GameSceneBase {
 		add(darkScore);
 
 		// dice
-
 		boolean isLightNoMoves = "light".equals(board.getNoMovesPlayerWarning());
 		boolean isDarkNoMoves = "dark".equals(board.getNoMovesPlayerWarning());
 
-		DicePanel dicePanelLight = new DicePanel(renderContext, board, "light", isLightNoMoves);
+		DicePanel dicePanelLight = new DicePanel(renderContext, gameStateController, "light", isLightNoMoves);
 		dicePanelLight.setBounds(renderContext.scaleRectangle(109, 132, 110, 111));
 		add(dicePanelLight);
 
-		DicePanel dicePanelDark = new DicePanel(renderContext, board, "dark", isDarkNoMoves);
+		DicePanel dicePanelDark = new DicePanel(renderContext, gameStateController, "dark", isDarkNoMoves);
 		dicePanelDark.setBounds(renderContext.scaleRectangle(417, 132, 110, 111));
 		add(dicePanelDark);
 
 		// board
-		BoardPanel boardPanel = new BoardPanel(renderContext, board);
+		BoardPanel boardPanel = new BoardPanel(renderContext, gameStateController);
 		boardPanel.setBounds(renderContext.scaleRectangle(262, 41, 112, 292));
 		add(boardPanel);
 

@@ -316,23 +316,23 @@ public class Board {
 		return targetTilePoint;
 	}
 
-	public void makeMove(Point p) {
-		makeMove(p.x, p.y);
+	public boolean makeMove(Point p) {
+		return makeMove(p.x, p.y);
 	}
 
-	public void makeMove(int x, int y) {
+	public boolean makeMove(int x, int y) {
 		if (isRollAvailable) {
-			return;
+			return false;
 		}
 
 		if (!isSelectMoveAvailable) {
-			return;
+			return false;
 		}
 
 		Point possibleMovePoint = getPossibleMove(x, y);
 
 		if (possibleMovePoint == null) {
-			return;
+			return false;
 		}
 
 		// make move
@@ -354,7 +354,7 @@ public class Board {
 			isRollAvailable = true;
 			changePlayerTurn();
 			notifyChange();
-			return;
+			return true;
 		}
 
 		if (currentTile.isStart()) {
@@ -371,6 +371,7 @@ public class Board {
 		isRollAvailable = true;
 
 		notifyChange();
+		return true;
 	}
 
 	public boolean checkCurrentPlayerMoveAvailability() {
@@ -396,6 +397,18 @@ public class Board {
 
 		if (darkScore == TOTAL_PAWNS) {
 			return "dark";
+		}
+
+		return null;
+	}
+
+	public ArrayList<Point> getPlayerPath(String player) {
+		if (player.equals("light")) {
+			return lightPath;
+		}
+
+		if (player.equals("dark")) {
+			return darkPath;
 		}
 
 		return null;

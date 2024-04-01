@@ -4,6 +4,8 @@ import javax.swing.JPanel;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import rgou.controllers.GameStateController;
 import rgou.model.Board;
 import rgou.model.Tile;
 import rgou.view.components.primitives.ImageBox;
@@ -20,10 +22,11 @@ public class BoardPanel extends JPanel {
 	private final int PAWN_MARGIN = 11;
 	private final int OUTLINE_PADDING = 2;
 
-	public BoardPanel(RenderScaleContext renderScaleContext, Board board) {
+	public BoardPanel(RenderScaleContext renderScaleContext, GameStateController gameStateController) {
 		setLayout(null);
 		setOpaque(false);
 
+		Board board = gameStateController.getBoard();
 		this.renderScaleContext = renderScaleContext;
 		this.outline = new ImageBox("pawns/pawn-target.png");
 		this.outline.setVisible(false);

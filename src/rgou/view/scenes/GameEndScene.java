@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.SwingConstants;
 
 import rgou.controllers.GameSceneController;
+import rgou.controllers.GameStateController;
 import rgou.model.Board;
 import rgou.view.GameScenes;
 import rgou.view.components.primitives.ImageButton;
@@ -15,10 +16,12 @@ import rgou.view.sceneTemplates.GameSceneBase;
 
 public class GameEndScene extends GameSceneBase {
 	private Board board;
+	private GameStateController gameStateController;
 
-	public GameEndScene(GameSceneController gameSceneController, Board board) {
+	public GameEndScene(GameSceneController gameSceneController, GameStateController gameStateController) {
 		super(gameSceneController);
-		this.board = board;
+		this.gameStateController = gameStateController;
+		this.board = gameStateController.getBoard();
 	}
 
 	public void run() {

@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JComponent;
 
+import rgou.controllers.GameStateController;
+import rgou.controllers.agents.Agent;
 import rgou.model.Board;
 import rgou.model.dice.DiceRollResult;
 import rgou.model.dice.DiceRollsResult;
@@ -15,14 +17,19 @@ import rgou.view.components.primitives.RenderScaleContext;
 
 public class DicePanel extends JComponent {
 	private final int TOTAL_DICES = 4;
+	private GameStateController gameStateController;
 	private ImageBox number;
 	private ImageBox[] diceImages = new ImageBox[TOTAL_DICES];
 
 	public DicePanel(
 			RenderScaleContext renderScaleContext,
-			Board board,
+			GameStateController gameStateController,
 			String player,
 			boolean isNoMovesWarningShown) {
+
+		this.gameStateController = gameStateController;
+		Board board = this.gameStateController.getBoard();
+
 		setOpaque(false);
 		setLayout(null);
 
@@ -57,7 +64,9 @@ public class DicePanel extends JComponent {
 			add(diceImages[i]);
 		}
 
-		if (board.isRollAvailable()) {
+		Agent currentAgent = gameStateController.getPlayerAgent(player);
+
+		if (board.isRollAvailable() && currentAgent.isInputRequired()) {
 			ImageButton rollButton = new ImageButton("buttons/roll.png");
 			rollButton.setBounds(renderScaleContext.scaleRectangle(34, 91, 42, 20));
 			rollButton.addActionListener(new ActionListener() {
