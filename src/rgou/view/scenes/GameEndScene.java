@@ -21,7 +21,7 @@ public class GameEndScene extends GameSceneBase {
 	public GameEndScene(GameSceneController gameSceneController, GameStateController gameStateController) {
 		super(gameSceneController);
 		this.gameStateController = gameStateController;
-		this.board = gameStateController.getBoard();
+		this.board = this.gameStateController.getBoard();
 	}
 
 	public void run() {
