@@ -9,6 +9,10 @@ import rgou.view.assetLoaders.FontLoader;
 public class LabelBox extends JLabel {
 	private static Font font;
 
+	public LabelBox() {
+		this("");
+	}
+
 	public LabelBox(String text) {
 		super(text);
 

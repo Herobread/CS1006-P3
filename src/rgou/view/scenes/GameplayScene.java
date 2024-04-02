@@ -20,7 +20,6 @@ import rgou.view.components.ui.DicePanel;
 import rgou.view.sceneTemplates.GameSceneBase;
 
 public class GameplayScene extends GameSceneBase {
-	private Board board;
 	private GameStateController gameStateController;
 	private LabelBox turn;
 
@@ -28,12 +27,12 @@ public class GameplayScene extends GameSceneBase {
 		super(gameSceneController);
 		this.gameSceneController = gameSceneController;
 		this.gameStateController = gameStateController;
-		this.board = gameStateController.getBoard();
 
 		addBoardListener();
 	}
 
 	public void addBoardListener() {
+		Board board = gameStateController.getBoard();
 		board.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
@@ -43,6 +42,8 @@ public class GameplayScene extends GameSceneBase {
 	}
 
 	public void run() {
+		Board board = gameStateController.getBoard();
+
 		if (board.getVictoriousPlayer() != null) {
 			gameSceneController.setActiveScene(GameScenes.GAME_END);
 		}

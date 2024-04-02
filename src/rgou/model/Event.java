@@ -52,4 +52,12 @@ public class Event {
 	public void setBoard(Board board) {
 		this.board = board;
 	}
+
+	public String getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(String player) {
+		this.player = player;
+	}
 }

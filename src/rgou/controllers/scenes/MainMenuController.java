@@ -17,7 +17,7 @@ public class MainMenuController {
 	}
 
 	public static void onLocalPlayPressed(GameStateController gameStateController) {
-		// resetBoard(gameStateController);
+		resetBoard(gameStateController);
 
 		Agent lightAgent = new LocalAgent("light", gameStateController.getBoard());
 		Agent darkAgent = new LocalAgent("dark", gameStateController.getBoard());
@@ -27,7 +27,7 @@ public class MainMenuController {
 	}
 
 	public static void onAIPlayerPressed(GameStateController gameStateController) {
-		// resetBoard(gameStateController);
+		resetBoard(gameStateController);
 
 		Agent lightAgent = new LocalAgent("light", gameStateController.getBoard());
 		Agent darkAgent = new AIAgent("dark", gameStateController.getBoard());

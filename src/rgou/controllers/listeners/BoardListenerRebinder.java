@@ -11,7 +11,7 @@ public class BoardListenerRebinder {
 		List<ChangeListener> listeners = oldBoard.getListeners();
 		newBoard.setListeners(listeners);
 
-		List<ChangeListener> eventListeners = oldBoard.getListeners();
+		List<ChangeListener> eventListeners = oldBoard.getEventListeners();
 		newBoard.setEventListeners(eventListeners);
 
 		return newBoard;
