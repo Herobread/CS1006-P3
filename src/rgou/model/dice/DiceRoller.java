@@ -43,6 +43,6 @@ public class DiceRoller {
 		boolean isSuccessfullRoll = winningRolls[roll];
 		String texture = diceRollTextures[roll];
 
-		return new DiceRollResult(isSuccessfullRoll, texture);
+		return new DiceRollResult(isSuccessfullRoll, texture, roll);
 	}
 }

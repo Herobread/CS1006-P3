@@ -3,10 +3,12 @@ package rgou.model.dice;
 public class DiceRollResult {
 	private boolean isWin;
 	private String textureName;
+	private int id;
 
-	public DiceRollResult(boolean isWin, String textureName) {
+	public DiceRollResult(boolean isWin, String textureName, int id) {
 		this.isWin = isWin;
 		this.textureName = textureName;
+		this.id = id;
 	}
 
 	public boolean isWin() {
@@ -23,6 +25,14 @@ public class DiceRollResult {
 
 	public void setTextureName(String texture) {
 		this.textureName = texture;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 }

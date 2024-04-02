@@ -1,0 +1,5 @@
+1. bug: land on rosette before finish and roll 4:
+- unable to move, but doesn't say that no moves available
+
+
+2. board doesn't reset

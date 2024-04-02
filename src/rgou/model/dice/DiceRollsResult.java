@@ -20,4 +20,17 @@ public class DiceRollsResult {
 	public int getTotal() {
 		return total;
 	}
+
+	///////////////////// networking
+
+	public String toActionString() {
+		StringBuilder result = new StringBuilder("roll,");
+
+		String[] numbers = new String[diceRollResults.length];
+		for (int i = 0; i < diceRollResults.length; i++) {
+			numbers[i] = "" + diceRollResults[i].getId();
+		}
+		result.append(String.join("|", numbers));
+		return result.toString();
+	}
 }
