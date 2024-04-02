@@ -9,6 +9,10 @@ public class RemoteConfig {
 		this.hostname = hostname;
 		this.port = port;
 		this.remoteType = remoteType;
+
+		if (remoteType == RemoteTypes.SERVER) {
+			hostname = "localhost";
+		}
 	}
 
 	public String getHostname() {
