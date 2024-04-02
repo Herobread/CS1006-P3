@@ -30,6 +30,10 @@ public class GameplayScene extends GameSceneBase {
 		this.gameStateController = gameStateController;
 		this.board = gameStateController.getBoard();
 
+		addBoardListener();
+	}
+
+	public void addBoardListener() {
 		board.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {

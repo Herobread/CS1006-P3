@@ -2,11 +2,13 @@ package rgou.controllers;
 
 import rgou.controllers.agents.Agent;
 import rgou.model.Board;
+import rgou.model.remote.RemoteConfig;
 
 public class GameStateController {
 	private Board board;
 	private Agent lightPlayer;
 	private Agent darkPlayer;
+	private RemoteConfig remoteConfig;
 
 	public GameStateController() {
 		board = new Board();
@@ -40,5 +42,13 @@ public class GameStateController {
 		if (player.equals("dark")) {
 			darkPlayer = agent;
 		}
+	}
+
+	public RemoteConfig getRemoteConfig() {
+		return remoteConfig;
+	}
+
+	public void setRemoteConfig(RemoteConfig remoteConfig) {
+		this.remoteConfig = remoteConfig;
 	}
 }

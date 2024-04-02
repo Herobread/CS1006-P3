@@ -13,10 +13,42 @@ import rgou.utils.Pair;
 import java.awt.Point;
 
 public class Board {
+	//// game event listener
+	private List<ChangeListener> eventListeners = new ArrayList<>();
+
+	public void addEventListener(ChangeListener eventListener) {
+		eventListeners.add(eventListener);
+	}
+
+	public List<ChangeListener> getEventListeners() {
+		return eventListeners;
+	}
+
+	public void setEventListeners(List<ChangeListener> eventListeners) {
+		this.eventListeners.clear();
+		this.eventListeners.addAll(eventListeners);
+	}
+
+	protected void notifyEvent(Event event) {
+		for (ChangeListener eventListener : eventListeners) {
+			eventListener.stateChanged(new ChangeEvent(event));
+		}
+	}
+
+	//// game board listener
 	private List<ChangeListener> listeners = new ArrayList<>();
 
 	public void addChangeListener(ChangeListener listener) {
 		listeners.add(listener);
+	}
+
+	public List<ChangeListener> getListeners() {
+		return listeners;
+	}
+
+	public void setListeners(List<ChangeListener> listeners) {
+		this.listeners.clear();
+		this.listeners.addAll(listeners);
 	}
 
 	protected void notifyChange() {
@@ -224,6 +256,7 @@ public class Board {
 		}
 
 		notifyChange();
+		notifyEvent(new Event(this, activePlayer, EventTypes.ROLL));
 	}
 
 	public DiceRollsResult getLastDiceRollsResult() {
@@ -233,6 +266,14 @@ public class Board {
 		}
 
 		return lastDiceRollsResult;
+	}
+
+	public void rollCustomDice(DiceRollsResult lastDiceRollsResult) {
+		this.lastDiceRollsResult = lastDiceRollsResult;
+		isRollAvailable = false;
+		isSelectMoveAvailable = true;
+
+		notifyChange();
 	}
 
 	/**
@@ -354,7 +395,8 @@ public class Board {
 			changeCurrentPlayerScore(1);
 			isRollAvailable = true;
 			changePlayerTurn();
-			notifyChange();
+			notifyEvent(new Event(this, activePlayer, EventTypes.MOVE, x, y));
+			// notifyChange();
 			return true;
 		}
 
@@ -371,6 +413,7 @@ public class Board {
 		}
 		isRollAvailable = true;
 
+		notifyEvent(new Event(this, activePlayer, EventTypes.MOVE, x, y));
 		notifyChange();
 		return true;
 	}
