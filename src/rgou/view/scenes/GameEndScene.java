@@ -15,16 +15,15 @@ import rgou.view.components.primitives.RenderScaleContext;
 import rgou.view.sceneTemplates.GameSceneBase;
 
 public class GameEndScene extends GameSceneBase {
-	private Board board;
 	private GameStateController gameStateController;
 
 	public GameEndScene(GameSceneController gameSceneController, GameStateController gameStateController) {
 		super(gameSceneController);
 		this.gameStateController = gameStateController;
-		this.board = this.gameStateController.getBoard();
 	}
 
 	public void run() {
+		Board board = gameStateController.getBoard();
 		RenderScaleContext renderContext = new RenderScaleContext(gameSceneController.getSceneScale());
 		LabelBox.setFontSize(renderContext.scaleFont());
 

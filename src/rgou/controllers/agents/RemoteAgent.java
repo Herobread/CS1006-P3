@@ -8,13 +8,17 @@ import rgou.controllers.GameStateController;
 import rgou.model.Board;
 import rgou.model.Event;
 import rgou.model.dice.DiceRollsResult;
+import rgou.model.remote.RemoteConfig;
 
 public class RemoteAgent extends Agent {
+	GameStateController gameStateController;
+
 	public RemoteAgent(
 			String player,
 			GameStateController gameStateController,
 			GameSceneController gameSceneController) {
 		super(player, gameStateController.getBoard());
+		this.gameStateController = gameStateController;
 
 		// disable dice roll and board panel inputs for current player
 		isInputRequired = false;
@@ -82,6 +86,13 @@ public class RemoteAgent extends Agent {
 
 	@SuppressWarnings("unused") // remove this line in final version
 	private void examples() {
+		////////////////////////
+		// get config:
+		RemoteConfig remoteConfig = gameStateController.getRemoteConfig();
+		String host = remoteConfig.getHostname();
+		// see other things in RemoteConfig
+
+		////////////////////////
 		// roll local:
 		roll();
 		// get dice roll:
