@@ -2,7 +2,6 @@ package rgou.controllers.agents;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
@@ -207,7 +206,7 @@ public class AIAgent extends Agent {
 	private boolean checkDanger(Point point, List<Pair<Point, String>> pathWithPlayerPawns) {
 		String zone = coordToZone.get(pointToString(point));
 		if (zone.equals("D1") || zone.equals("D2")) {
-			for (Pair playerPathPair : pathWithPlayerPawns) {
+			for (Pair<Point, String> playerPathPair : pathWithPlayerPawns) {
 				if (playerPathPair.getFirst().equals(point)) {
 					ListIterator<Pair<Point, String>> iter = pathWithPlayerPawns.listIterator();
 					while (iter.hasNext()) {
