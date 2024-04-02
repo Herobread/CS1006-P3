@@ -1,17 +1,11 @@
 package rgou.view.components.primitives;
 
 import java.awt.Font;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import javax.swing.JTextField;
 import rgou.view.assetLoaders.FontLoader;
 
-/**
- * The {@code TextFieldBox} class extends {@link JTextField} to support custom
- * fonts.
- * It allows for the usage of a custom font file for all instances of text
- * fields within the application.
- * The class automatically loads a specified font upon initialization and
- * applies it to each instance.
- */
 public class TextFieldBox extends JTextField {
 	private static Font font = null;
 
@@ -20,6 +14,17 @@ public class TextFieldBox extends JTextField {
 	 */
 	static {
 		loadCustomFont();
+	}
+
+	/**
+	 * Constructs a new {@code TextFieldBox} instance and sets the value and custom
+	 * font if available.
+	 */
+	public TextFieldBox(String defaultValue) {
+		super(defaultValue); // Call the superclass constructor with the default value
+		if (font != null) {
+			this.setFont(font);
+		}
 	}
 
 	/**
@@ -44,6 +49,7 @@ public class TextFieldBox extends JTextField {
 	public static void setFontSize(int size) {
 		if (font != null) {
 			font = font.deriveFont((float) size);
+			// Update font for existing instances if needed
 		}
 	}
 
@@ -57,5 +63,27 @@ public class TextFieldBox extends JTextField {
 		if (font == null) {
 			font = FontLoader.loadFont("assets/fonts/pixelify-sans.ttf");
 		}
+	}
+
+	/**
+	 * Adds a listener that will be notified whenever the text changes.
+	 * 
+	 * @param listener A functional interface that accepts a String parameter.
+	 */
+	public void addTextChangeListener(TextChangeListener listener) {
+		this.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				listener.textChanged(TextFieldBox.this.getText());
+			}
+		});
+	}
+
+	/**
+	 * Functional interface for text change events.
+	 */
+	@FunctionalInterface
+	public interface TextChangeListener {
+		void textChanged(String newText);
 	}
 }

@@ -7,6 +7,7 @@ import javax.swing.SwingConstants;
 
 import rgou.controllers.GameSceneController;
 import rgou.controllers.GameStateController;
+import rgou.model.remote.RemoteConfig;
 import rgou.view.GameScenes;
 import rgou.view.components.primitives.ImageButton;
 import rgou.view.components.primitives.LabelBox;
@@ -23,6 +24,7 @@ public class HostScene extends GameSceneBase {
 	}
 
 	public void run() {
+		RemoteConfig remoteConfig = gameStateController.getRemoteConfig();
 		RenderScaleContext renderScaleContext = new RenderScaleContext(gameSceneController.getSceneScale());
 		LabelBox.setFontSize(renderScaleContext.scaleFont(16));
 
@@ -36,13 +38,30 @@ public class HostScene extends GameSceneBase {
 		exit.setBounds(renderScaleContext.scaleRectangle(596, 10, 20, 20));
 		add(exit);
 
-		TextFieldBox textFieldBox = new TextFieldBox();
-		textFieldBox.setBounds(renderScaleContext.scaleRectangle(221, 167, 200, 23));
-		add(textFieldBox);
+		LabelBox portLabel = new LabelBox("Port:");
+		portLabel.setBounds(renderScaleContext.scaleRectangle(221, 144, 200, 19));
+		add(portLabel);
+
+		TextFieldBox portTextFieldBox = new TextFieldBox(remoteConfig.getPort());
+		portTextFieldBox.setBounds(renderScaleContext.scaleRectangle(221, 167, 200, 23));
+		portTextFieldBox.addTextChangeListener(newText -> {
+			remoteConfig.setPort(newText);
+		});
+		add(portTextFieldBox);
 
 		LabelBox text = new LabelBox("Host a game");
 		text.setBounds(renderScaleContext.scaleRectangle(221, 10, 200, 19));
 		text.setHorizontalAlignment(SwingConstants.CENTER);
 		add(text);
+
+		ImageButton hostButton = new ImageButton("buttons/host.png");
+		hostButton.setBounds(renderScaleContext.scaleRectangle(297, 200, 42, 20));
+		hostButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println(remoteConfig);
+			}
+		});
+		add(hostButton);
 	}
 }

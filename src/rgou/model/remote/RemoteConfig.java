@@ -34,4 +34,9 @@ public class RemoteConfig {
 	public void setRemoteType(RemoteTypes remoteType) {
 		this.remoteType = remoteType;
 	}
+
+	@Override
+	public String toString() {
+		return "RemoteConfig [hostname=" + hostname + ", port=" + port + ", remoteType=" + remoteType + "]";
+	}
 }
