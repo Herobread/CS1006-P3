@@ -12,6 +12,10 @@ public class GameStateController {
 		board = new Board();
 	}
 
+	public void setBoard(Board board) {
+		this.board = board;
+	}
+
 	public Board getBoard() {
 		return board;
 	}
