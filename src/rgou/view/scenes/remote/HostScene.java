@@ -11,6 +11,7 @@ import rgou.view.GameScenes;
 import rgou.view.components.primitives.ImageButton;
 import rgou.view.components.primitives.LabelBox;
 import rgou.view.components.primitives.RenderScaleContext;
+import rgou.view.components.primitives.TextFieldBox;
 import rgou.view.sceneTemplates.GameSceneBase;
 
 public class HostScene extends GameSceneBase {
@@ -34,6 +35,10 @@ public class HostScene extends GameSceneBase {
 		});
 		exit.setBounds(renderScaleContext.scaleRectangle(596, 10, 20, 20));
 		add(exit);
+
+		TextFieldBox textFieldBox = new TextFieldBox();
+		textFieldBox.setBounds(renderScaleContext.scaleRectangle(221, 167, 200, 23));
+		add(textFieldBox);
 
 		LabelBox text = new LabelBox("Host a game");
 		text.setBounds(renderScaleContext.scaleRectangle(221, 10, 200, 19));

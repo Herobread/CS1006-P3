@@ -47,7 +47,7 @@ public class RemoteOptionsScene extends GameSceneBase {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				RemoteOptionsController.onRemoteJoin(gameStateController);
-				System.out.println("join");
+
 				gameSceneController.setActiveScene(GameScenes.SELECT_REMOTE_JOIN);
 			}
 		});
@@ -59,7 +59,7 @@ public class RemoteOptionsScene extends GameSceneBase {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				RemoteOptionsController.onRemoteHost(gameStateController);
-				System.out.println("host");
+
 				gameSceneController.setActiveScene(GameScenes.SELECT_REMOTE_HOST);
 			}
 		});
