@@ -39,12 +39,14 @@ public class RemoteConnector {
 
 	private static void createClient(GameSceneController gameSceneController, GameStateController gameStateController)
 			throws Exception {
-		//Client client = new Client(gameSceneController, gameStateController);
+		// Client client = new Client(gameSceneController, gameStateController);
 		// TODO
 
-		Socket socket = new Socket(gameStateController.getRemoteConfig().getHostname(), Integer.parseInt(gameStateController.getRemoteConfig().getPort()));
-		System.out.println("Client connected to " + gameStateController.getRemoteConfig().getHostname() + " on port " + gameStateController.getRemoteConfig().getPort() + ".");
-		
+		Socket socket = new Socket(gameStateController.getRemoteConfig().getHostname(),
+				Integer.parseInt(gameStateController.getRemoteConfig().getPort()));
+		System.out.println("Client connected to " + gameStateController.getRemoteConfig().getHostname() + " on port "
+				+ gameStateController.getRemoteConfig().getPort() + ".");
+
 		RemoteStatus remoteStatus = gameStateController.getRemoteStatus();
 		remoteStatus.setStatus("connecting...");
 		Thread.sleep(1000);
@@ -52,59 +54,61 @@ public class RemoteConnector {
 		Thread.sleep(1000);
 
 		Agent clientPlayer = new LocalAgent("dark", gameStateController.getBoard());
-		
+		gameStateController.setPlayerAgent("dark", clientPlayer);
 
 		Agent clientOpponent = new RemoteAgent(
-		"light",
-		gameStateController,
-		gameSceneController,
-		socket);
+				"light",
+				gameStateController,
+				gameSceneController,
+				socket);
 
 		gameStateController.setPlayerAgent("light", clientOpponent);
-		
+
 		gameSceneController.setActiveScene(GameScenes.GAMEPLAY);
-		
+
 		InputStream inputStream = socket.getInputStream();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 		String[] diceRollResults = new String[4];
 		String[] coordinates = new String[4];
-		while (true){
+		while (true) {
 			String serverResponse = reader.readLine();
 			String[] parsedLine = serverResponse.split(",");
-			for (String entry : parsedLine){
+			for (String entry : parsedLine) {
 				System.out.println(entry);
 			}
-			//String[] diceRollResults = new String[4];
-			
+			// String[] diceRollResults = new String[4];
 
-			if (parsedLine[0].equals("roll")){
-
-				
+			if (parsedLine[0].equals("roll")) {
 
 				diceRollResults = parsedLine[1].split("\\|");
-				
-				/*for (String entry: diceRollResults){
-					System.out.println(entry);
-				}*/
-					
+
+				/*
+				 * for (String entry: diceRollResults){
+				 * System.out.println(entry);
+				 * }
+				 */
+
 			}
-			if (parsedLine[0].equals("move")){
+			if (parsedLine[0].equals("move")) {
 
 				coordinates = parsedLine[1].split("\\|");
-				/*for (String entry: coordinates){
-					System.out.println(entry);
-				}*/
-				
-				for (String entry: diceRollResults){
+				/*
+				 * for (String entry: coordinates){
+				 * System.out.println(entry);
+				 * }
+				 */
+
+				for (String entry : diceRollResults) {
 					System.out.println(entry);
 				}
-				for (String entry: coordinates){
+				for (String entry : coordinates) {
 					System.out.println(entry);
 				}
 				clientOpponent.getBoard().customRoll(diceRollResults);
-				boolean didMove = clientOpponent.move(Integer.parseInt(coordinates[0]),Integer.parseInt(coordinates[1]));
+				boolean didMove = clientOpponent.move(Integer.parseInt(coordinates[0]),
+						Integer.parseInt(coordinates[1]));
 				System.out.println(didMove);
-				
+
 			}
 
 		}
@@ -113,18 +117,17 @@ public class RemoteConnector {
 
 	private static void createServer(GameSceneController gameSceneController, GameStateController gameStateController)
 			throws Exception {
-			
+
 		// TODO
 
-		
 		// add some network code here
 		try {
 			ServerSocket ss = new ServerSocket(Integer.parseInt(gameStateController.getRemoteConfig().getPort()));
-			System.out.println("Server started ... listening on port " + gameStateController.getRemoteConfig().getPort() + " ...");
-			
+			System.out.println(
+					"Server started ... listening on port " + gameStateController.getRemoteConfig().getPort() + " ...");
+
 			Socket conn = ss.accept();
 			System.out.println("Server got new connection request from " + conn.getInetAddress());
-
 
 			RemoteStatus remoteStatus = gameStateController.getRemoteStatus();
 			remoteStatus.setStatus("connecting...");
@@ -136,10 +139,10 @@ public class RemoteConnector {
 			gameStateController.setPlayerAgent("light", serverPlayer);
 
 			Agent serverOpponent = new RemoteAgent(
-			"dark",
-			gameStateController,
-			gameSceneController,
-			conn);
+					"dark",
+					gameStateController,
+					gameSceneController,
+					conn);
 			gameStateController.setPlayerAgent("dark", serverOpponent);
 
 			gameSceneController.setActiveScene(GameScenes.GAMEPLAY);
@@ -147,32 +150,33 @@ public class RemoteConnector {
 			OutputStream outputStream = conn.getOutputStream();
 			PrintWriter writer = new PrintWriter(outputStream, true);
 
-		} catch (Exception e){
-				e.printStackTrace();
-		
+		} catch (Exception e) {
+			e.printStackTrace();
+
 		}
-		
+
 		// change status for visual info:
 
 		// set up local player agent
-		/*Agent lightAgent = new LocalAgent("light", gameStateController.getBoard());
-		gameStateController.setPlayerAgent("light", lightAgent);
+		/*
+		 * Agent lightAgent = new LocalAgent("light", gameStateController.getBoard());
+		 * gameStateController.setPlayerAgent("light", lightAgent);
+		 * 
+		 * // set up remote agent
+		 * // pass some other stuff to remote agent, if needed
+		 * // remote agent will observe local player actions and handle remote player
+		 * // see code inside of agent
+		 * Agent darkAgent = new RemoteAgent(
+		 * "dark",
+		 * gameStateController,
+		 * gameSceneController);
+		 * gameStateController.setPlayerAgent("dark", darkAgent);
+		 */
 
-		// set up remote agent
-		// pass some other stuff to remote agent, if needed
-		// remote agent will observe local player actions and handle remote player
-		// see code inside of agent
-		Agent darkAgent = new RemoteAgent(
-				"dark",
-				gameStateController,
-				gameSceneController);
-		gameStateController.setPlayerAgent("dark", darkAgent);*/
-		
-		
 		// switch to gameplay if successful connection:
 		// gameSceneController.setActiveScene(GameScenes.GAMEPLAY);
 
 		// or throw an exception if something goes wrong:
-		//throw new Exception("networking was not implemented");
+		// throw new Exception("networking was not implemented");
 	}
 }
