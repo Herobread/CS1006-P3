@@ -47,5 +47,4 @@ public class Agent {
 	public String toString() {
 		return "Agent [isInputRequired=" + isInputRequired + "]";
 	}
-
 }
