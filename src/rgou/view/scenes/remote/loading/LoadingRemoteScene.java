@@ -11,7 +11,7 @@ import javax.swing.event.ChangeListener;
 
 import rgou.controllers.GameSceneController;
 import rgou.controllers.GameStateController;
-import rgou.controllers.scenes.RemoteConnector;
+import rgou.controllers.remote.RemoteConnector;
 import rgou.model.remote.RemoteStatus;
 import rgou.view.GameScenes;
 import rgou.view.components.primitives.ImageButton;

@@ -1,4 +1,4 @@
-package rgou.controllers.scenes;
+package rgou.controllers.remote;
 
 import rgou.controllers.GameSceneController;
 import rgou.controllers.GameStateController;
@@ -13,8 +13,7 @@ public class RemoteConnector {
 			GameStateController gameStateController) throws Exception {
 		RemoteConfig remoteConfig = gameStateController.getRemoteConfig();
 
-		System.out.println("connecting");
-		System.out.println(remoteConfig);
+		System.out.println("creating connection for: " + remoteConfig);
 
 		switch (remoteConfig.getRemoteType()) {
 			case CLIENT:
