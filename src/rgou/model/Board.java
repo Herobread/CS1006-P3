@@ -6,6 +6,7 @@ import java.util.List;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import rgou.model.dice.DiceRollResult;
 import rgou.model.dice.DiceRoller;
 import rgou.model.dice.DiceRollsResult;
 import rgou.utils.Pair;
@@ -378,60 +379,23 @@ public class Board {
 	 * @return Point where pawn can move, null otherwise
 	 */
 	public Point getPossibleMove(int x, int y, int roll) {
-		Tile currentTile = getTile(x, y);
-		Point currentPoint = new Point(x, y);
-		boolean isStart = currentTile.isStart();
+		DiceRollsResult originalDiceRollsResult = lastDiceRollsResult;
 
-		// check if pawn of correct team exists on the tile
-		boolean isCorrectTeamPawn = activePlayer.equals(currentTile.getPawn());
-		boolean isNormalMove = isCorrectTeamPawn && !isStart;
-
-		boolean isCorrectTeamStart = currentTile.getTeam().equals(activePlayer);
-		boolean isStockAvailable = getCurrentPlayerStock() > 0;
-		boolean isStartTileMove = isStart && isStockAvailable && isCorrectTeamStart;
-
-		if (!isNormalMove && !isStartTileMove) {
-			return null;
+		// create fake dice roll:
+		DiceRollResult[] fakeRolls = new DiceRollResult[DiceRoller.DICES_AMOUNT];
+		for (int i = 0; i < DiceRoller.DICES_AMOUNT; i++) {
+			boolean isWin = i < roll;
+			fakeRolls[i] = new DiceRollResult(isWin, "", 0);
 		}
+		// override last roll with fake
+		lastDiceRollsResult = new DiceRollsResult(fakeRolls);
 
-		// get possible position
-		ArrayList<Point> activePlayerPath = getCurrentPlayerPath();
+		Point move = getPossibleMove(x, y);
 
-		int currentTileIdOnPath = activePlayerPath.indexOf(currentPoint);
+		// return back to original state
+		lastDiceRollsResult = originalDiceRollsResult;
 
-		// check if selected point is on path
-		if (currentTileIdOnPath == -1) {
-			return null;
-		}
-
-		Point targetTilePoint;
-		try {
-			targetTilePoint = activePlayerPath.get(roll + currentTileIdOnPath);
-		} catch (IndexOutOfBoundsException e) {
-			return null;
-		}
-
-		Tile targetTile = getTile(targetTilePoint);
-
-		// check tile content
-		// check if enemy
-		String playerThatOccupies = targetTile.getPawn();
-		boolean isTileEmpty = playerThatOccupies == null;
-		boolean isTileOccupiedByEnemy = !isTileEmpty && !activePlayer.equals(playerThatOccupies);
-		boolean isRosette = targetTile.isRosette();
-
-		if (RULES_SAFE_ROSSETE && isTileOccupiedByEnemy && isRosette) {
-			return null;
-		}
-
-		// check if current player occupies
-		boolean isTileOccupiedBySelf = !isTileEmpty && playerThatOccupies.equals(activePlayer);
-
-		if (isTileOccupiedBySelf) {
-			return null;
-		}
-
-		return targetTilePoint;
+		return move;
 	}
 
 	public boolean makeMove(Point p) {
