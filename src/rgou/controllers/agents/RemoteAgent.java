@@ -78,7 +78,8 @@ public class RemoteAgent extends Agent {
 			OutputStream os = conn.getOutputStream();
 			PrintWriter writer = new PrintWriter(os, true);
 			DiceRollsResult diceRollsResult = board.getLastDiceRollsResult();
-			writer.println("Roll:" + diceRollsResult.getTotal());	
+			//writer.println("Roll:" + diceRollsResult.toActionString());	
+			writer.println(diceRollsResult.toActionString());	
 		} catch (Exception exception){
 
 		}
@@ -103,7 +104,7 @@ public class RemoteAgent extends Agent {
 			try {
 				OutputStream os = conn.getOutputStream();
 				PrintWriter writer = new PrintWriter(os, true);
-				writer.println("Move:" + e.getX() + "," + e.getY());
+				writer.println("move," + e.getX() + "|" + e.getY());
 			} catch (Exception exception){
 	
 			}

@@ -260,6 +260,25 @@ public class Board {
 		notifyEvent(new Event(this, activePlayer, EventTypes.ROLL));
 	}
 
+	public void customRoll(String[] diceRollResults){
+		if (!isRollAvailable) {
+			return;
+		}
+		lastDiceRollsResult = DiceRoller.createCustomResult(diceRollResults);
+		isRollAvailable = false;
+		isSelectMoveAvailable = true;
+
+		if (!checkCurrentPlayerMoveAvailability()) {
+			noMovesPlayerWarning = activePlayer;
+			changePlayerTurn();
+			isRollAvailable = true;
+			isSelectMoveAvailable = false;
+		}
+
+		notifyChange();
+		notifyEvent(new Event(this, activePlayer, EventTypes.ROLL));
+	}
+
 	public DiceRollsResult getLastDiceRollsResult() {
 		if (lastDiceRollsResult == null) {
 			// roll as placeholder

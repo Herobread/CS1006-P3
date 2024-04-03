@@ -66,20 +66,47 @@ public class RemoteConnector {
 		
 		InputStream inputStream = socket.getInputStream();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+		String[] diceRollResults = new String[4];
+		String[] coordinates = new String[4];
 		while (true){
 			String serverResponse = reader.readLine();
-			String[] parsedLine = serverResponse.split(":");
+			String[] parsedLine = serverResponse.split(",");
 			for (String entry : parsedLine){
 				System.out.println(entry);
 			}
-			if (parsedLine[0].equals("Move")){
-				String[] coordinates = parsedLine[1].split(",");
+			//String[] diceRollResults = new String[4];
+			
+
+			if (parsedLine[0].equals("roll")){
+
+				
+
+				diceRollResults = parsedLine[1].split("\\|");
+				
+				/*for (String entry: diceRollResults){
+					System.out.println(entry);
+				}*/
+					
+			}
+			if (parsedLine[0].equals("move")){
+
+				coordinates = parsedLine[1].split("\\|");
+				/*for (String entry: coordinates){
+					System.out.println(entry);
+				}*/
+				
+				for (String entry: diceRollResults){
+					System.out.println(entry);
+				}
 				for (String entry: coordinates){
 					System.out.println(entry);
 				}
+				clientOpponent.getBoard().customRoll(diceRollResults);
 				boolean didMove = clientOpponent.move(Integer.parseInt(coordinates[0]),Integer.parseInt(coordinates[1]));
 				System.out.println(didMove);
+				
 			}
+
 		}
 
 	}
