@@ -1,5 +1,9 @@
 package rgou.controllers.agents;
 
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.Socket;
+
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -12,13 +16,16 @@ import rgou.model.remote.RemoteConfig;
 
 public class RemoteAgent extends Agent {
 	GameStateController gameStateController;
+	private Socket conn;
 
 	public RemoteAgent(
 			String player,
 			GameStateController gameStateController,
-			GameSceneController gameSceneController) {
+			GameSceneController gameSceneController,
+			Socket conn) {
 		super(player, gameStateController.getBoard());
 		this.gameStateController = gameStateController;
+		this.conn = conn;
 
 		// disable dice roll and board panel inputs for current player
 		isInputRequired = false;
@@ -67,6 +74,16 @@ public class RemoteAgent extends Agent {
 			return;
 		}
 
+		try {
+			OutputStream os = conn.getOutputStream();
+			PrintWriter writer = new PrintWriter(os, true);
+			DiceRollsResult diceRollsResult = board.getLastDiceRollsResult();
+			writer.println("Roll:" + diceRollsResult.getTotal());	
+		} catch (Exception exception){
+
+		}
+				
+
 		// TODO
 
 		// handle dice rolled by oponent:
@@ -76,12 +93,20 @@ public class RemoteAgent extends Agent {
 
 	private void onMove(Event e) {
 		System.out.println("pawn moved");
-
+		
 		Board board = e.getBoard();
 		String activePlayer = board.getActivePlayer();
+		//System.out.println(e.getX() + "," + e.getY());
 
 		if (activePlayer.equals(player)) {
 			// move made by this Agent
+			try {
+				OutputStream os = conn.getOutputStream();
+				PrintWriter writer = new PrintWriter(os, true);
+				writer.println("Move:" + e.getX() + "," + e.getY());
+			} catch (Exception exception){
+	
+			}
 			return;
 		}
 
@@ -90,6 +115,8 @@ public class RemoteAgent extends Agent {
 		// handle move by oponent:
 		// aka local player
 		// your code to send stuff to remote here
+		
+		
 	}
 
 	@Deprecated

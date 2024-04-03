@@ -31,6 +31,10 @@ public class Agent {
 		return isInputRequired;
 	}
 
+	public void setInputRequired(boolean val) {
+		this.isInputRequired = val;
+	}
+
 	public void roll() {
 		board.roll();
 	}
