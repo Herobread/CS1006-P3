@@ -294,8 +294,8 @@ public class Board {
 	 * @param roll
 	 * @return Point where pawn can move, null otherwise
 	 */
-	public Point getPossibleMove(Point p, int roll) {
-		return getPossibleMove(p.x, p.y, roll);
+	public Point getPossibleMove(Point p, int roll, String player) {
+		return getPossibleMove(p.x, p.y, roll, player);
 	}
 
 	/**
@@ -378,7 +378,7 @@ public class Board {
 	 * @param roll
 	 * @return Point where pawn can move, null otherwise
 	 */
-	public Point getPossibleMove(int x, int y, int roll) {
+	public Point getPossibleMove(int x, int y, int roll, String player) {
 		DiceRollsResult originalDiceRollsResult = lastDiceRollsResult;
 
 		// create fake dice roll:
@@ -390,8 +390,11 @@ public class Board {
 		// override last roll with fake
 		lastDiceRollsResult = new DiceRollsResult(fakeRolls);
 
+		String ogPlayer = activePlayer;
+		activePlayer = player;
 		Point move = getPossibleMove(x, y);
 
+		activePlayer = ogPlayer;
 		// return back to original state
 		lastDiceRollsResult = originalDiceRollsResult;
 
