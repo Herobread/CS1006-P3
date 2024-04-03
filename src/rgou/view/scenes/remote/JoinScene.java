@@ -42,7 +42,7 @@ public class JoinScene extends GameSceneBase {
 		hostnameLabel.setBounds(renderScaleContext.scaleRectangle(221, 115, 200, 19));
 		add(hostnameLabel);
 
-		TextFieldBox hostTextFieldBox = new TextFieldBox(remoteConfig.getPort());
+		TextFieldBox hostTextFieldBox = new TextFieldBox(remoteConfig.getHostname());
 		hostTextFieldBox.setBounds(renderScaleContext.scaleRectangle(221, 140, 200, 23));
 		hostTextFieldBox.addTextChangeListener(newText -> {
 			remoteConfig.setHostname(newText);
@@ -60,7 +60,7 @@ public class JoinScene extends GameSceneBase {
 		});
 		add(portTextFieldBox);
 
-		LabelBox text = new LabelBox("Host a game");
+		LabelBox text = new LabelBox("Join a game");
 		text.setBounds(renderScaleContext.scaleRectangle(221, 10, 200, 19));
 		text.setHorizontalAlignment(SwingConstants.CENTER);
 		add(text);
@@ -70,7 +70,7 @@ public class JoinScene extends GameSceneBase {
 		hostButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(remoteConfig);
+				gameSceneController.setActiveScene(GameScenes.SELECT_REMOTE_LOADING);
 			}
 		});
 		add(hostButton);

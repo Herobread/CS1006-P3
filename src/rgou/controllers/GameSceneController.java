@@ -20,6 +20,7 @@ import rgou.view.scenes.MainMenuScene;
 import rgou.view.scenes.RemoteOptionsScene;
 import rgou.view.scenes.remote.HostScene;
 import rgou.view.scenes.remote.JoinScene;
+import rgou.view.scenes.remote.loading.LoadingRemoteScene;
 
 /**
  * Controls the switching and rendering of game scenes.
@@ -69,6 +70,7 @@ public class GameSceneController {
 		sceneMap.put(GameScenes.SELECT_REMOTE, new RemoteOptionsScene(this, gameStateController));
 		sceneMap.put(GameScenes.SELECT_REMOTE_HOST, new HostScene(this, gameStateController));
 		sceneMap.put(GameScenes.SELECT_REMOTE_JOIN, new JoinScene(this, gameStateController));
+		sceneMap.put(GameScenes.SELECT_REMOTE_LOADING, new LoadingRemoteScene(this, gameStateController));
 
 		// to add new scenes:
 		// sceneMap.put(scene name, Class that extends GameSceneBase);

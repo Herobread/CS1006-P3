@@ -52,7 +52,10 @@ public class MainMenuScene extends GameSceneBase {
 		playRemote.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// MainMenuController.onAIPlayerPressed(gameStateController);
+				// clear board
+				MainMenuController.onRemotePlayerPressed(gameStateController, gameSceneController);
+
+				// go to config
 				gameSceneController.setActiveScene(GameScenes.SELECT_REMOTE);
 			}
 		});

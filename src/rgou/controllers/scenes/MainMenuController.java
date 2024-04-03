@@ -5,7 +5,6 @@ import rgou.controllers.GameStateController;
 import rgou.controllers.agents.AIAgent;
 import rgou.controllers.agents.Agent;
 import rgou.controllers.agents.LocalAgent;
-import rgou.controllers.agents.RemoteAgent;
 import rgou.controllers.listeners.BoardListenerRebinder;
 import rgou.model.Board;
 
@@ -39,11 +38,5 @@ public class MainMenuController {
 	public static void onRemotePlayerPressed(GameStateController gameStateController,
 			GameSceneController gameSceneController) {
 		resetBoard(gameStateController);
-
-		Agent lightAgent = new LocalAgent("light", gameStateController.getBoard());
-		Agent darkAgent = new RemoteAgent("dark", gameStateController, gameSceneController);
-
-		gameStateController.setPlayerAgent("light", lightAgent);
-		gameStateController.setPlayerAgent("dark", darkAgent);
 	}
 }

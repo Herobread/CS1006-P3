@@ -59,7 +59,7 @@ public class HostScene extends GameSceneBase {
 		hostButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(remoteConfig);
+				gameSceneController.setActiveScene(GameScenes.SELECT_REMOTE_LOADING);
 			}
 		});
 		add(hostButton);

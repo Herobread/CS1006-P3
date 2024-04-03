@@ -57,6 +57,8 @@ public class RemoteAgent extends Agent {
 	}
 
 	private void onDiceRoll(Event e) {
+		System.out.println("dice rolled");
+
 		Board board = e.getBoard();
 		String activePlayer = board.getActivePlayer();
 
@@ -65,12 +67,16 @@ public class RemoteAgent extends Agent {
 			return;
 		}
 
+		// TODO
+
 		// handle dice rolled by oponent:
 		// aka local player
 		// your code to send stuff to remote here
 	}
 
 	private void onMove(Event e) {
+		System.out.println("pawn moved");
+
 		Board board = e.getBoard();
 		String activePlayer = board.getActivePlayer();
 
@@ -79,12 +85,15 @@ public class RemoteAgent extends Agent {
 			return;
 		}
 
+		// TODO
+
 		// handle move by oponent:
 		// aka local player
 		// your code to send stuff to remote here
 	}
 
-	@SuppressWarnings("unused") // remove this line in final version
+	@Deprecated
+	@SuppressWarnings("unused") // remove this in final version
 	private void examples() {
 		////////////////////////
 		// get config:
@@ -93,8 +102,6 @@ public class RemoteAgent extends Agent {
 		// see other things in RemoteConfig
 
 		////////////////////////
-		// roll local:
-		roll();
 		// get dice roll:
 		DiceRollsResult diceRollsResult = board.getLastDiceRollsResult();
 		// ( notice: roll>s< not roll_ )
@@ -104,24 +111,26 @@ public class RemoteAgent extends Agent {
 		String action = diceRollsResult.toActionString();
 		// then you can send action to the remote client
 		//
-		// *insert your network code to send data*
+		// *insert your network code to send data in onDiceRoll or onMove above*
 		//
 		//
-		// *insert your code to recieve data, it will probably be some kind of event
+		// *insert your code to recieve data,
+		// it will probably be some kind of event
 		// listener that will get string*
 		//
-		// to make it easier to parse data from string:
+		// to make it easier to parse data from string to dice roll:
 		// create a new constructor in DiceRollsResult from it
 		// smth like DiceRollsResult(String whatever)
 		//
 		// to emulate roll dice with custom results:
-		// board.rollCustomDice(DiceRollsResult lastDiceRollsResult)
+		// board.rollCustomDice(DiceRollsResult roll)
 
 		int x = 1; // ignore this
 		int y = 1; // ignore this
-		// after getting dice roll from another player
+		// after getting dice roll from another player and updating it's value in board
+		//
 		// move player:
-		// this function just moves pawn
+		// this function moves pawn automatically
 		move(x, y);
 		// returns true on successful move
 		// note: must be legal move and correct activePlayer

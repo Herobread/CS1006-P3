@@ -1,18 +1,18 @@
 package rgou.model.remote;
 
 public class RemoteConfig {
-	private String hostname;
-	private String port;
+	private String hostname = "localhost";
+	private String port = "3333";
 	private RemoteTypes remoteType;
 
 	public RemoteConfig(String hostname, String port, RemoteTypes remoteType) {
 		this.hostname = hostname;
 		this.port = port;
 		this.remoteType = remoteType;
+	}
 
-		if (remoteType == RemoteTypes.SERVER) {
-			hostname = "localhost";
-		}
+	public RemoteConfig(RemoteTypes remoteType) {
+		this.remoteType = remoteType;
 	}
 
 	public String getHostname() {

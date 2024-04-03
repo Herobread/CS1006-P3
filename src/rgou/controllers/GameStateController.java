@@ -3,15 +3,18 @@ package rgou.controllers;
 import rgou.controllers.agents.Agent;
 import rgou.model.Board;
 import rgou.model.remote.RemoteConfig;
+import rgou.model.remote.RemoteStatus;
 
 public class GameStateController {
 	private Board board;
 	private Agent lightPlayer;
 	private Agent darkPlayer;
 	private RemoteConfig remoteConfig;
+	private RemoteStatus remoteStatus;
 
 	public GameStateController() {
 		board = new Board();
+		remoteStatus = new RemoteStatus(null);
 	}
 
 	public void setBoard(Board board) {
@@ -50,5 +53,13 @@ public class GameStateController {
 
 	public void setRemoteConfig(RemoteConfig remoteConfig) {
 		this.remoteConfig = remoteConfig;
+	}
+
+	public RemoteStatus getRemoteStatus() {
+		return remoteStatus;
+	}
+
+	public void setRemoteStatus(RemoteStatus remoteStatus) {
+		this.remoteStatus = remoteStatus;
 	}
 }
