@@ -6,6 +6,7 @@ import java.util.List;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import rgou.model.dice.DiceRollResult;
 import rgou.model.dice.DiceRoller;
 import rgou.model.dice.DiceRollsResult;
 import rgou.utils.Pair;
@@ -287,6 +288,17 @@ public class Board {
 	}
 
 	/**
+	 * gets possible move for current player from Point and given roll
+	 * 
+	 * @param point
+	 * @param roll
+	 * @return Point where pawn can move, null otherwise
+	 */
+	public Point getPossibleMove(Point p, int roll, String player) {
+		return getPossibleMove(p.x, p.y, roll, player);
+	}
+
+	/**
 	 * gets possible move for current player from x y
 	 * 
 	 * @param x
@@ -356,6 +368,37 @@ public class Board {
 		}
 
 		return targetTilePoint;
+	}
+
+	/**
+	 * gets possible move for current player from x y and a given roll
+	 * 
+	 * @param x
+	 * @param y
+	 * @param roll
+	 * @return Point where pawn can move, null otherwise
+	 */
+	public Point getPossibleMove(int x, int y, int roll, String player) {
+		DiceRollsResult originalDiceRollsResult = lastDiceRollsResult;
+
+		// create fake dice roll:
+		DiceRollResult[] fakeRolls = new DiceRollResult[DiceRoller.DICES_AMOUNT];
+		for (int i = 0; i < DiceRoller.DICES_AMOUNT; i++) {
+			boolean isWin = i < roll;
+			fakeRolls[i] = new DiceRollResult(isWin, "", 0);
+		}
+		// override last roll with fake
+		lastDiceRollsResult = new DiceRollsResult(fakeRolls);
+
+		String ogPlayer = activePlayer;
+		activePlayer = player;
+		Point move = getPossibleMove(x, y);
+
+		activePlayer = ogPlayer;
+		// return back to original state
+		lastDiceRollsResult = originalDiceRollsResult;
+
+		return move;
 	}
 
 	public boolean makeMove(Point p) {

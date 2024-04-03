@@ -6,7 +6,7 @@ public class DiceRoller {
 	// there are 6 dice states
 	private static final int MIN_DICE_STATE = 0;
 	private static final int MAX_DICE_STATE = 6 - 1;
-	private static final int DICES_AMOUNT = 4;
+	public static final int DICES_AMOUNT = 4;
 
 	private static Random random = new Random();
 

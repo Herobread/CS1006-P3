@@ -78,7 +78,7 @@ public class BoardPanel extends JPanel {
 					}
 
 					@Override
-					public void mouseClicked(MouseEvent e) {
+					public void mouseReleased(MouseEvent e) {
 						board.makeMove(currentTilePoint);
 					}
 				});
