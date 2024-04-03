@@ -287,6 +287,17 @@ public class Board {
 	}
 
 	/**
+	 * gets possible move for current player from Point and given roll
+	 * 
+	 * @param point
+	 * @param roll
+	 * @return Point where pawn can move, null otherwise
+	 */
+	public Point getPossibleMove(Point p, int roll) {
+		return getPossibleMove(p.x, p.y, roll);
+	}
+
+	/**
 	 * gets possible move for current player from x y
 	 * 
 	 * @param x
@@ -331,6 +342,71 @@ public class Board {
 		Point targetTilePoint;
 		try {
 			targetTilePoint = activePlayerPath.get(diceRoll + currentTileIdOnPath);
+		} catch (IndexOutOfBoundsException e) {
+			return null;
+		}
+
+		Tile targetTile = getTile(targetTilePoint);
+
+		// check tile content
+		// check if enemy
+		String playerThatOccupies = targetTile.getPawn();
+		boolean isTileEmpty = playerThatOccupies == null;
+		boolean isTileOccupiedByEnemy = !isTileEmpty && !activePlayer.equals(playerThatOccupies);
+		boolean isRosette = targetTile.isRosette();
+
+		if (RULES_SAFE_ROSSETE && isTileOccupiedByEnemy && isRosette) {
+			return null;
+		}
+
+		// check if current player occupies
+		boolean isTileOccupiedBySelf = !isTileEmpty && playerThatOccupies.equals(activePlayer);
+
+		if (isTileOccupiedBySelf) {
+			return null;
+		}
+
+		return targetTilePoint;
+	}
+
+	/**
+	 * gets possible move for current player from x y and a given roll
+	 * 
+	 * @param x
+	 * @param y
+	 * @param roll
+	 * @return Point where pawn can move, null otherwise
+	 */
+	public Point getPossibleMove(int x, int y, int roll) {
+		Tile currentTile = getTile(x, y);
+		Point currentPoint = new Point(x, y);
+		boolean isStart = currentTile.isStart();
+
+		// check if pawn of correct team exists on the tile
+		boolean isCorrectTeamPawn = activePlayer.equals(currentTile.getPawn());
+		boolean isNormalMove = isCorrectTeamPawn && !isStart;
+
+		boolean isCorrectTeamStart = currentTile.getTeam().equals(activePlayer);
+		boolean isStockAvailable = getCurrentPlayerStock() > 0;
+		boolean isStartTileMove = isStart && isStockAvailable && isCorrectTeamStart;
+
+		if (!isNormalMove && !isStartTileMove) {
+			return null;
+		}
+
+		// get possible position
+		ArrayList<Point> activePlayerPath = getCurrentPlayerPath();
+
+		int currentTileIdOnPath = activePlayerPath.indexOf(currentPoint);
+
+		// check if selected point is on path
+		if (currentTileIdOnPath == -1) {
+			return null;
+		}
+
+		Point targetTilePoint;
+		try {
+			targetTilePoint = activePlayerPath.get(roll + currentTileIdOnPath);
 		} catch (IndexOutOfBoundsException e) {
 			return null;
 		}
