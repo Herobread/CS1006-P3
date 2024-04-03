@@ -256,27 +256,8 @@ public class Board {
 			isSelectMoveAvailable = false;
 		}
 
-		notifyChange();
 		notifyEvent(new Event(this, activePlayer, EventTypes.ROLL));
-	}
-
-	public void customRoll(String[] diceRollResults){
-		if (!isRollAvailable) {
-			return;
-		}
-		lastDiceRollsResult = DiceRoller.createCustomResult(diceRollResults);
-		isRollAvailable = false;
-		isSelectMoveAvailable = true;
-
-		if (!checkCurrentPlayerMoveAvailability()) {
-			noMovesPlayerWarning = activePlayer;
-			changePlayerTurn();
-			isRollAvailable = true;
-			isSelectMoveAvailable = false;
-		}
-
 		notifyChange();
-		notifyEvent(new Event(this, activePlayer, EventTypes.ROLL));
 	}
 
 	public DiceRollsResult getLastDiceRollsResult() {
@@ -452,13 +433,14 @@ public class Board {
 			changeEnemyPlayerStock(1);
 		}
 
+		notifyEvent(new Event(this, activePlayer, EventTypes.MOVE, x, y));
+
 		if (targetTile.isFinish()) {
 			currentTile.setPawn(null);
 			changeCurrentPlayerScore(1);
 			isRollAvailable = true;
+			notifyChange();
 			changePlayerTurn();
-			notifyEvent(new Event(this, activePlayer, EventTypes.MOVE, x, y));
-			// notifyChange();
 			return true;
 		}
 
@@ -475,7 +457,6 @@ public class Board {
 		}
 		isRollAvailable = true;
 
-		notifyEvent(new Event(this, activePlayer, EventTypes.MOVE, x, y));
 		notifyChange();
 		return true;
 	}

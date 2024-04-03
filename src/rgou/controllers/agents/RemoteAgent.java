@@ -1,5 +1,9 @@
 package rgou.controllers.agents;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -9,160 +13,144 @@ import javax.swing.event.ChangeListener;
 
 import rgou.controllers.GameSceneController;
 import rgou.controllers.GameStateController;
-import rgou.model.Board;
+import rgou.controllers.remote.RemoteAction;
 import rgou.model.Event;
 import rgou.model.dice.DiceRollsResult;
-import rgou.model.remote.RemoteConfig;
 
 public class RemoteAgent extends Agent {
 	GameStateController gameStateController;
-	private Socket conn;
+	private Socket socket;
+	private OutputStream outputStream;
+	private PrintWriter writer;
 
 	public RemoteAgent(
 			String player,
 			GameStateController gameStateController,
 			GameSceneController gameSceneController,
-			Socket conn) {
+			Socket conn) throws Exception {
 		super(player, gameStateController.getBoard());
 		this.gameStateController = gameStateController;
-		this.conn = conn;
+		this.socket = conn;
+
+		outputStream = socket.getOutputStream();
+		writer = new PrintWriter(outputStream, true);
 
 		// disable dice roll and board panel inputs for current player
 		isInputRequired = false;
 
 		// any updates
-		board.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				System.out.println("Board updated");
-				// board updated
-				// might not need this event handler, but it was created already, so why not
-				//
-				// maybe needed to sync boards between 2 users sometimes??
-				// but then you will need to create a way to compress board to string and back
-			}
-		});
+		// board.addChangeListener(new ChangeListener() {
+		// @Override
+		// public void stateChanged(ChangeEvent e) {
+		// System.out.println("Board updated");
+		// // board updated
+		// // might not need this event handler, but it was created already, so why not
+		// //
+		// // maybe needed to sync boards between 2 users sometimes??
+		// // but then you will need to create a way to compress board to string and
+		// back
+		// }
+		// });
 
 		// add on move or dice roll event listener
 		board.addEventListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				Event event = (Event) e.getSource();
+				try {
+					Event event = (Event) e.getSource();
 
-				switch (event.getType()) {
-					case ROLL:
-						onDiceRoll(event);
-						break;
-					case MOVE:
-						onMove(event);
-						break;
-					default:
-						break;
+					System.out.println("event happend");
+					System.out.println(e);
+
+					switch (event.getType()) {
+						case ROLL:
+							onDiceRoll(event);
+							break;
+						case MOVE:
+							onMove(event);
+							break;
+						default:
+							break;
+					}
+				} catch (Exception err) {
+					throw new RuntimeException(err.getMessage());
 				}
 			}
 		});
-	}
 
-	private void onDiceRoll(Event e) {
-		System.out.println("dice rolled");
+		////////// handle remote requests
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					InputStream input = socket.getInputStream();
+					BufferedReader reader = new BufferedReader(new InputStreamReader(input));
 
-		Board board = e.getBoard();
-		String activePlayer = board.getActivePlayer();
+					String action;
+					while ((action = reader.readLine()) != null) {
+						handleRemotePlayerAction(action);
+					}
 
-		if (activePlayer.equals(player)) {
-			// dice rolled by this Agent
-			return;
-		}
-
-		try {
-			OutputStream os = conn.getOutputStream();
-			PrintWriter writer = new PrintWriter(os, true);
-			DiceRollsResult diceRollsResult = board.getLastDiceRollsResult();
-			//writer.println("Roll:" + diceRollsResult.toActionString());	
-			writer.println(diceRollsResult.toActionString());	
-		} catch (Exception exception){
-
-		}
-				
-
-		// TODO
-
-		// handle dice rolled by oponent:
-		// aka local player
-		// your code to send stuff to remote here
-	}
-
-	private void onMove(Event e) {
-		System.out.println("pawn moved");
-		
-		Board board = e.getBoard();
-		String activePlayer = board.getActivePlayer();
-		//System.out.println(e.getX() + "," + e.getY());
-
-		if (activePlayer.equals(player)) {
-			// move made by this Agent
-			try {
-				OutputStream os = conn.getOutputStream();
-				PrintWriter writer = new PrintWriter(os, true);
-				writer.println("move," + e.getX() + "|" + e.getY());
-			} catch (Exception exception){
-	
+					// Close the connection
+					socket.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
+		}).start();
+
+	}
+
+	private void handleRemotePlayerAction(String action) {
+		System.out.println(action);
+
+		RemoteAction remoteAction = new RemoteAction(action);
+
+		switch (remoteAction.getAction()) {
+			case "move":
+				int[] metadata = remoteAction.getMetadata();
+				int x = metadata[0];
+				int y = metadata[1];
+				move(x, y);
+				break;
+			case "roll":
+				DiceRollsResult diceRollsResult = new DiceRollsResult(action);
+				board.rollCustomDice(diceRollsResult);
+				break;
+			default:
+				break;
+		}
+	}
+
+	// observe any dice roll
+	private void onDiceRoll(Event e) throws Exception {
+		String activePlayer = e.getPlayer();
+
+		if (activePlayer.equals(player)) {
+			// dice rolled by this Agent aka remote player
 			return;
 		}
 
-		// TODO
-
-		// handle move by oponent:
-		// aka local player
-		// your code to send stuff to remote here
-		
-		
-	}
-
-	@Deprecated
-	@SuppressWarnings("unused") // remove this in final version
-	private void examples() {
-		////////////////////////
-		// get config:
-		RemoteConfig remoteConfig = gameStateController.getRemoteConfig();
-		String host = remoteConfig.getHostname();
-		// see other things in RemoteConfig
-
-		////////////////////////
-		// get dice roll:
+		// handle dice rolled by local player and send to the remote:
 		DiceRollsResult diceRollsResult = board.getLastDiceRollsResult();
-		// ( notice: roll>s< not roll_ )
-		// from DiceRollsResult you can get action string:
-		// "roll,1|2|3|4"
-		// where 1234 are dice roll states
-		String action = diceRollsResult.toActionString();
-		// then you can send action to the remote client
-		//
-		// *insert your network code to send data in onDiceRoll or onMove above*
-		//
-		//
-		// *insert your code to recieve data,
-		// it will probably be some kind of event
-		// listener that will get string*
-		//
-		// to make it easier to parse data from string to dice roll:
-		// create a new constructor in DiceRollsResult from it
-		// smth like DiceRollsResult(String whatever)
-		//
-		// to emulate roll dice with custom results:
-		// board.rollCustomDice(DiceRollsResult roll)
-
-		int x = 1; // ignore this
-		int y = 1; // ignore this
-		// after getting dice roll from another player and updating it's value in board
-		//
-		// move player:
-		// this function moves pawn automatically
-		move(x, y);
-		// returns true on successful move
-		// note: must be legal move and correct activePlayer
-		// (for example when light player active: only light player can move light
-		// pieces)
+		writer.println(diceRollsResult.toActionString());
 	}
+
+	// observe any move
+	private void onMove(Event e) throws Exception {
+		String activePlayer = e.getPlayer();
+
+		if (activePlayer.equals(player)) {
+			return; // move made by remote - ignore
+		}
+
+		// local player move - send data to remote:
+		writer.println("move," + e.getX() + "|" + e.getY());
+	}
+
+	@Override
+	public String toString() {
+		return "RemoteAgent [isInputRequired=" + isInputRequired + "]";
+	}
+
 }

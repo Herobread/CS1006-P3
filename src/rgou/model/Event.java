@@ -60,4 +60,10 @@ public class Event {
 	public void setPlayer(String player) {
 		this.player = player;
 	}
+
+	@Override
+	public String toString() {
+		return "Event [type=" + type + ", player=" + player + ", x=" + x + ", y=" + y + ", board=" + board + "]";
+	}
+
 }
