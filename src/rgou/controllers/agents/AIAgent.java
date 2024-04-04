@@ -11,7 +11,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import rgou.model.Board;
-import rgou.model.dice.DiceRollsResult;
 import rgou.utils.Pair;
 
 public class AIAgent extends Agent {
@@ -76,9 +75,6 @@ public class AIAgent extends Agent {
 
 		// roll dice:
 		roll();
-		DiceRollsResult diceRollsResult = board.getLastDiceRollsResult();
-		int total = diceRollsResult.getTotal();
-		System.out.println("AI rolled a " + total);
 
 		// check if move is available at all:
 		// if unavailable: return;
@@ -117,7 +113,7 @@ public class AIAgent extends Agent {
 			playerPawns.add(new Point(0, 4));
 
 		// Determine which AI to run
-		boolean expectiMinMax = false;
+		boolean expectiMinMax = true;
 
 		// Get move
 		Pair<Point, Double> move;
@@ -128,7 +124,6 @@ public class AIAgent extends Agent {
 
 		// make a move:
 		// returns true if move successful
-		System.out.println("Moving: " + pointToString(move.getFirst()) + " : " + move.getSecond());
 		boolean didMove = move((int) move.getFirst().getX(), (int) move.getFirst().getY());
 
 		if (!didMove) {
@@ -218,23 +213,56 @@ public class AIAgent extends Agent {
 		// turn will
 		// make a "worse" move
 		Pair<Point, Double> worstPlayerMove = new Pair<Point, Double>(new Point(0, 0), 100.0);
-		moves.entrySet().stream()
-				.forEach(move -> {
-					if (move.getValue() < worstPlayerMove.getSecond()) {
-						worstPlayerMove.setFirst(move.getKey());
-						worstPlayerMove.setSecond(move.getValue());
-					}
-				});
+		List<Point> sameMetricMoves = new ArrayList<>();
+		Boolean noPlayerEffect = null;
 
-		return worstPlayerMove;
+		for (Point move : moves.keySet()) {
+			if ((int) Math.floor(moves.get(move) * 100000) == (int) Math.floor(worstPlayerMove.getSecond() * 100000)
+					&& noPlayerEffect) {
+				sameMetricMoves.add(move);
+			} else if (moves.get(move) < worstPlayerMove.getSecond()) {
+				// This will always be run first, so change noPlayerEffect to true and add move
+				// to list
+				if (noPlayerEffect == null) {
+					sameMetricMoves.add(move);
+					noPlayerEffect = true;
+				}
+				// If this ever gets checked again, that means there was a move that would
+				// result
+				// in the player getting a worse move, so clear list
+				else if (noPlayerEffect) {
+					noPlayerEffect = false;
+					sameMetricMoves.clear();
+				}
+				worstPlayerMove.setFirst(move);
+				worstPlayerMove.setSecond(moves.get(move));
+			} // Same check in case the following move has a higher metric
+			else if (moves.get(move) > worstPlayerMove.getSecond()) {
+				noPlayerEffect = false;
+				sameMetricMoves.clear();
+			}
+		}
+
+		// If sameMetricMoves is empty, that means one of the moves it could make would
+		// result
+		// in the player getting a worse move, so make that move
+		if (sameMetricMoves.isEmpty()) {
+			return worstPlayerMove;
+		} // If not, all moves the AI could make give the player the same average
+			// potential move metric,
+			// so instead, make move decision based on what is best for the AI given the
+			// current gamestate
+		else {
+			return getCurrentStateMove(sameMetricMoves, playerPawns, board.getPathWithPawns("light"));
+		}
+
 	}
 
 	// Goes through a list of moves and chooses the best one
 	private Pair<Point, Double> chooseBestMove(Map<Point, Double> moves) {
-		Pair<Point, Double> bestMove = new Pair<Point, Double>(new Point(0, 0), -100.0);
+		Pair<Point, Double> bestMove = new Pair<Point, Double>(new Point(0, 0), -1.5);
 		moves.entrySet().stream()
 				.forEach(move -> {
-					System.out.println(pointToString(move.getKey()) + ": " + move.getValue());
 					if (move.getValue() > bestMove.getSecond()) {
 						bestMove.setFirst(move.getKey());
 						bestMove.setSecond(move.getValue());
@@ -389,10 +417,9 @@ public class AIAgent extends Agent {
 
 		// Captures
 		if (isCapture) {
-			if (endZone.equals("D2")) {
+			if (endZone.equals("D2"))
 				finalMetric += 4.6;
-				System.out.println(4.6);
-			} else if (endZone.equals("D1")) {
+			else if (endZone.equals("D1")) {
 				if (opposingPawnsInStartAndD1 == 1)
 					finalMetric += 3.1;
 				else if (selectedPawnsInStartAndD1 >= opposingPawnsInStartAndD1)
