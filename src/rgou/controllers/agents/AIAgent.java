@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
+import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -30,7 +31,9 @@ public class AIAgent extends Agent {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				if (board.getActivePlayer().equals(player) && board.isRollAvailable()) {
-					moveAvailable();
+					Timer timer = new Timer(1000, event -> moveAvailable());
+					timer.setRepeats(false);
+					timer.start();
 				}
 			}
 		});
