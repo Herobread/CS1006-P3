@@ -2,4 +2,6 @@
 - unable to move, but doesn't say that no moves available
 
 
-2. board doesn't reset
+2. prevent inputs on board
+
+3. when no moves send no moves event

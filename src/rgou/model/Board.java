@@ -256,8 +256,8 @@ public class Board {
 			isSelectMoveAvailable = false;
 		}
 
-		notifyChange();
 		notifyEvent(new Event(this, activePlayer, EventTypes.ROLL));
+		notifyChange();
 	}
 
 	public DiceRollsResult getLastDiceRollsResult() {
@@ -433,13 +433,14 @@ public class Board {
 			changeEnemyPlayerStock(1);
 		}
 
+		notifyEvent(new Event(this, activePlayer, EventTypes.MOVE, x, y));
+
 		if (targetTile.isFinish()) {
 			currentTile.setPawn(null);
 			changeCurrentPlayerScore(1);
 			isRollAvailable = true;
+			notifyChange();
 			changePlayerTurn();
-			notifyEvent(new Event(this, activePlayer, EventTypes.MOVE, x, y));
-			// notifyChange();
 			return true;
 		}
 
@@ -456,7 +457,6 @@ public class Board {
 		}
 		isRollAvailable = true;
 
-		notifyEvent(new Event(this, activePlayer, EventTypes.MOVE, x, y));
 		notifyChange();
 		return true;
 	}

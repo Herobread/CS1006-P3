@@ -40,9 +40,24 @@ public class DiceRoller {
 
 	public static DiceRollResult rollOne() {
 		int roll = MIN_DICE_STATE + random.nextInt(MAX_DICE_STATE - MIN_DICE_STATE + 1);
+
+		return customRollOne(roll);
+	}
+
+	public static DiceRollResult customRollOne(int roll) {
 		boolean isSuccessfullRoll = winningRolls[roll];
 		String texture = diceRollTextures[roll];
 
 		return new DiceRollResult(isSuccessfullRoll, texture, roll);
+	}
+
+	public static DiceRollsResult createCustomResult(String[] inputResults) {
+		DiceRollResult[] results = new DiceRollResult[DICES_AMOUNT];
+
+		for (int i = 0; i < DICES_AMOUNT; i++) {
+			int roll = Integer.parseInt(inputResults[i]);
+			results[i] = new DiceRollResult(winningRolls[roll], diceRollTextures[roll], roll);
+		}
+		return new DiceRollsResult(results);
 	}
 }

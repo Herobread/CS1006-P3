@@ -33,4 +33,19 @@ public class DiceRollsResult {
 		result.append(String.join("|", numbers));
 		return result.toString();
 	}
+
+	// Constructor to deconstruct action string
+	public DiceRollsResult(String actionString) {
+		if (actionString.startsWith("roll,")) {
+			String[] parts = actionString.substring(5).split("\\|");
+			this.diceRollResults = new DiceRollResult[parts.length];
+			for (int i = 0; i < parts.length; i++) {
+				int id = Integer.parseInt(parts[i]);
+				this.diceRollResults[i] = DiceRoller.customRollOne(id);
+				this.total += this.diceRollResults[i].isWin() ? 1 : 0;
+			}
+		} else {
+			throw new IllegalArgumentException("Invalid action string format");
+		}
+	}
 }
