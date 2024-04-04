@@ -245,18 +245,36 @@ public class Board {
 			return;
 		}
 
-		lastDiceRollsResult = DiceRoller.roll();
+		// Use the DiceRoller to get a new dice roll result.
+		rollDiceAndHandleResult(DiceRoller.roll());
+	}
+
+	public void rollCustomDice(DiceRollsResult lastDiceRollsResult) {
+		if (!isRollAvailable) {
+			return;
+		}
+
+		// Use the provided dice roll result.
+		rollDiceAndHandleResult(lastDiceRollsResult);
+	}
+
+	private void rollDiceAndHandleResult(DiceRollsResult diceRollsResult) {
+		lastDiceRollsResult = diceRollsResult;
 		isRollAvailable = false;
 		isSelectMoveAvailable = true;
 
-		if (!checkCurrentPlayerMoveAvailability()) {
+		boolean isMoveAvailable = checkCurrentPlayerMoveAvailability();
+
+		if (!isMoveAvailable) {
 			noMovesPlayerWarning = activePlayer;
-			changePlayerTurn();
 			isRollAvailable = true;
 			isSelectMoveAvailable = false;
 		}
 
 		notifyEvent(new Event(this, activePlayer, EventTypes.ROLL));
+		if (!isMoveAvailable) {
+			changePlayerTurn();
+		}
 		notifyChange();
 	}
 
@@ -267,14 +285,6 @@ public class Board {
 		}
 
 		return lastDiceRollsResult;
-	}
-
-	public void rollCustomDice(DiceRollsResult lastDiceRollsResult) {
-		this.lastDiceRollsResult = lastDiceRollsResult;
-		isRollAvailable = false;
-		isSelectMoveAvailable = true;
-
-		notifyChange();
 	}
 
 	/**

@@ -3,5 +3,3 @@
 
 
 2. prevent inputs on board
-
-3. when no moves send no moves event
