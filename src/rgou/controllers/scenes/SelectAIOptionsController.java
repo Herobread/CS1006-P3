@@ -22,7 +22,7 @@ public class SelectAIOptionsController {
 		Agent lightAgent = new LocalAgent("light", gameStateController.getBoard());
 		AIAgent darkAgent = new AIAgent("dark", gameStateController.getBoard());
 
-		darkAgent.setAdvancedAI(false);
+		darkAgent.setAdvancedAI(true);
 
 		gameStateController.setPlayerAgent("light", lightAgent);
 		gameStateController.setPlayerAgent("dark", darkAgent);
@@ -35,7 +35,7 @@ public class SelectAIOptionsController {
 		Agent lightAgent = new LocalAgent("light", gameStateController.getBoard());
 		AIAgent darkAgent = new AIAgent("dark", gameStateController.getBoard());
 
-		darkAgent.setAdvancedAI(true);
+		darkAgent.setAdvancedAI(false);
 
 		gameStateController.setPlayerAgent("light", lightAgent);
 		gameStateController.setPlayerAgent("dark", darkAgent);

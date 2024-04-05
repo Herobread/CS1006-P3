@@ -49,6 +49,7 @@ public class AIAgent extends Agent {
 		this.expectMiniMax = expectiMinMax;
 	}
 
+	// Creates the full map of coordinates to zones
 	public void populateCoordsToZone() {
 		coordToZone.put("2.0,0.0", "S");
 		coordToZone.put("2.0,1.0", "S");
@@ -81,18 +82,16 @@ public class AIAgent extends Agent {
 		coordToZone.put("0.0,4.0", "start");
 	}
 
-	// any action that updated the board will automatically update the GUI
-	// so, I think that this should trigger again when you get extra move
+	// Triggered whenever it is the AI's turn to move
 	public void moveAvailable() {
 		Board board = getBoard();
 
-		// roll dice:
+		// Roll dice
 		roll();
 
-		// check if move is available at all:
-		// if unavailable: return;
-		boolean isMoveAvailable = board.isSelectMoveAvailable();
-		if (!isMoveAvailable)
+		// Check if move is available at all:
+		// if unavailable, return
+		if (!board.isSelectMoveAvailable())
 			return;
 
 		// Get paths for both players
@@ -109,7 +108,7 @@ public class AIAgent extends Agent {
 				.map(pair -> pair.getFirst())
 				.filter(point -> !point.equals(new Point(2, 5)))
 				.forEach(point -> aiPawns.add(point));
-		// Start tile doesn't say if a pawn is there, so as long as there is
+		// Start tile doesn't show if a pawn is there, so as long as there is
 		// remaining stock, add a starting pawn to the list of potentially
 		// movable pawns
 		if (board.getCurrentPlayerStock() > 0)
@@ -125,40 +124,32 @@ public class AIAgent extends Agent {
 		if (board.getPlayerStock("light") > 0)
 			playerPawns.add(new Point(0, 4));
 
-		// Determine which AI to run
-
-		// Get move
+		// Get move depending on which AI is selected
 		Pair<Point, Double> move;
 		if (expectMiniMax)
 			move = getExpectiMinMaxMove(aiPawns, playerPawns);
 		else
 			move = getCurrentStateMove(aiPawns, playerPawns, pathWithPlayerPawns);
 
-		Timer timer = new Timer(1000, event -> {
-			boolean didMove = move((int) move.getFirst().getX(), (int) move.getFirst().getY());
-			if (!didMove) {
-				// skill issue:
-				throw new RuntimeException("AI has skill issue, maybe");
-			}
-		});
+		// Make move
+		Timer timer = new Timer(1000, event -> move((int) move.getFirst().getX(), (int) move.getFirst().getY()));
 		timer.setRepeats(false);
 		timer.start();
 	}
 
 	// This is the basic AI that only looks at the current state of the board and
-	// makes
-	// the best move based on that
+	// makes the best move based on that
 	private Pair<Point, Double> getCurrentStateMove(List<Point> aiPawns, List<Point> playerPawns,
 			List<Pair<Point, String>> pathWithPlayerPawns) {
 
 		// Get all possible moves and calculate metrics
-		Map<Point, Double> moves = getPossibleMoves(5, aiPawns, playerPawns, player, board, false);
+		Map<Point, Double> moves = getPossibleMoves(5, aiPawns, playerPawns, player, board);
 		// Return best move
 		return chooseBestMove(moves);
 	}
 
 	// This is the advanced AI that should utilize the expectiminmax algorithm to
-	// make a move
+	// look ahead one move before making its move
 	private Pair<Point, Double> getExpectiMinMaxMove(List<Point> aiPawns, List<Point> playerPawns) {
 		Map<Point, Double> moves = new HashMap<>();
 
@@ -167,8 +158,7 @@ public class AIAgent extends Agent {
 			Point endPoint = board.getPossibleMove(aiPawn);
 
 			// Reset isCapture before every iteration, used to check if a player pawn would
-			// be
-			// sent back to start
+			// be sent back to start
 			boolean isCapture = false;
 
 			// If valid endpoint --> valid move
@@ -183,7 +173,7 @@ public class AIAgent extends Agent {
 				if (pawnAtTarget != null)
 					isCapture = pawnAtTarget.equals("light");
 
-				if (isCapture)
+				if (isCapture) // If capture, remove that player pawn from list
 					newPlayerPawns = removePawnFromList(endPoint, playerPawns);
 				else
 					newPlayerPawns = playerPawns;
@@ -194,7 +184,7 @@ public class AIAgent extends Agent {
 					// For each possible roll, need to get all possible player moves
 
 					Map<Point, Double> playerMoves = getPossibleMoves(possibleRoll, newPlayerPawns,
-							newAIPawns, "light", board, isCapture);
+							newAIPawns, "light", board);
 					// For each set of possible player moves, assume player will choose the best one
 					Pair<Point, Double> bestPlayerMove = chooseBestMove(playerMoves);
 
@@ -219,37 +209,43 @@ public class AIAgent extends Agent {
 			}
 		}
 
-		// At this point, should have a map of potential moves and the metric of the
-		// move the AI
-		// expects the player will make after that move, with roll chances factored in.
-		// So, AI chooses the move with the lowest associated metric, so the player next
-		// turn will
-		// make a "worse" move
+		// At this point, should have a map of potential moves and the weighted metric
+		// of the
+		// move the AI expects the player will make following that move.
+		// AI will choose the move with the lowest associated metric, so the player next
+		// turn will make a "worse" move
 		Pair<Point, Double> worstPlayerMove = new Pair<Point, Double>(new Point(0, 0), 100.0);
+
+		// In addition, if all associated metrics are the same, AI makes move based on
+		// what is
+		// best for itself for that particular turn (i.e. how simple AI makes decision)
 		List<Point> sameMetricMoves = new ArrayList<>();
 		Boolean noPlayerEffect = null;
 
 		for (Point move : moves.keySet()) {
+			// If both metrics equal and a difference in all metrics hasn't been found, add
+			// to list
 			if ((int) Math.floor(moves.get(move) * 100000) == (int) Math.floor(worstPlayerMove.getSecond() * 100000)
 					&& noPlayerEffect) {
 				sameMetricMoves.add(move);
-			} else if (moves.get(move) < worstPlayerMove.getSecond()) {
-				// This will always be run first, so change noPlayerEffect to true and add move
-				// to list
+			} // If found lower metric, update worstPlayerMove
+			else if (moves.get(move) < worstPlayerMove.getSecond()) {
+				// This will always be run first since worstPlayerMove is preset to have
+				// a very high metric, so change noPlayerEffect to true and add move to list
 				if (noPlayerEffect == null) {
 					sameMetricMoves.add(move);
 					noPlayerEffect = true;
 				}
-				// If this ever gets checked again, that means there was a move that would
-				// result
-				// in the player getting a worse move, so clear list
+				// If a lower metric is found again, that means there was a move that would
+				// result in the player getting a worse move, so clear list
 				else if (noPlayerEffect) {
 					noPlayerEffect = false;
 					sameMetricMoves.clear();
 				}
 				worstPlayerMove.setFirst(move);
 				worstPlayerMove.setSecond(moves.get(move));
-			} // Same check in case the following move has a higher metric
+			} // Check in case the following moves have a higher metric.
+				// If they do, should make move with lower associated metric
 			else if (moves.get(move) > worstPlayerMove.getSecond()) {
 				noPlayerEffect = false;
 				sameMetricMoves.clear();
@@ -257,21 +253,19 @@ public class AIAgent extends Agent {
 		}
 
 		// If sameMetricMoves is empty, that means one of the moves it could make would
-		// result
-		// in the player getting a worse move, so make that move
-		if (sameMetricMoves.isEmpty()) {
+		// result in the player getting a worse move, so make that move
+		if (sameMetricMoves.isEmpty())
 			return worstPlayerMove;
-		} // If not, all moves the AI could make give the player the same average
-			// potential move metric,
-			// so instead, make move decision based on what is best for the AI given the
-			// current gamestate
-		else {
-			return getCurrentStateMove(sameMetricMoves, playerPawns, board.getPathWithPawns("light"));
-		}
 
+		// If not, all moves the AI could make would give the player a move with
+		// the same weighted metric, so make move decision
+		// based on what is best for the AI given the
+		// current gamestate
+		else
+			return getCurrentStateMove(sameMetricMoves, playerPawns, board.getPathWithPawns("light"));
 	}
 
-	// Goes through a list of moves and chooses the best one
+	// Goes through a list of moves and chooses the one with the highest metric
 	private Pair<Point, Double> chooseBestMove(Map<Point, Double> moves) {
 		Pair<Point, Double> bestMove = new Pair<Point, Double>(new Point(0, 0), -1.5);
 		moves.entrySet().stream()
@@ -284,7 +278,7 @@ public class AIAgent extends Agent {
 		return bestMove;
 	}
 
-	// Updates the location of a single pawn to a new location from a list
+	// Takes a list of pawn locations and updates the location of a single pawn
 	private List<Point> getNewPawnList(Point pawnToChange, Point newPoint, List<Point> pawnList) {
 		List<Point> newPawnList = new ArrayList<>();
 		boolean changeMade = false;
@@ -313,9 +307,9 @@ public class AIAgent extends Agent {
 		return newPawnList;
 	}
 
-	// Gets all possible moves and their associated metrics from a given gane state
+	// Gets all possible moves and their associated metrics from a given game state
 	private Map<Point, Double> getPossibleMoves(int roll, List<Point> pawnsToMove, List<Point> otherPawns,
-			String selectedPlayer, Board board, boolean isCapture) {
+			String selectedPlayer, Board board) {
 
 		String opposingPlayer;
 		if (selectedPlayer.equals("light"))
@@ -325,32 +319,40 @@ public class AIAgent extends Agent {
 
 		Map<Point, Double> moves = new HashMap<>();
 
+		// Go through each pawn in list
 		for (Point pawn : pawnsToMove) {
-			isCapture = false;
+			// Check if needed to input a roll for getting a posisble move
+			// Only need to specify a roll for expectiminmax
 			Point endPoint;
+			// If roll inputted as 5, just use current roll value
 			if (roll == 5)
 				endPoint = board.getPossibleMove(pawn);
 			else
 				endPoint = board.getPossibleMove(pawn, roll, selectedPlayer);
 
+			// If possible move
 			if (endPoint != null) {
+				// Get zones
 				String startZone = coordToZone.get(pointToString(pawn));
 				String endZone = coordToZone.get(pointToString(endPoint));
 
-				if (!isCapture) {
-					String pawnAtTarget = board.getTile(endPoint).getPawn();
-					if (pawnAtTarget != null)
-						isCapture = pawnAtTarget.equals(opposingPlayer);
-				}
+				// Check if move would result in a capture
+				boolean isCapture = false;
+				String pawnAtTarget = board.getTile(endPoint).getPawn();
+				if (pawnAtTarget != null)
+					isCapture = pawnAtTarget.equals(opposingPlayer);
 
+				// Check if pawn in danger
 				boolean inDanger = checkDanger(pawn, board.getPathWithPawns(opposingPlayer), opposingPlayer);
 
+				// Check how many selected pawns are in start and danger 1 zone
 				int selectedPawnsInStartAndD1 = pawnsToMove.stream()
 						.map(p -> coordToZone.get(pointToString(p)))
 						.filter(zone -> zone.equals("D1") || zone.equals("S"))
 						.mapToInt(zone -> 1)
 						.sum();
 
+				// Check how many opposing pawns are in start and danger 1 zone
 				int opposingPawnsInStartAndD1 = otherPawns.stream()
 						.map(p -> coordToZone.get(pointToString(p)))
 						.filter(zone -> zone != null)
@@ -358,40 +360,63 @@ public class AIAgent extends Agent {
 						.mapToInt(zone -> 1)
 						.sum();
 
+				// Check if there is a selected pawn in danger 2 zone
 				boolean selectedPawnInD2 = pawnsToMove.stream()
 						.map(p -> coordToZone.get(pointToString(p)))
 						.filter(zone -> zone.equals("D2"))
 						.mapToInt(zone -> 1)
 						.sum() > 1;
 
+				// Check if both end tiles are full
 				boolean endFull = board.getTile(new Point(2, 6)).getPawn() != null
 						&& board.getTile(new Point(2, 7)).getPawn() != null;
 
+				// Get metric
 				double metric = calculateMetric(isCapture, inDanger, pawn, endPoint, startZone,
 						endZone, selectedPawnsInStartAndD1, opposingPawnsInStartAndD1, selectedPawnInD2, endFull);
 
+				// Add the pawn to move and the associated metric to list
 				moves.put(pawn, metric);
 			}
 		}
 
+		// Return list of possible moves and their metrics
 		return moves;
 	}
 
 	// Checks if a piece is in danger
 	private boolean checkDanger(Point point, List<Pair<Point, String>> pathWithOpposingPawns, String opposingPlayer) {
+		// If pawn on middle rosette, it's safe so return false
 		if (point.equals(new Point(1, 3)))
 			return false;
+
+		// Check zone, because piece only in danger if in danger zone
 		String zone = coordToZone.get(pointToString(point));
 		if (zone.equals("D1") || zone.equals("D2")) {
+			// Go through each point in the opposing player's path
 			for (Pair<Point, String> opposingPlayerPathPair : pathWithOpposingPawns) {
+				// When the point in the opposing player's path with the pawn to check is found,
+				// check the 4 spaces behind to see if an opposing pawn is there.
+				// If an opposing pawn is within 4 tiles behind the selected pawn,
+				// the pawn is in danger.
+
+				// Note: One of the two loops here appear to be redundant, as they both
+				// do the same check of looking for the selected piece in the opposing
+				// player's path. However, when attempting to remove one of the loops,
+				// the game crashed, so, we chose to keep these method as is despite
+				// it seeming inefficient. It doesn't slow the AI down, so as long as it
+				// does what it needs to, the redundant code won't be noticed by a player.
 				if (opposingPlayerPathPair.getFirst().equals(point)) {
 					ListIterator<Pair<Point, String>> iter = pathWithOpposingPawns.listIterator();
 					while (iter.hasNext()) {
 						if (iter.next().getFirst().equals(point)) {
+							// Iterate through the 4 tiles behind the piece
 							for (int i = 0; i < 4; i++) {
 								String pawnAtTile = iter.previous().getSecond();
 								if (pawnAtTile != null)
 									if (pawnAtTile.equals(opposingPlayer))
+										// If one of the 4 tiles behind the piece has an opposing
+										// pawn, pawn in danger
 										return true;
 							}
 							return false;
