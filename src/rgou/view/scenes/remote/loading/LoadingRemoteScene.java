@@ -32,7 +32,7 @@ public class LoadingRemoteScene extends GameSceneBase {
 		RenderScaleContext renderScaleContext = new RenderScaleContext(gameSceneController.getSceneScale());
 		LabelBox.setFontSize(renderScaleContext.scaleFont(16));
 
-		statusBox = new LabelBox("-");
+		statusBox = new LabelBox("waiting for connection");
 		statusBox.setBounds(renderScaleContext.scaleRectangle(68, 170, 500, 19));
 		statusBox.setHorizontalAlignment(SwingConstants.CENTER);
 		add(statusBox);

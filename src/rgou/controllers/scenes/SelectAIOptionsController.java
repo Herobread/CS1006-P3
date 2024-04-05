@@ -8,38 +8,37 @@ import rgou.controllers.agents.LocalAgent;
 import rgou.controllers.listeners.BoardListenerRebinder;
 import rgou.model.Board;
 
-public class MainMenuController {
+public class SelectAIOptionsController {
 	private static void resetBoard(GameStateController gameStateController) {
 		Board newBoard = new Board();
 		newBoard = BoardListenerRebinder.rebind(gameStateController.getBoard(), newBoard);
 		gameStateController.setBoard(newBoard);
 	}
 
-	public static void onLocalPlayPressed(GameStateController gameStateController) {
+	public static void handleAdvancedAISelected(GameSceneController gameSceneController,
+			GameStateController gameStateController) {
 		resetBoard(gameStateController);
 
 		Agent lightAgent = new LocalAgent("light", gameStateController.getBoard());
-		Agent darkAgent = new LocalAgent("dark", gameStateController.getBoard());
+		AIAgent darkAgent = new AIAgent("dark", gameStateController.getBoard());
+
+		darkAgent.setAdvancedAI(false);
 
 		gameStateController.setPlayerAgent("light", lightAgent);
 		gameStateController.setPlayerAgent("dark", darkAgent);
 	}
 
-	public static void onAIPlayerPressed(
-			GameStateController gameStateController,
-			GameSceneController gameSceneController) {
+	public static void handleSimpleAISelected(GameSceneController gameSceneController,
+			GameStateController gameStateController) {
 		resetBoard(gameStateController);
 
 		Agent lightAgent = new LocalAgent("light", gameStateController.getBoard());
-		Agent darkAgent = new AIAgent("dark", gameStateController.getBoard());
+		AIAgent darkAgent = new AIAgent("dark", gameStateController.getBoard());
+
+		darkAgent.setAdvancedAI(true);
 
 		gameStateController.setPlayerAgent("light", lightAgent);
 		gameStateController.setPlayerAgent("dark", darkAgent);
-	}
 
-	public static void onRemotePlayerPressed(
-			GameStateController gameStateController,
-			GameSceneController gameSceneController) {
-		resetBoard(gameStateController);
 	}
 }

@@ -15,6 +15,8 @@ import rgou.model.Board;
 import rgou.utils.Pair;
 
 public class AIAgent extends Agent {
+	private boolean expectMiniMax = true;
+
 	private static HashMap<String, String> coordToZone = new HashMap<>();
 
 	public AIAgent(String player, Board board) {
@@ -31,12 +33,20 @@ public class AIAgent extends Agent {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				if (board.getActivePlayer().equals(player) && board.isRollAvailable()) {
-					Timer timer = new Timer(1000, event -> moveAvailable());
+					Timer timer = new Timer(500, event -> moveAvailable());
 					timer.setRepeats(false);
 					timer.start();
 				}
 			}
 		});
+	}
+
+	public boolean isAdvancedAI() {
+		return expectMiniMax;
+	}
+
+	public void setAdvancedAI(boolean expectiMinMax) {
+		this.expectMiniMax = expectiMinMax;
 	}
 
 	public void populateCoordsToZone() {
@@ -116,11 +126,10 @@ public class AIAgent extends Agent {
 			playerPawns.add(new Point(0, 4));
 
 		// Determine which AI to run
-		boolean expectiMinMax = true;
 
 		// Get move
 		Pair<Point, Double> move;
-		if (expectiMinMax)
+		if (expectMiniMax)
 			move = getExpectiMinMaxMove(aiPawns, playerPawns);
 		else
 			move = getCurrentStateMove(aiPawns, playerPawns, pathWithPlayerPawns);

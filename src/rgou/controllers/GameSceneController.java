@@ -18,6 +18,7 @@ import rgou.view.scenes.GameplayScene;
 import rgou.view.scenes.LoadingScene;
 import rgou.view.scenes.MainMenuScene;
 import rgou.view.scenes.RemoteOptionsScene;
+import rgou.view.scenes.ai.SelectAIOptionsScene;
 import rgou.view.scenes.remote.HostScene;
 import rgou.view.scenes.remote.JoinScene;
 import rgou.view.scenes.remote.loading.LoadingRemoteScene;
@@ -71,6 +72,7 @@ public class GameSceneController {
 		sceneMap.put(GameScenes.SELECT_REMOTE_HOST, new HostScene(this, gameStateController));
 		sceneMap.put(GameScenes.SELECT_REMOTE_JOIN, new JoinScene(this, gameStateController));
 		sceneMap.put(GameScenes.SELECT_REMOTE_LOADING, new LoadingRemoteScene(this, gameStateController));
+		sceneMap.put(GameScenes.SELECT_AI, new SelectAIOptionsScene(this, gameStateController));
 
 		// to add new scenes:
 		// sceneMap.put(scene name, Class that extends GameSceneBase);

@@ -66,12 +66,9 @@ public class MainMenuScene extends GameSceneBase {
 		playAi.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MainMenuController.onAIPlayerPressed(gameStateController);
-				gameSceneController.setActiveScene(GameScenes.GAMEPLAY);
+				gameSceneController.setActiveScene(GameScenes.SELECT_AI);
 			}
 		});
 		add(playAi);
-
-		repaint();
 	}
 }
