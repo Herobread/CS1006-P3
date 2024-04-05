@@ -54,8 +54,7 @@ public class GameSceneController {
 	}
 
 	private void addResizeListener() {
-		// resize panel inside of the frame
-		// when frame is resized
+		// Resize panel inside of the frame when frame is resized
 		mainFrame.addComponentListener(new ComponentAdapter() {
 			public void componentResized(ComponentEvent e) {
 				renderActiveScene();
@@ -73,17 +72,12 @@ public class GameSceneController {
 		sceneMap.put(GameScenes.SELECT_REMOTE_JOIN, new JoinScene(this, gameStateController));
 		sceneMap.put(GameScenes.SELECT_REMOTE_LOADING, new LoadingRemoteScene(this, gameStateController));
 		sceneMap.put(GameScenes.SELECT_AI, new SelectAIOptionsScene(this, gameStateController));
-
-		// to add new scenes:
-		// sceneMap.put(scene name, Class that extends GameSceneBase);
 	}
 
 	/**
 	 * Renders the active scene.
 	 * 
-	 * removes all content from scene
-	 * then runs it
-	 * and finally, repaints
+	 * Removes all content from scene, then runs it, and finally repaints.
 	 */
 	public void renderActiveScene() {
 		if (activeScenePanel == null) {
@@ -109,8 +103,7 @@ public class GameSceneController {
 		return (double) activeScenePanel.getWidth() / ORIGINAL_SCENE_WIDTH;
 	}
 
-	// calculates how to scale the panel inside the frame,
-	// while keeping aspect ratio
+	// Calculates how to scale the panel inside the frame while keeping aspect ratio
 	private Rectangle getPanelTargetBounds() {
 		int frameWidth = mainFrame.getWidth();
 		int frameHeight = mainFrame.getHeight();
@@ -120,16 +113,16 @@ public class GameSceneController {
 		double frameAspectRatio = (double) frameWidth / frameHeight;
 
 		if (frameAspectRatio > ORIGINAL_ASPECT_RATIO) {
-			// frame is wider than the desired aspect ratio
+			// Frame is wider than the desired aspect ratio
 			targetHeight = frameHeight;
 			targetWidth = targetHeight * ORIGINAL_ASPECT_RATIO;
 		} else {
-			// frame is narrower or equal to the desired aspect ratio
+			// Frame is narrower or equal to the desired aspect ratio
 			targetWidth = frameWidth;
 			targetHeight = targetWidth / ORIGINAL_ASPECT_RATIO;
 		}
 
-		// center frame
+		// Center frame
 		int x = (int) ((frameWidth - targetWidth) / 2);
 		int y = (int) ((frameHeight - targetHeight) / 2);
 

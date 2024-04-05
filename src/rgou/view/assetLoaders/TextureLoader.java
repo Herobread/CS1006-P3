@@ -7,12 +7,21 @@ import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
+/**
+ * Loads textures for the game.
+ */
 public class TextureLoader {
-	private static String BASE_TEXTURE_PATH = "assets/textures/";
-	private static String TEXTURE_NOT_FOUND = "not-found.png";
+	private static final String BASE_TEXTURE_PATH = "assets/textures/";
+	private static final String TEXTURE_NOT_FOUND = "not-found.png";
 
-	private static HashMap<String, Image> textureCache = new HashMap<>();
+	private static final HashMap<String, Image> textureCache = new HashMap<>();
 
+	/**
+	 * Loads an image texture from the specified file path.
+	 *
+	 * @param textureName the name of the texture file
+	 * @return the loaded image texture
+	 */
 	public static Image loadImage(String textureName) {
 		// Check if the texture is already loaded in the cache
 		if (textureCache.containsKey(textureName)) {
@@ -25,7 +34,7 @@ public class TextureLoader {
 			try {
 				Image textureImage = ImageIO.read(imageFile);
 
-				// access cache
+				// Cache the loaded texture
 				textureCache.put(textureName, textureImage);
 
 				return textureImage;
@@ -51,13 +60,17 @@ public class TextureLoader {
 		}
 	}
 
+	/**
+	 * Preloads an image texture into the cache.
+	 *
+	 * @param textureName the name of the texture file
+	 */
 	public static void preLoadToCache(String textureName) {
 		File imageFile = new File(BASE_TEXTURE_PATH + textureName);
 
 		if (!imageFile.exists()) {
-			throw new RuntimeException(
-					"Failed to preload image: image " + BASE_TEXTURE_PATH + textureName +
-							"doesn't exist.");
+			throw new RuntimeException("Failed to preload image: image " + BASE_TEXTURE_PATH + textureName +
+					"doesn't exist.");
 		}
 
 		try {

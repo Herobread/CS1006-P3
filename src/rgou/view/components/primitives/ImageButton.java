@@ -1,10 +1,8 @@
 package rgou.view.components.primitives;
 
 import javax.swing.JButton;
-
 import rgou.view.assetLoaders.TextureLoader;
 import rgou.view.assetLoaders.TextureProcessor;
-
 import javax.swing.ImageIcon;
 import java.awt.Image;
 import java.awt.Cursor;
@@ -21,7 +19,7 @@ public class ImageButton extends JButton {
 	 * Constructs an ImageButton with the specified image path.
 	 *
 	 * Note: base path already included
-	 * 
+	 *
 	 * @param imagePath The path to the image file.
 	 */
 	public ImageButton(String imagePath) {
@@ -38,7 +36,7 @@ public class ImageButton extends JButton {
 	@Override
 	public void setBounds(int x, int y, int width, int height) {
 		if (originalImage != null) {
-			// rescale image, so that it's not blurry
+			// Rescale image, so that it's not blurry
 			setIcon(new ImageIcon(
 					TextureProcessor.getScaledImage(
 							originalImage,
@@ -51,9 +49,14 @@ public class ImageButton extends JButton {
 		super.setBounds(x, y, width, height);
 	}
 
+	/**
+	 * Sets the opacity of the button.
+	 *
+	 * @param opacity The opacity value between 0.0 and 1.0.
+	 */
 	public void setOpacity(float opacity) {
-		BufferedImage imageWithOpactiy = TextureProcessor.setOpacity(originalImage, opacity);
+		BufferedImage imageWithOpacity = TextureProcessor.setOpacity(originalImage, opacity);
 
-		setIcon(new ImageIcon(imageWithOpactiy));
+		setIcon(new ImageIcon(imageWithOpacity));
 	}
 }

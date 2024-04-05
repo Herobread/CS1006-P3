@@ -7,7 +7,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+/**
+ * Loads custom fonts for the game.
+ */
 public class FontLoader {
+	/**
+	 * Loads a custom font from the specified font file path.
+	 *
+	 * @param fontFilePath the file path of the font
+	 * @return the loaded custom font
+	 */
 	public static Font loadFont(String fontFilePath) {
 		Font customFont = null;
 		int fontSize = 20;
@@ -25,7 +34,7 @@ public class FontLoader {
 
 			fontStream.close();
 		} catch (IOException | FontFormatException e) {
-			// loading failed, load system font instead
+			// Loading failed, load system font instead
 			System.err.println("Error loading font: " + e.getMessage());
 			customFont = new Font(Font.SANS_SERIF, Font.PLAIN, fontSize);
 		}

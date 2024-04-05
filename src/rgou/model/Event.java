@@ -1,5 +1,8 @@
 package rgou.model;
 
+/**
+ * Represents an event in the game.
+ */
 public class Event {
 	private EventTypes type;
 	private String player;
@@ -7,6 +10,15 @@ public class Event {
 	private int y;
 	private Board board;
 
+	/**
+	 * Constructs an Event with the specified attributes.
+	 * 
+	 * @param board  the board associated with the event
+	 * @param player the player associated with the event
+	 * @param type   the type of the event
+	 * @param x      the x-coordinate of the event
+	 * @param y      the y-coordinate of the event
+	 */
 	public Event(Board board, String player, EventTypes type, int x, int y) {
 		this.board = board;
 		this.player = player;
@@ -15,6 +27,13 @@ public class Event {
 		this.y = y;
 	}
 
+	/**
+	 * Constructs an Event with the specified attributes.
+	 * 
+	 * @param board  the board associated with the event
+	 * @param player the player associated with the event
+	 * @param type   the type of the event
+	 */
 	public Event(Board board, String player, EventTypes type) {
 		this.board = board;
 		this.player = player;
@@ -65,5 +84,4 @@ public class Event {
 	public String toString() {
 		return "Event [type=" + type + ", player=" + player + ", x=" + x + ", y=" + y + ", board=" + board + "]";
 	}
-
 }

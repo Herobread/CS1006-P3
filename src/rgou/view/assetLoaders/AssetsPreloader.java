@@ -2,7 +2,13 @@ package rgou.view.assetLoaders;
 
 import rgou.view.components.primitives.LabelBox;
 
+/**
+ * Preloads assets needed for the game.
+ */
 public class AssetsPreloader {
+	/**
+	 * Loads necessary assets for the game.
+	 */
 	public static void load() {
 		LabelBox.loadCustomFont();
 

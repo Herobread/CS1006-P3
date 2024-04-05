@@ -38,29 +38,12 @@ public class RemoteAgent extends Agent {
 		// disable dice roll and board panel inputs for current player
 		isInputRequired = false;
 
-		// any updates
-		// board.addChangeListener(new ChangeListener() {
-		// @Override
-		// public void stateChanged(ChangeEvent e) {
-		// System.out.println("Board updated");
-		// // board updated
-		// // might not need this event handler, but it was created already, so why not
-		// //
-		// // maybe needed to sync boards between 2 users sometimes??
-		// // but then you will need to create a way to compress board to string and
-		// back
-		// }
-		// });
-
 		// add on move or dice roll event listener
 		board.addEventListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				try {
 					Event event = (Event) e.getSource();
-
-					System.out.println("event happend");
-					System.out.println(e);
 
 					switch (event.getType()) {
 						case ROLL:
@@ -93,8 +76,8 @@ public class RemoteAgent extends Agent {
 
 					// Close the connection
 					socket.close();
-				} catch (IOException e) {
-					e.printStackTrace();
+				} catch (IOException err) {
+					throw new RuntimeException(err.getMessage());
 				}
 			}
 		}).start();
@@ -102,8 +85,6 @@ public class RemoteAgent extends Agent {
 	}
 
 	private void handleRemotePlayerAction(String action) {
-		System.out.println(action);
-
 		RemoteAction remoteAction = new RemoteAction(action);
 
 		switch (remoteAction.getAction()) {
@@ -152,5 +133,4 @@ public class RemoteAgent extends Agent {
 	public String toString() {
 		return "RemoteAgent [isInputRequired=" + isInputRequired + "]";
 	}
-
 }

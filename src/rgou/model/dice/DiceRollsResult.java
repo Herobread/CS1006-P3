@@ -1,28 +1,51 @@
 package rgou.model.dice;
 
+/**
+ * Represents the result of rolling multiple dice.
+ */
 public class DiceRollsResult {
 	private DiceRollResult[] diceRollResults;
 	private int total = 0;
 
+	/**
+	 * Constructs a DiceRollsResult with the specified array of dice roll results.
+	 * 
+	 * @param diceRollResults the array of dice roll results
+	 */
 	public DiceRollsResult(DiceRollResult[] diceRollResults) {
 		this.diceRollResults = diceRollResults;
 
-		// calculate total dice score
+		// Calculate total dice score
 		for (DiceRollResult diceRollResult : diceRollResults) {
 			total += diceRollResult.isWin() ? 1 : 0;
 		}
 	}
 
+	/**
+	 * Gets the array of dice roll results.
+	 * 
+	 * @return the array of dice roll results
+	 */
 	public DiceRollResult[] getDiceRollResults() {
 		return diceRollResults;
 	}
 
+	/**
+	 * Gets the total score of the dice rolls.
+	 * 
+	 * @return the total score
+	 */
 	public int getTotal() {
 		return total;
 	}
 
-	///////////////////// networking
+	///////////////////// Networking
 
+	/**
+	 * Converts the dice rolls result to an action string for networking.
+	 * 
+	 * @return the action string representation of the dice rolls result
+	 */
 	public String toActionString() {
 		StringBuilder result = new StringBuilder("roll,");
 
@@ -34,7 +57,11 @@ public class DiceRollsResult {
 		return result.toString();
 	}
 
-	// Constructor to deconstruct action string
+	/**
+	 * Constructs a DiceRollsResult from an action string received over the network.
+	 * 
+	 * @param actionString the action string received over the network
+	 */
 	public DiceRollsResult(String actionString) {
 		if (actionString.startsWith("roll,")) {
 			String[] parts = actionString.substring(5).split("\\|");

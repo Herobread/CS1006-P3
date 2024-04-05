@@ -7,6 +7,11 @@ import rgou.view.MainFrame;
 import rgou.view.assetLoaders.AssetsPreloader;
 
 public class Main {
+	/**
+	 * The main method to start the game.
+	 * 
+	 * @param args Command-line arguments (unused).
+	 */
 	public static void main(String[] args) {
 		GameStateController gameStateController = new GameStateController();
 		MainFrame mainFrame = new MainFrame();
@@ -15,10 +20,10 @@ public class Main {
 		gameSceneController.setActiveScene(GameScenes.LOADING);
 		gameSceneController.renderActiveScene();
 
-		// load assets
+		// Load assets in a separate thread
 		Thread thread = new Thread(() -> {
 			AssetsPreloader.load();
-			// load default scene:
+			// Load default scene
 			gameSceneController.setActiveScene(GameScenes.MAIN_MENU);
 		});
 		thread.run();

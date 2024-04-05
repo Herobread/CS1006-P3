@@ -1,16 +1,32 @@
 package rgou.view.components.primitives;
 
-import javax.swing.*;
+import javax.swing.JComponent;
 import rgou.view.assetLoaders.TextureLoader;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 
+/**
+ * Represents a component for displaying an image.
+ */
 public class ImageBox extends JComponent {
 	private Image image;
 
+	/**
+	 * Constructs an ImageBox with the specified image path.
+	 *
+	 * @param imagePath the path to the image
+	 */
 	public ImageBox(String imagePath) {
 		setImagePath(imagePath);
 	}
 
+	/**
+	 * Sets the image path and loads the image.
+	 *
+	 * @param imagePath the path to the image
+	 */
 	public void setImagePath(String imagePath) {
 		this.image = TextureLoader.loadImage(imagePath);
 		invalidate();

@@ -42,7 +42,6 @@ public class LoadingRemoteScene extends GameSceneBase {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				RemoteStatus remoteStatus = (RemoteStatus) e.getSource();
-				System.out.println(remoteStatus.getStatus());
 				statusBox.setText(remoteStatus.getStatus());
 			}
 		});
