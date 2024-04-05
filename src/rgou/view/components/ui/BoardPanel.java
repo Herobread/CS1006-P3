@@ -58,32 +58,37 @@ public class BoardPanel extends JPanel {
 						TILE_SIZE - TILE_PADDING,
 						TILE_SIZE - TILE_PADDING));
 
-				boardTilePanel.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseEntered(MouseEvent e) {
-						if (board.isRollAvailable()) {
-							return;
-						}
-						highlightedTilePoint = board.getPossibleMove(currentTilePoint);
-						updateHighlight();
-					}
+				boolean isInputRequired = gameStateController.getPlayerAgent(board.getActivePlayer()).isInputRequired();
+				if (isInputRequired) {
 
-					@Override
-					public void mouseExited(MouseEvent e) {
-						if (board.isRollAvailable()) {
-							return;
+					boardTilePanel.addMouseListener(new MouseAdapter() {
+						@Override
+						public void mouseEntered(MouseEvent e) {
+							if (board.isRollAvailable()) {
+								return;
+							}
+							highlightedTilePoint = board.getPossibleMove(currentTilePoint);
+							updateHighlight();
 						}
-						highlightedTilePoint = null;
-						updateHighlight();
-					}
 
-					@Override
-					public void mouseReleased(MouseEvent e) {
-						board.makeMove(currentTilePoint);
-					}
-				});
+						@Override
+						public void mouseExited(MouseEvent e) {
+							if (board.isRollAvailable()) {
+								return;
+							}
+							highlightedTilePoint = null;
+							updateHighlight();
+						}
+
+						@Override
+						public void mouseReleased(MouseEvent e) {
+							board.makeMove(currentTilePoint);
+						}
+					});
+				}
 
 				add(boardTilePanel);
+
 			}
 		}
 
