@@ -125,6 +125,12 @@ public class AIAgent extends Agent {
 		else
 			move = getCurrentStateMove(aiPawns, playerPawns, pathWithPlayerPawns);
 
+		Timer timer = new Timer(1000, event -> makeMove(move));
+		timer.setRepeats(false);
+		timer.start();
+	}
+
+	private void makeMove(Pair<Point, Double> move) {
 		// make a move:
 		// returns true if move successful
 		boolean didMove = move((int) move.getFirst().getX(), (int) move.getFirst().getY());
